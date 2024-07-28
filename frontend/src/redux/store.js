@@ -10,7 +10,8 @@ const store = configureStore({
         payment: paymentReducer
     },
     middleware: (getDefaultMiddleware) =>
-        getDefaultMiddleware().concat(apiSlice.middleware)
+        getDefaultMiddleware().concat(apiSlice.middleware),
+    devTools: false
 });
 
 export default store;
