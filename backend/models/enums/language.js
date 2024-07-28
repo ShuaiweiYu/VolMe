@@ -1,0 +1,9 @@
+const LANGUAGE = {
+    ENGLISH: "ENGLISH",
+    GERMAN: "GERMAN",
+    FRENCH: "FRENCH",
+    ITALIAN: "ITALIAN",
+    SPANISH: "SPANISH"
+}
+
+export {LANGUAGE}

@@ -1,0 +1,15 @@
+backend/node_modules
+backend/logs
+backend/.vscode
+backend/.idea
+backend/.env
+backend/.yarn.lock
+backend/.DS_Store
+frontend/.DS_Store
+frontend/.vscode
+frontend/.idea
+frontend/.yarn.lock
+frontend/node_modules
+.DS_Store
+.idea
+.vscode

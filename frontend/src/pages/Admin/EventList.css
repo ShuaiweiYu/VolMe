@@ -1,0 +1,21 @@
+.login-container {
+    justify-content: center;
+    align-items: center;
+    min-width: 500px;
+}
+
+.input-container {
+    max-width: 300px;
+    /*centering*/
+    margin: 20px auto;
+}
+
+.icon-size {
+    height: 80px;
+    width: 80px;
+}
+
+.hint-font-size {
+    font-size: 10px;
+    color: darkgrey;
+}
