@@ -18,7 +18,7 @@ import {
     useDeleteAllWishlistItemsForUserMutation,
     useGetWishlistItemsForUserQuery
 } from '../redux/wishlist/wishlistApiSlice';
-import WishlistItemCard3 from '../components/Wishlist/WishlistItemCard3';
+import WishlistItemCard from '../components/Wishlist/WishlistItemCard';
 import WishlistSearchBar from '../components/Wishlist/WishlistSearchBar';
 import { ThemeProvider } from "@mui/material/styles";
 import { volmeTheme } from "../theme";
@@ -152,7 +152,7 @@ const WishlistPage = () => {
                             <Grid container spacing={2}>
                                 {filteredItems.map(item => (
                                     <Grid item key={item._id} xs={12} sm={6} md={6}>
-                                        <WishlistItemCard3 item={item} />
+                                        <WishlistItemCard item={item} />
                                     </Grid>
                                 ))}
                             </Grid>

@@ -166,7 +166,7 @@ const CreateEvent = () => {
             }
             return
         } else if (organizerObj.data.response.subscriptionType === "BASIC") {
-            const {data: count} = await getEventCount({id: organiser, creationPlan: "PAYASYOUGO"})
+            const {data: count} = await getEventCount({id: organiser, creationPlan: "BASIC"})
             const result = await checkValidity({userID: organizerObj.data.response._id})
             if (result.data.status !== 'ACTIVE') {
                 toast.error("Your subscription is invalid!");
@@ -176,7 +176,7 @@ const CreateEvent = () => {
                 return
             }
         } else if (organizerObj.data.response.subscriptionType === "PREMIUM") {
-            const {data: count} = await getEventCount({id: organiser, creationPlan: "PAYASYOUGO"})
+            const {data: count} = await getEventCount({id: organiser, creationPlan: "BASIC"})
             const result = await checkValidity({userID: organizerObj.data.response._id})
             if (result.data.status !== 'ACTIVE') {
                 toast.error("Your subscription is invalid!");

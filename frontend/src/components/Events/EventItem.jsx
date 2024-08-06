@@ -28,28 +28,6 @@ import {toast} from "react-toastify";
 import {useDeleteEventMutation, useGetEventByIdQuery} from "../../redux/events/eventApiSlice";
 import {styled} from "@mui/system";
 
-const StyledButton = styled(Button)(({theme, variant}) => ({
-    padding: '10px 20px',
-    width: '80px',
-    height: '50px',
-    borderRadius: '15px',
-    ...(variant === 'outlined' && {
-        color: theme.palette.primary.main,
-        border: `1px solid ${theme.palette.primary.main}`,
-        '&:hover': {
-            backgroundColor: theme.palette.primary.light,
-            borderColor: theme.palette.primary.dark,
-        },
-    }),
-    ...(variant === 'contained' && {
-        color: theme.palette.common.white,
-        backgroundColor: theme.palette.primary.main,
-        '&:hover': {
-            backgroundColor: theme.palette.primary.dark,
-        },
-    }),
-}));
-
 const EventItem = ({
                        eventID,
                        title,

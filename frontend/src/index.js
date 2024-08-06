@@ -24,5 +24,3 @@ root.render(
         </Provider>
     </ThemeProvider>
 );
-
-// App.js or index.js (main entry point)

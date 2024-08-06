@@ -80,6 +80,7 @@ const PayPalButton = () => {
     }
 
     return (
+        // todo: fix pricing bug
         <>
             <PayPalScriptProvider options={{
                 clientId: "AbeIMuvo2F_oTF3jl2qsdywXQH2q8BtbEo-hnbg0jxO3zAYOShGLPxso5xGFO_4L7JYcQkA19jLd25tq",

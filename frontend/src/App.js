@@ -7,7 +7,7 @@ import UserProfile from "./pages/Users/UserProfile";
 import ForgotPassword from "./pages/util/ForgetPasswordPage";
 import Application from "./pages/Applications/Application"
 import Events from "./pages/Events/Events";
-import EventPage2 from "./pages/Events/EventPage2";
+import EventPage from "./pages/Events/EventPage";
 import CreateEvent from "./pages/Events/CreateEvent";
 import MyEventsPage from "./pages/Events/MyEventsPage";
 import {Management} from "./pages/eventManagement/Management";
@@ -70,7 +70,7 @@ function App() {
                     }/>
                     <Route path="/events/:eventID" element={
                         <PersistLogin>
-                            <EventPage2/>
+                            <EventPage/>
                         </PersistLogin>
                     }/>
                     <Route path='/create-event' element={
