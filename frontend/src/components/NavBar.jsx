@@ -24,7 +24,6 @@ import {getFileUrl} from "../util/fileUploaderWrapper";
 import PersonIcon from "@mui/icons-material/Person";
 import {useGetUserByUserIdQuery} from "../redux/users/usersApiSlice";
 import {useSendLogoutMutation} from "../redux/auth/authApiSlice";
-import SideDrawer from '../components/NavBar/SideDrawer'
 import Chat from "../pages/Chat/Chat";
 import {useTranslation} from "react-i18next";
 
@@ -487,15 +486,6 @@ function NavBar({mode, setMode}) {
                             ]
                         )}
                     </Menu>
-                </Box>
-
-                <Box
-                    sx={{
-                        display: {xs: 'flex', md: 'none'},
-                        fontFamily: 'PT Sans',
-                    }}
-                >
-                    <SideDrawer/>
                 </Box>
 
             </StyledToolbar>
