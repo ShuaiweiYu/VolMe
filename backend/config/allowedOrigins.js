@@ -1,5 +1,5 @@
 const allowedOrigins = [
-    'http://localhost:3000',
+    'http://3.74.42.109',
 ]
 
 export default allowedOrigins
