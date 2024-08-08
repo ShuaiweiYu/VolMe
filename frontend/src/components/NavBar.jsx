@@ -66,7 +66,7 @@ const StyledMenuItem = styled(MenuItem)(({theme}) => ({
     },
 }));
 
-function NavBar({mode, setMode}) {
+function NavBar() {
     const {t, i18n} = useTranslation();
     const [lang, setLang] = React.useState("en");
 
@@ -83,10 +83,7 @@ function NavBar({mode, setMode}) {
             setLang("de");
         }
     };
-
-    const handleOpenNavMenu = (event) => {
-        setAnchorElNav(event.currentTarget);
-    };
+    
     const handleOpenUserMenu = (event) => {
         setAnchorElUser(event.currentTarget);
     };
@@ -100,10 +97,6 @@ function NavBar({mode, setMode}) {
         setAnchorElMessage(null);
     };
 
-    const handleCloseNavMenu = () => {
-        setAnchorElNav(null);
-    };
-
     const handleCloseUserMenu = () => {
         setAnchorElUser(null);
     };
@@ -111,10 +104,6 @@ function NavBar({mode, setMode}) {
     //------******------ LoginModal
     const [openModal, setOpenModal] = useState(false);
     const [isLoginModal, setIsLoginModal] = useState(true);
-
-    const handleOpen = () => {
-        setOpenModal(true);
-    };
 
     const handleClose = () => {
         setOpenModal(false);
@@ -125,7 +114,6 @@ function NavBar({mode, setMode}) {
     const userId = useSelector(selectCurrentUserId)
 
     const user = useGetUserByUserIdQuery(userId, {skip: userId === null || userId === undefined})
-
 
     const handleClickOpen = (state) => {
         setOpenModal(true);
@@ -147,9 +135,6 @@ function NavBar({mode, setMode}) {
     };
 
     const [open, setOpen] = React.useState(false);
-    const toggleDrawer = (newOpen) => () => {
-        setOpen(newOpen);
-    };
 
     const scrollToSection = (sectionId) => {
         const sectionElement = document.getElementById(sectionId);
@@ -214,7 +199,8 @@ function NavBar({mode, setMode}) {
                     </StyledButton>
                 </Box>
 
-                {isLandingPage ? (
+                {isLandingPage ? 
+                    (
                     <Box sx={{flexGrow: 1, display: {xs: 'none', md: 'flex'}}}>
                         <StyledMenuItem key="features"
                                         onClick={() => scrollToSection('features')}
