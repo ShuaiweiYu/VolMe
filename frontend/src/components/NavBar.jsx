@@ -158,20 +158,11 @@ function NavBar() {
                 bgcolor: 'transparent',
                 backgroundImage: 'none',
                 mt: 2,
+                padding: 0,
+                margin: 0,
             }}
         >
             <StyledToolbar sx={{borderBottomColor: 'divider'}}>
-                <InterestsIcon
-                    onClick={() => {
-                        navigate("/");
-                    }}
-                    sx={{
-                        flexGrow: 0.05,
-                        display: 'flex',
-                        mr: 1,
-                        color: '#5CBC63',
-                    }}
-                />
                 <Box
                     sx={{
                         flexGrow: 0.05,
@@ -407,10 +398,7 @@ function NavBar() {
                                     </Button>
                                 </MenuItem>,
                                 <MenuItem key="sendLogout" onClick={handleCloseUserMenu}>
-                                    <Button
-                                        variant='contained'
-                                        size="small"
-                                        onClick={sendLogout}
+                                    <Button onClick={sendLogout}
                                         sx={{
                                             backgroundColor: "#FA462A",
                                             '&:hover': {

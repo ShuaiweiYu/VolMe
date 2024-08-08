@@ -248,7 +248,7 @@ const Contacts = () => {
                         <Stack direction="row" spacing={2}>
                             <LocalPhoneRoundedIcon/>
                             <Typography>
-                                +49 123 456 789 00
+                                +49 174 3156870
                             </Typography>
                         </Stack>
                     </Grid>
@@ -257,7 +257,7 @@ const Contacts = () => {
                         <Stack direction="row" spacing={2}>
                             <EmailRoundedIcon/>
                             <Typography>
-                                support@volme.com
+                                volmeplatform@gmail.com
                             </Typography>
                         </Stack>
                     </Grid>
@@ -266,85 +266,85 @@ const Contacts = () => {
                     <Box mt={3} position="absolute" bottom="50px" sx={{alignItems: 'center'}}>
                         <Grid item xs={12} sm={6}>
                             <Stack direction="row" spacing={2} sx={{display: {xs: 'none', lg: 'block'}}}>
-                                <Button href="https://www.tiktok.com/" variant="text">
-                                    <SvgIcon>
-                                        {/* tiktok logo */}
-                                        <svg
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            width={40}
-                                            height={40}
-                                            viewBox="0 0 40 40"
-                                        >
-                                            <path
-                                                strokeLinecap="round"
-                                                strokeLinejoin="round"
-                                                fill="white"
-                                                d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74a2.89 2.89 0 0 1 2.31-4.64a2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z">
+                                {/*<Button href="https://www.tiktok.com/" variant="text">*/}
+                                {/*    <SvgIcon>*/}
+                                {/*        /!* tiktok logo *!/*/}
+                                {/*        <svg*/}
+                                {/*            xmlns="http://www.w3.org/2000/svg"*/}
+                                {/*            width={40}*/}
+                                {/*            height={40}*/}
+                                {/*            viewBox="0 0 40 40"*/}
+                                {/*        >*/}
+                                {/*            <path*/}
+                                {/*                strokeLinecap="round"*/}
+                                {/*                strokeLinejoin="round"*/}
+                                {/*                fill="white"*/}
+                                {/*                d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74a2.89 2.89 0 0 1 2.31-4.64a2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z">*/}
 
-                                            </path>
-                                        </svg>
-                                        )
-                                    </SvgIcon>
-                                </Button>
+                                {/*            </path>*/}
+                                {/*        </svg>*/}
+                                {/*        )*/}
+                                {/*    </SvgIcon>*/}
+                                {/*</Button>*/}
 
-                                <Button href="https://www.instagram.com/" variant="text">
-                                    <SvgIcon>
-                                        {/* instagram logo */}
-                                        <svg
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            width={40}
-                                            height={40}
-                                            viewBox="0 0 24 24"
-                                        >
-                                            <path
-                                                fill="white"
-                                                d="M20.947 8.305a6.53 6.53 0 0 0-.419-2.216a4.61 4.61 0 0 0-2.633-2.633a6.606 6.606 0 0 0-2.186-.42c-.962-.043-1.267-.055-3.709-.055s-2.755 0-3.71.055a6.606 6.606 0 0 0-2.185.42a4.607 4.607 0 0 0-2.633 2.633a6.554 6.554 0 0 0-.419 2.185c-.043.963-.056 1.268-.056 3.71s0 2.754.056 3.71c.015.748.156 1.486.419 2.187a4.61 4.61 0 0 0 2.634 2.632a6.584 6.584 0 0 0 2.185.45c.963.043 1.268.056 3.71.056s2.755 0 3.71-.056a6.59 6.59 0 0 0 2.186-.419a4.615 4.615 0 0 0 2.633-2.633c.263-.7.404-1.438.419-2.187c.043-.962.056-1.267.056-3.71c-.002-2.442-.002-2.752-.058-3.709m-8.953 8.297c-2.554 0-4.623-2.069-4.623-4.623s2.069-4.623 4.623-4.623a4.623 4.623 0 0 1 0 9.246m4.807-8.339a1.077 1.077 0 0 1-1.078-1.078a1.077 1.077 0 1 1 2.155 0c0 .596-.482 1.078-1.077 1.078">
+                                {/*<Button href="https://www.instagram.com/" variant="text">*/}
+                                {/*    <SvgIcon>*/}
+                                {/*        /!* instagram logo *!/*/}
+                                {/*        <svg*/}
+                                {/*            xmlns="http://www.w3.org/2000/svg"*/}
+                                {/*            width={40}*/}
+                                {/*            height={40}*/}
+                                {/*            viewBox="0 0 24 24"*/}
+                                {/*        >*/}
+                                {/*            <path*/}
+                                {/*                fill="white"*/}
+                                {/*                d="M20.947 8.305a6.53 6.53 0 0 0-.419-2.216a4.61 4.61 0 0 0-2.633-2.633a6.606 6.606 0 0 0-2.186-.42c-.962-.043-1.267-.055-3.709-.055s-2.755 0-3.71.055a6.606 6.606 0 0 0-2.185.42a4.607 4.607 0 0 0-2.633 2.633a6.554 6.554 0 0 0-.419 2.185c-.043.963-.056 1.268-.056 3.71s0 2.754.056 3.71c.015.748.156 1.486.419 2.187a4.61 4.61 0 0 0 2.634 2.632a6.584 6.584 0 0 0 2.185.45c.963.043 1.268.056 3.71.056s2.755 0 3.71-.056a6.59 6.59 0 0 0 2.186-.419a4.615 4.615 0 0 0 2.633-2.633c.263-.7.404-1.438.419-2.187c.043-.962.056-1.267.056-3.71c-.002-2.442-.002-2.752-.058-3.709m-8.953 8.297c-2.554 0-4.623-2.069-4.623-4.623s2.069-4.623 4.623-4.623a4.623 4.623 0 0 1 0 9.246m4.807-8.339a1.077 1.077 0 0 1-1.078-1.078a1.077 1.077 0 1 1 2.155 0c0 .596-.482 1.078-1.077 1.078">*/}
 
-                                            </path>
-                                            <circle cx={11.994} cy={11.979} r={3.003} fill="white"></circle>
-                                        </svg>
-                                    </SvgIcon>
-                                </Button>
+                                {/*            </path>*/}
+                                {/*            <circle cx={11.994} cy={11.979} r={3.003} fill="white"></circle>*/}
+                                {/*        </svg>*/}
+                                {/*    </SvgIcon>*/}
+                                {/*</Button>*/}
 
-                                <Button href="https://www.x.com/" variant="text">
-                                    <SvgIcon>
-                                        {/* x logo */}
-                                        <svg
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            shapeRendering="geometricPrecision"
-                                            textRendering="geometricPrecision"
-                                            imageRendering="optimizeQuality"
-                                            fillRule="evenodd"
-                                            clipRule="evenodd"
-                                            viewBox="0 0 512 462.799"
-                                        >
-                                            <path
-                                                fillRule="nonzero"
-                                                fill="white"
-                                                d="M403.229 0h78.506L310.219 196.04 512 462.799H354.002L230.261 301.007 88.669 462.799h-78.56l183.455-209.683L0 0h161.999l111.856 147.88L403.229 0zm-27.556 415.805h43.505L138.363 44.527h-46.68l283.99 371.278z"
-                                            />
-                                        </svg>
-                                    </SvgIcon>
-                                </Button>
+                                {/*<Button href="https://www.x.com/" variant="text">*/}
+                                {/*    <SvgIcon>*/}
+                                {/*        /!* x logo *!/*/}
+                                {/*        <svg*/}
+                                {/*            xmlns="http://www.w3.org/2000/svg"*/}
+                                {/*            shapeRendering="geometricPrecision"*/}
+                                {/*            textRendering="geometricPrecision"*/}
+                                {/*            imageRendering="optimizeQuality"*/}
+                                {/*            fillRule="evenodd"*/}
+                                {/*            clipRule="evenodd"*/}
+                                {/*            viewBox="0 0 512 462.799"*/}
+                                {/*        >*/}
+                                {/*            <path*/}
+                                {/*                fillRule="nonzero"*/}
+                                {/*                fill="white"*/}
+                                {/*                d="M403.229 0h78.506L310.219 196.04 512 462.799H354.002L230.261 301.007 88.669 462.799h-78.56l183.455-209.683L0 0h161.999l111.856 147.88L403.229 0zm-27.556 415.805h43.505L138.363 44.527h-46.68l283.99 371.278z"*/}
+                                {/*            />*/}
+                                {/*        </svg>*/}
+                                {/*    </SvgIcon>*/}
+                                {/*</Button>*/}
 
-                                <Button href="https://www.youtube.com/" variant="text">
-                                    <SvgIcon>
-                                        {/* youtube logo */}
+                                {/*<Button href="https://www.youtube.com/" variant="text">*/}
+                                {/*    <SvgIcon>*/}
+                                {/*        /!* youtube logo *!/*/}
 
-                                        <svg
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            width={40}
-                                            height={40}
-                                            viewBox="0 0 24 24"
-                                        >
-                                            <path
-                                                fill="white"
-                                                d="M21.593 7.203a2.506 2.506 0 0 0-1.762-1.766C18.265 5.007 12 5 12 5s-6.264-.007-7.831.404a2.56 2.56 0 0 0-1.766 1.778c-.413 1.566-.417 4.814-.417 4.814s-.004 3.264.406 4.814c.23.857.905 1.534 1.763 1.765c1.582.43 7.83.437 7.83.437s6.265.007 7.831-.403a2.515 2.515 0 0 0 1.767-1.763c.414-1.565.417-4.812.417-4.812s.02-3.265-.407-4.831M9.996 15.005l.005-6l5.207 3.005z">
+                                {/*        <svg*/}
+                                {/*            xmlns="http://www.w3.org/2000/svg"*/}
+                                {/*            width={40}*/}
+                                {/*            height={40}*/}
+                                {/*            viewBox="0 0 24 24"*/}
+                                {/*        >*/}
+                                {/*            <path*/}
+                                {/*                fill="white"*/}
+                                {/*                d="M21.593 7.203a2.506 2.506 0 0 0-1.762-1.766C18.265 5.007 12 5 12 5s-6.264-.007-7.831.404a2.56 2.56 0 0 0-1.766 1.778c-.413 1.566-.417 4.814-.417 4.814s-.004 3.264.406 4.814c.23.857.905 1.534 1.763 1.765c1.582.43 7.83.437 7.83.437s6.265.007 7.831-.403a2.515 2.515 0 0 0 1.767-1.763c.414-1.565.417-4.812.417-4.812s.02-3.265-.407-4.831M9.996 15.005l.005-6l5.207 3.005z">*/}
 
-                                            </path>
-                                        </svg>
-                                    </SvgIcon>
-                                </Button>
+                                {/*            </path>*/}
+                                {/*        </svg>*/}
+                                {/*    </SvgIcon>*/}
+                                {/*</Button>*/}
                             </Stack>
                         </Grid>
                     </Box>
