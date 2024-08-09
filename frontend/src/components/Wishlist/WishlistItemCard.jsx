@@ -50,7 +50,6 @@ const WishlistItemCard = ({ item, onDelete, isSelected, onSelectChange }) => {
 
     const handleShareClick = () => {
         if (item?.event) {
-            console.log('Share event:', item?.event?._id);
             const eventUrl = `${window.location.origin}/events/${item?.event?._id}`;
 
             navigator.clipboard.writeText(eventUrl)
@@ -74,7 +73,6 @@ const WishlistItemCard = ({ item, onDelete, isSelected, onSelectChange }) => {
 
         try {
             const { data } = await deleteWishlistItemForUser({ userId, wishlistItemId: item._id }).unwrap();
-            console.log(`Deleted wishlist item ${item._id}`, data);
             if (onDelete) {
                 onDelete(item._id);
             }

@@ -203,7 +203,6 @@ const deleteAllWishlistItemsForUser = asyncHandler(async (req, res) => {
 
 const deleteWishlistItemByEvent = asyncHandler(async (req, res) => {
     const { userId, eventId } = req.params;
-    //console.log(`userId: ${userId}, eventId: ${eventId}`);
 
     try {
         const deletedItem = await WishlistItemModel.findOneAndDelete({ user: userId, event: eventId });

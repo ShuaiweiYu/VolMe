@@ -197,25 +197,11 @@ const getAllEvents = asyncHandler(async (req, res) => {
 const addEventReview = asyncHandler(async (req, res) => {
     const { eventID, userID, rating, comment } = req.body;
 
-    //console.log("Event ID: ", eventID)
-
     const event = await EventModel.findById(req.params.id);
 
     const user = await UserModel.findOne({_id: userID})
-    console.log("user: ", user)
 
     if (event) {
-        /*
-        const alreadyReviewed = event.reviews.find(
-            (r) => r.user.toString() === req.user._id.toString()
-        );
-
-        if (alreadyReviewed) {
-          res.status(400);
-          throw new Error('Event already reviewed by this user');
-        }
-
-         */
 
         const review = {
             name: user.username,

@@ -101,9 +101,7 @@ const Application = () => {
     useEffect(() => {
         if (applicationID && draftData) {
             // setPresentedFiles(draftData.response.files); // Adjust based on your data structure
-            // console.log(presentedFiles)
             setFiles(draftData.response.files)
-            console.log(files)
 
         }
     }, [draftData, applicationID]);
@@ -122,16 +120,12 @@ const Application = () => {
     };
 
     const handleFileDeletePresented    = (id) => {
-        console.log(draftData.response.files)
         setPresentedFiles(prevPresentedFiles => {
                 const temp = prevPresentedFiles.filter(file => file.id !== id)
                 return temp
             }
         );
         setFiles(prevFiles => prevFiles.filter(file => file.id !== id));
-        console.log(files)
-
-
     };
 
     const handleUpload = async () => {
@@ -155,12 +149,7 @@ const Application = () => {
                     }).unwrap();
 
                   await  setFiles(prevState => [...prevState, result?.response]);
-                  console.log(files)
                     fileIDs.push(result.response._id)
-                    console.log(fileIDs)
-
-            //        files.push(result.response._id)
-
                     if (result.error) {
                         toast.error(result.error);
                     } else {
@@ -174,7 +163,6 @@ const Application = () => {
                 try {
                     const url = await upload(file.file, "image", volunteerID);
                     newUploadURLs.push(url);
-                    console.log(newUploadURLs);
                 } catch (error) {
                     console.error(error);
                     toast.error("Uploading image failed, try again.");

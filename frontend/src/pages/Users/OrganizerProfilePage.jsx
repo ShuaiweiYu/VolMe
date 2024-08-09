@@ -157,10 +157,7 @@ const OrganizerProfilePage = ({userId}) => {
             setProfilePictureFile(null); /////
             setSelectedCountry(Country.getCountryByCode(initialUserData.country) || null);
             setSelectedState(State.getStateByCodeAndCountry(initialUserData.state, initialUserData.country) || null);
-            console.log(State.getStateByCodeAndCountry(initialUserData.state, initialUserData.country) || null);
             setSelectedCity(findCityByName(initialUserData.country, initialUserData.state, initialUserData.city) || null);
-            // test
-            console.log(findCityByName(initialUserData.country, initialUserData.state, initialUserData.city) || null);
             setErrors({});
         }
         setEditMode(!editMode);
@@ -230,7 +227,6 @@ const OrganizerProfilePage = ({userId}) => {
                 } else {
                     toast.success(`${file.name} is uploaded.`);
                     uploadedFileIds.push(result.response._id);
-                    // console.log(uploadedFileIds);
                 }
             } catch (error) {
                 console.error(error);
@@ -317,7 +313,6 @@ const OrganizerProfilePage = ({userId}) => {
 
             // Handle file upload and get the new file IDs
             const uploadedFileIds = await handleUpload();
-            console.log("Uploaded File IDs:", uploadedFileIds);
 
             // Fetch existing file IDs from the initial user data
             const existingFileIds = initialUserData.files || [];
@@ -330,17 +325,13 @@ const OrganizerProfilePage = ({userId}) => {
 
             // Update the user data with the combined file IDs
             updatedUser.files = updatedFileIds;
-            console.log("Updated File IDs:", updatedUser.files);
 
             if (profilePicturePath !== initialUserData.profilePicturePath) {
                 updatedUser = {...updatedUser, profilePicturePath};
             }
 
-            console.log("user:", updatedUser);
 
             const {data} = await updateUser({userId: user.response._id, updateData: updatedUser}).unwrap();
-            console.log(user.response._id);
-            console.log('Updated User Data:', data);
             setInitialUserData(updatedUser);
             setEditMode(false);
             setErrors({});
@@ -365,7 +356,6 @@ const OrganizerProfilePage = ({userId}) => {
         try {
             await deleteUser(user.response._id).unwrap();
             // Handle successful deletion (e.g., redirect to another page)
-            console.log('User deleted:', user.response._id);
             navigate('/');
         } catch (error) {
             console.error('Error deleting user:', error);
@@ -382,7 +372,6 @@ const OrganizerProfilePage = ({userId}) => {
             try {
                 // Perform the deletion mutation
                 await deleteDocument(documentId);
-                console.log('Document deleted successfully', documentId);
 
                 // Add the deleted document ID to deletedFileIds
                 setDeletedFileIds([...deletedFileIds, documentId]);
@@ -390,7 +379,6 @@ const OrganizerProfilePage = ({userId}) => {
                 // Filter out the deleted document ID from initialUserData.files
                 const updatedFiles = initialUserData.files.filter(file => file !== documentId);
 
-                console.log(updatedFiles);
                 // Update initialUserData with the updated files array
                 setInitialUserData({
                     ...initialUserData,

@@ -70,8 +70,6 @@ const ApplicationItem = ({application, eventObj, peopleAmountSatisfied, isStarte
 
     const [getDocu, {data: docuData, isFetching: isDocuFetching}] = useLazyGetDocumentByIdQuery()
 
-    console.log("application.files: " + application.files)
-
     useEffect(() => {
         const fetchPdfs = async () => {
             const newPdfs = [];
@@ -328,7 +326,6 @@ const ApplicationItem = ({application, eventObj, peopleAmountSatisfied, isStarte
                         <Grid item container spacing={2}>
                             {isDocuFetching && <CircularProgress/>}
                             {pdfs.length > 0 && pdfs.map((file, index) => {
-                                console.log("File: ", file);
                                 return (
                                     <Grid item xs={12} sm={4} key={index}>
                                         <PdfModal

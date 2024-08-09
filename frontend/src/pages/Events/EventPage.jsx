@@ -195,8 +195,6 @@ const EventPage2 = () => {
     };
 
     const handleURLChange = (newURLs) => {
-        console.log("newURLs: ", newURLs);
-        //console.log("prevURLs: ", ...prevURLs);
         setUploadURL((prevURLs) => [...prevURLs, ...newURLs]);
         setRenderUploadURL(false);
     };
@@ -231,9 +229,7 @@ const EventPage2 = () => {
                 uploadURL
             };
 
-            //console.log("Event Data: ", eventData);
             const updatedEvent = await updateEvent({eventID, eventData});
-            //console.log("Updated event: ", updatedEvent);
             refetch();
             setIsEditing(false);
 
@@ -272,11 +268,7 @@ const EventPage2 = () => {
 
     const handleAddReview = async () => {
         try {
-            //console.log("event ID: ", eventID);
-            //console.log("rating: ", rating);
-            //console.log("comment: ", comment);
             const review = await createReview({eventID, userID, rating, comment});
-            console.log("Review: ", review);
             toast.success('Review created successfully');
             refetch();
         } catch (err) {
@@ -286,7 +278,6 @@ const EventPage2 = () => {
 
     const handleDeleteReview = async ({reviewID}) => {
         try {
-            console.log("review ID: ", reviewID);
             await deleteReview({eventID, reviewID});
             refetch();
             toast.success('Review deleted successfully');

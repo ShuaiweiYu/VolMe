@@ -109,7 +109,6 @@ const VolunteerProfilePage = ({userId}) => {
 
 
     const documents = documentsData?.response;
-    console.log(documents);
 
     const handleCountryChange = (event, value) => {
         setSelectedCountry(value);
@@ -181,10 +180,7 @@ const VolunteerProfilePage = ({userId}) => {
             setNewLanguage('');
             setSelectedCountry(Country.getCountryByCode(initialUserData.country) || null);
             setSelectedState(State.getStateByCodeAndCountry(initialUserData.state, initialUserData.country) || null);
-            console.log(State.getStateByCodeAndCountry(initialUserData.state, initialUserData.country) || null);
             setSelectedCity(findCityByName(initialUserData.country, initialUserData.state, initialUserData.city) || null);
-            // test
-            console.log(findCityByName(initialUserData.country, initialUserData.state, initialUserData.city) || null);
             setErrors({});
         }
         setEditMode(!editMode); // Toggle edit mode
@@ -277,7 +273,6 @@ const VolunteerProfilePage = ({userId}) => {
             }
 
             const {data} = await updateUser({userId: user.response?._id, updateData: updatedUser});
-            console.log('Updated User Data:', data);
             setInitialUserData(updatedUser);
             setEditMode(false);
             setErrors({});
@@ -303,7 +298,6 @@ const VolunteerProfilePage = ({userId}) => {
         try {
             await deleteUser(user.response._id).unwrap();
             // Handle successful deletion (e.g., redirect to another page)
-            console.log('User deleted:', user.response._id);
             navigate('/');
         } catch (error) {
             console.error('Error deleting user:', error);

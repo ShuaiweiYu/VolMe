@@ -83,7 +83,6 @@ const EventList = ({ searchTerm, location, time ,language}) => {
                     count={events.response.pages}
                     page={page}
                     onChange={(event, value) => {
-                        console.log('Page changed to:', value); // Debug line
                         setPage(value);
                     }}
                     variant="outlined"

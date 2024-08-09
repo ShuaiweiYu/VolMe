@@ -32,10 +32,8 @@ function ImageWindow({ uploadURL }) {
     };
 
     React.useEffect(() => {
-        console.log("Upload URLs:", uploadURL);
         uploadURL.forEach((url, index) => {
             const fileUrl = getFileUrl(url, "image", "default");
-            console.log(`Generated URL for image ${index + 1}:`, fileUrl);
         });
     }, [uploadURL]);
 

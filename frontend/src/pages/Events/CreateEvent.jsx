@@ -219,8 +219,6 @@ const CreateEvent = () => {
             if (event.error) {
                 toast.error("Failed to create event. Please try again.");
             } else {
-                console.log(event)
-                console.log(event.data.response.event._id)
                 toast.success(`${title} is created`);
                 navigate(`/events/${event.data.response.event._id}`);
             }

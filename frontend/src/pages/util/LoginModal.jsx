@@ -548,9 +548,6 @@ const Step2ForOrganizer = ({
 
     const handleCityChange = (event, value) => {
         setSelectedCity(value);
-        console.log(selectedCountry);
-        console.log(selectedState);
-        console.log(selectedCity);
     };
 
     return (
@@ -773,7 +770,6 @@ const Step4 = ({handleClose, handleLogin}) => {
                 handleClose();
                 navigate('/profile');
             } catch (error) {
-                console.log(error);
             }
         };
 
@@ -873,7 +869,6 @@ export const SignUpModal = ({handleClose}) => {
         event.preventDefault();
 
         const user = await getUserByEmailAddress(email)
-        console.log(user)
         if (user.data?.status === 200) {
             setEmailError(t('credentials.signUp.signUpErrorDuplication'))
             alert(t('credentials.signUp.signUpErrorDuplication'))
@@ -920,8 +915,6 @@ export const SignUpModal = ({handleClose}) => {
             });
         }
 
-        console.log(user)
-
         if (user.data?.status === 201) {
             setId(user.data.response._id)
             const codeResponse = await addNewCode({userId: user.data.response._id, usage: "REGISTRATION"})
@@ -940,7 +933,6 @@ export const SignUpModal = ({handleClose}) => {
 
     const handleCheckCode = async (event) => {
         const result = await checkCode({userId: id, usage: "REGISTRATION", inputValue: code})
-        console.log(result)
         if (result.data?.status === 200) {
             await validateUser({userId: id, updateData: {isValidUser: true}});
             setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -957,7 +949,6 @@ export const SignUpModal = ({handleClose}) => {
             username: username,
             user_email_address: email
         })
-        console.log("sendCodeResponse: ", sendCodeResponse)
     }
 
     const handleLogin = async () => {
@@ -1197,7 +1188,6 @@ export const LoginModal = ({handleClose, requireNavigation}) => {
 
         try {
             const loginData = await login({emailAddress: email, password: password})
-            console.log(loginData)
             if (loginData.data?.status === 200) {
                 dispatch(setCredentials({
                     accessToken: loginData.data.response.accessToken,
@@ -1213,7 +1203,6 @@ export const LoginModal = ({handleClose, requireNavigation}) => {
             } else if (loginData.error?.status === 401 && loginData.error?.data.message === "Unauthorized") {
                 setLoginError(t('credentials.login.loginWrongCredential'))
             } else if (loginData.error?.status === 401 && loginData.error?.data.message === "Unconfirmed") {
-                console.log(loginData)
                 setLoginError(t('credentials.login.loginUnconfirmed'))
                 setId(loginData.error?.data.userId)
                 setShowConfirmArea(true)
@@ -1231,12 +1220,10 @@ export const LoginModal = ({handleClose, requireNavigation}) => {
             username: username,
             user_email_address: email
         })
-        console.log("sendCodeResponse: ", sendCodeResponse)
     }
 
     const handleCheckCode = async (event) => {
         const result = await checkCode({userId: id, usage: "REGISTRATION", inputValue: code})
-        console.log(result)
         if (result.data?.status === 200) {
             await validateUser({userId: id, updateData: {isValidUser: true}});
             setShowConfirmArea(false)

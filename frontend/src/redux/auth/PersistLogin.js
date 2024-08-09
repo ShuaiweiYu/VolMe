@@ -51,7 +51,6 @@ const PersistLogin = ({ children, allowedUsers }) => {
             
             if (token) {
                 if (isTokenExpired(token)) {
-                    console.log('Access token expired, attempting to refresh');
                     verifyRefreshToken();
                 } else {
                     setTrueSuccess(true);

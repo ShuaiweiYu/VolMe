@@ -16,9 +16,6 @@ import Grid from "@mui/material/Grid";
 export const Management = () => {
     const { eventID } = useParams();
     const {data: event, isLoading, isSuccess, error, refetch} = useGetEventByIdQuery(eventID);
-    if (isSuccess) {
-        console.log(event)
-    }
     const organiserID = event?.response?.organiser;
     const {data: organiser} = useGetUserByUserIdQuery(organiserID, {skip: !organiserID});
     const navigate = useNavigate();

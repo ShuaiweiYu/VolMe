@@ -83,8 +83,7 @@ const Events = () => {
     };
 
     const handleSearch = () => {
-        console.log('Searching for:', searchTermProp);
-        // Add search functionality here using find event by name
+        // todo: Add search functionality here using find event by name
     };
 
     const handleClear = () => {
@@ -126,14 +125,12 @@ const Events = () => {
     const handleLanguageChange = (event) => {
         //add search events by....
         const value = event.target.value;
-        console.log(value)
 
         setSelectedLanguage((prevSelectedLanguage) => {
             // If the value is already in the array, remove it, otherwise add it
             if (prevSelectedLanguage.includes(value)) {
                 return prevSelectedLanguage.filter((item) => item !== value);
             } else {
-                console.log([...prevSelectedLanguage, value])
                 return [...prevSelectedLanguage, value];
             }
         });
