@@ -18,6 +18,7 @@ import CheckOut from "./pages/checkOut";
 import Wishlist from "./pages/Wishlist";
 import Chat from "./pages/Chat/Chat";
 import OrganizerProfileDisplayPage from "./pages/Users/OrganizerProfileDisplayPage";
+import Contacts from "./components/LandingPage/Contacts";
 
 function App() {
     const {t, i18n} = useTranslation();
@@ -40,8 +41,11 @@ function App() {
                 <NavBar/>
                 <Routes>
                     <Route path='/' element={<LandingPage/>}/>
+                    <Route path='/contact' element={<Contacts/>}/>
                     <Route path='/reset-password' element={<ForgotPassword/>}/>
                     <Route path='*' element={<NoFound/>}/>
+                    <Route path='/events' element={<Events/>}/>
+                    <Route path="/events/:eventID" element={<EventPage/>}/>
                     
                     <Route path='/profile' element={
                         <PersistLogin allowedUsers={[userType.VOLUNTEER, userType.ORGANIZER]}>
@@ -58,19 +62,10 @@ function App() {
                             <Wishlist/>
                         </PersistLogin>
                     }/>
-                    <Route path='/events' element={
-                        <PersistLogin>
-                            <Events/>
-                        </PersistLogin>
-                    }/>
+
                     <Route path='/application/:eventID/:applicationID?' element={
                         <PersistLogin allowedUsers={[userType.VOLUNTEER]}>
                             <Application/>
-                        </PersistLogin>
-                    }/>
-                    <Route path="/events/:eventID" element={
-                        <PersistLogin>
-                            <EventPage/>
                         </PersistLogin>
                     }/>
                     <Route path='/create-event' element={

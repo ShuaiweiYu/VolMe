@@ -3,7 +3,7 @@ import Box from '@mui/material/Box';
 import Hero from '../components/LandingPage/Hero';
 import Pricing from '../components/LandingPage/Pricing';
 import Testimonials from '../components/LandingPage/Testimonials';
-import Contacts from "../components/LandingPage/Contacts";
+
 import Footer from "../components/LandingPage/Footer"
 import Features from "../components/LandingPage/Features"
 
@@ -14,7 +14,6 @@ export default function LandingPage() {
             <Features/>
             <Testimonials />
             <Pricing />
-            <Contacts />
             <Footer />
         </Box>
 );

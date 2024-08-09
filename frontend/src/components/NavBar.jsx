@@ -12,12 +12,11 @@ import MenuItem from '@mui/material/MenuItem';
 import {styled} from "@mui/material";
 import {Chat as ChatIcon} from "@mui/icons-material";
 import {useState} from "react";
-import InterestsIcon from '@mui/icons-material/Interests';
 import DialogTitle from "@mui/material/DialogTitle";
 import CloseIcon from "@mui/icons-material/Close";
 import {LoginModal, SignUpModal} from "../pages/util/LoginModal";
 import Dialog from "@mui/material/Dialog";
-import {useNavigate, useLocation} from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
 import {useSelector} from "react-redux";
 import {selectCurrentUserId} from "../redux/auth/authSlice";
 import {getFileUrl} from "../util/fileUploaderWrapper";
@@ -26,6 +25,7 @@ import {useGetUserByUserIdQuery} from "../redux/users/usersApiSlice";
 import {useSendLogoutMutation} from "../redux/auth/authApiSlice";
 import Chat from "../pages/Chat/Chat";
 import {useTranslation} from "react-i18next";
+import LogoutIcon from '@mui/icons-material/Logout';
 
 const StyledToolbar = styled(Toolbar)(({theme}) => ({
     display: "flex",
@@ -70,7 +70,6 @@ function NavBar() {
     const {t, i18n} = useTranslation();
     const [lang, setLang] = React.useState("en");
 
-    const [anchorElNav, setAnchorElNav] = React.useState(null);
     const [anchorElUser, setAnchorElUser] = React.useState(null);
     const [anchorElMessage, setAnchorElMessage] = React.useState(null);
 
@@ -83,7 +82,7 @@ function NavBar() {
             setLang("de");
         }
     };
-    
+
     const handleOpenUserMenu = (event) => {
         setAnchorElUser(event.currentTarget);
     };
@@ -120,35 +119,14 @@ function NavBar() {
         setIsLoginModal(state);
     };
 
-    const handleAvatarError = (event) => {
-        event.target.src = '/path/to/default/image';
-    };
-
-    const location = useLocation();
-
-    const isLandingPage = location.pathname === "/";
-
     //------******------
     const navigate = useNavigate();
     const handleNavigate = (path) => {
         navigate(path);
     };
 
-    const [open, setOpen] = React.useState(false);
-
-    const scrollToSection = (sectionId) => {
-        const sectionElement = document.getElementById(sectionId);
-        const offset = 128;
-        if (sectionElement) {
-            const targetScroll = sectionElement.offsetTop - offset;
-            sectionElement.scrollIntoView({behavior: 'smooth'});
-            window.scrollTo({
-                top: targetScroll,
-                behavior: 'smooth',
-            });
-            setOpen(false);
-        }
-    };
+    console.log("user:")
+    console.log(user)
 
     return (
         <AppBar
@@ -190,101 +168,63 @@ function NavBar() {
                     </StyledButton>
                 </Box>
 
-                {isLandingPage ? 
-                    (
-                    <Box sx={{flexGrow: 1, display: {xs: 'none', md: 'flex'}}}>
-                        <StyledMenuItem key="features"
-                                        onClick={() => scrollToSection('features')}
-                                        sx={{py: '6px', px: '12px'}}
-                        >
-                            <Typography variant="body2" color="#5CBC63">
-                                {t("navBar.features")}
-                            </Typography>
-                        </StyledMenuItem>
-                        <StyledMenuItem key="testimonials"
-                                        onClick={() => scrollToSection('testimonials')}
-                                        sx={{py: '6px', px: '12px'}}
-                        >
-                            <Typography variant="body2" color="#5CBC63">
-                                {t("navBar.testimonials")}
-                            </Typography>
-                        </StyledMenuItem>
-                        <StyledMenuItem key="pricing"
-                                        onClick={() => scrollToSection('pricing')}
-                                        sx={{py: '6px', px: '12px'}}
-                        >
-                            <Typography variant="body2" color="#5CBC63">
-                                {t("navBar.pricing")}
-                            </Typography>
-                        </StyledMenuItem>
-                        <StyledMenuItem key="contacts"
-                                        onClick={() => scrollToSection('contacts')}
-                                        sx={{py: '6px', px: '12px'}}
-                        >
-                            <Typography variant="body2" color="#5CBC63">
-                                {t("navBar.contacts")}
-                            </Typography>
-                        </StyledMenuItem>
-                    </Box>
-                ) : (
-                    <Box sx={{flexGrow: 1, display: {xs: 'none', md: 'flex'}}}>
-                        <StyledMenuItem key="Events"
+                <Box sx={{flexGrow: 1, display: {xs: 'flex', md: 'flex'}}}>
+                    <StyledMenuItem key="Events"
+                                    onClick={() => {
+                                        navigate("/Events");
+                                    }}
+                                    sx={{py: '6px', px: '12px'}}
+                    >
+                        <Typography variant="body2" color="#5CBC63">
+                            {t("navBar.events")}
+                        </Typography>
+                    </StyledMenuItem>
+                    {user?.data?.response?.role === 'VOLUNTEER' && (
+                        <StyledMenuItem key="wishlist"
                                         onClick={() => {
-                                            navigate("/Events");
+                                            navigate("/wishlist");
                                         }}
                                         sx={{py: '6px', px: '12px'}}
                         >
                             <Typography variant="body2" color="#5CBC63">
-                                {t("navBar.events")}
+                                {t("navBar.wishlist")}
                             </Typography>
                         </StyledMenuItem>
-                        {user?.data?.response?.role === 'VOLUNTEER' && (
-                            <StyledMenuItem key="wishlist"
-                                            onClick={() => {
-                                                navigate("/wishlist");
-                                            }}
-                                            sx={{py: '6px', px: '12px'}}
-                            >
-                                <Typography variant="body2" color="#5CBC63">
-                                    {t("navBar.wishlist")}
-                                </Typography>
-                            </StyledMenuItem>
-                        )}
-                    </Box>
-                )}
+                    )}
+                    <StyledMenuItem key="contact"
+                                    onClick={() => {
+                                        navigate("/contact");
+                                    }}
+                                    sx={{py: '6px', px: '12px'}}
+                    >
+                        <Typography variant="body2" color="#5CBC63">
+                            {t("navBar.contact")}
+                        </Typography>
+                    </StyledMenuItem>
+                </Box>
 
                 <Box sx={{flexGrow: 0.05, display: {xs: 'none', md: 'flex'}}}>
+                    <Button onClick={changeLanguage}>
+                        {lang === "de" ? "DE" : "EN"}
+                    </Button>
+
                     {(userId !== "null" && userId !== "undefined" && userId) ? (
-                        <div>
-                            {user.data ? (
-                                <Icons>
+                        <Icons>
+                            <IconButton sx={{padding: 0}} onClick={handleOpenMessagesMenu}>
+                                <ChatIcon color="action"/>
+                            </IconButton>
 
-                                    <Button onClick={changeLanguage}>
-                                        {lang === "de" ? "DE" : "EN"}
-                                    </Button>
+                            <Tooltip title="Open settings">
+                                <IconButton onClick={handleOpenUserMenu}>
+                                    <Avatar
+                                        src={getFileUrl(user.data?.response.profilePicturePath, "icon", "preview")}
+                                    >
+                                        <PersonIcon/>
+                                    </Avatar>
+                                </IconButton>
+                            </Tooltip>
+                        </Icons>
 
-                                    <IconButton sx={{padding: 0}} onClick={handleOpenMessagesMenu}>
-                                        <ChatIcon color="action"/>
-                                    </IconButton>
-
-                                    <Tooltip title="Open settings">
-                                        <IconButton onClick={handleOpenUserMenu}>
-                                            <Avatar
-                                                src={getFileUrl(user.data.response.profilePicturePath, "icon", "preview")}
-                                                onError={handleAvatarError}
-                                            >
-                                                <PersonIcon/>
-                                            </Avatar>
-                                        </IconButton>
-                                    </Tooltip>
-                                </Icons>
-
-                            ) : (
-                                <Avatar>
-                                    <PersonIcon/>
-                                </Avatar>
-                            )}
-                        </div>
                     ) : (
                         <Box
                             sx={{
@@ -293,10 +233,6 @@ function NavBar() {
                                 alignItems: 'center',
                             }}
                         >
-                            <Button onClick={changeLanguage}>
-                                {lang === "de" ? "DE" : "EN"}
-                            </Button>
-
                             <StyledButton
                                 onClick={() => handleClickOpen(false)}
                                 sx={{
@@ -348,7 +284,8 @@ function NavBar() {
                                     <CloseIcon/>
                                 </IconButton>
                                 <Box>
-                                    {isLoginModal ? <LoginModal handleClose={handleClose} requireNavigation={true}/> :
+                                    {isLoginModal ?
+                                        <LoginModal handleClose={handleClose} requireNavigation={false}/> :
                                         <SignUpModal handleClose={handleClose} requireNavigation={true}/>}
                                 </Box>
                             </Dialog>
@@ -360,9 +297,7 @@ function NavBar() {
                     variant="h7"
                     sx={{
                         flexGrow: 0,
-                        //fontFamily: "Roboto",
                         display: {xs: 'none', md: 'flex'},
-                        //borderRadius: '30px',
                     }}
                 >
                     <Menu
@@ -385,7 +320,7 @@ function NavBar() {
                             justifyContent: 'center',
                         }}
                     >
-                        {(userId !== "null" && userId !== "undefined" && userId) ? (
+                        {(userId !== "null" && userId !== "undefined" && userId) && (
                             [
                                 <MenuItem key="profile" onClick={handleCloseUserMenu}>
                                     <Button onClick={() => handleNavigate('/profile')}>
@@ -397,26 +332,11 @@ function NavBar() {
                                         <Typography textAlign="center">{t('navBar.myEvents')}</Typography>
                                     </Button>
                                 </MenuItem>,
-                                <MenuItem key="sendLogout" onClick={handleCloseUserMenu}>
-                                    <Button onClick={sendLogout}
-                                        sx={{
-                                            backgroundColor: "#FA462A",
-                                            '&:hover': {
-                                                backgroundColor: '#CC3B24',
-                                            },
-                                        }}
-                                    >
-                                        <Typography variant='h6' textAlign="center" sx={{color: "white"}}>{t('navBar.logOut')}</Typography>
+                                <MenuItem key="sendLogout" onClick={sendLogout}>
+                                    <Button onClick={sendLogout}>
+                                        <Typography textAlign="center">{t('navBar.logOut')}</Typography>
+                                        <LogoutIcon/>
                                     </Button>
-                                </MenuItem>
-                            ]
-                        ) : (
-                            [
-                                <MenuItem key="SignUp" onClick={handleCloseUserMenu}>
-                                    <Typography textAlign="center">{t('navBar.signup')}</Typography>
-                                </MenuItem>,
-                                <MenuItem key="LogIn" onClick={handleCloseUserMenu}>
-                                    <Typography textAlign="center">{t('navBar.login')}</Typography>
                                 </MenuItem>
                             ]
                         )}
@@ -450,15 +370,8 @@ function NavBar() {
                             justifyContent: 'center',
                         }}
                     >
-                        {(userId !== "null" && userId !== "undefined" && userId) ? (
-                            <Chat/>
-                        ) : (
-                            [
-                                <MenuItem key="NMessages">
-                                    <Typography textAlign="center">{t('navBar.noMessages')}</Typography>
-                                </MenuItem>
-                            ]
-                        )}
+                        {(userId !== "null" && userId !== "undefined" && userId) &&
+                            <Chat/>}
                     </Menu>
                 </Box>
 

@@ -8,12 +8,10 @@ import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import {useTranslation} from "react-i18next";
-
-// Import local logo images
-import GoogleLogo from './logo/google_logo.png';
-import AmazonLogo from './logo/amazon_logo.png';
 import TUMLogo from './logo/tum_logo.png';
-import MetaLogo from './logo/meta_logo.png';
+import LMULogo from './logo/lmu_logo.png';
+import ysw_profile from './profile/ysw_profile.jpeg';
+import lmu_buddy from './profile/lmu_buddy.png';
 
 const logoStyle = {
     height: '24px',
@@ -28,59 +26,48 @@ const bottomContainerStyle = {
 };
 
 export default function Testimonials() {
-    const { t } = useTranslation();
+    const {t} = useTranslation();
 
     const userTestimonials = [
         {
-            avatar: <Avatar alt="Emily Harrison" src="/images/profile/emily_harrison.webp" sx={{ width: 64, height: 64 }} />,
-            name: 'Emily Harrison',
-            occupation: t("testimonials.t1O"),
-            testimonial:t("testimonials.t1T"),
-        },
-        {
-            avatar: <Avatar alt="Brad Hudson" src="/images/profile/brad_hudson.webp" sx={{ width: 64, height: 64 }} />,
-            name: 'Brad Hudson',
-            occupation: t("testimonials.t2O"),
-            testimonial: t("testimonials.t2T"),
-        },
-        {
-            avatar: <Avatar alt="Alice Gabby" src="/images/profile/alice_gabby.jpg" sx={{ width: 64, height: 64 }} />,
-            name: 'Alice Gabby',
+            avatar: <Avatar alt="profile_tum" src={ysw_profile} sx={{width: 64, height: 64}}/>,
+            name: 'Shuaiwei Yu',
             occupation: t("testimonials.t3O"),
             testimonial: t("testimonials.t3T"),
+            logo_key: 'tum',
         },
         {
-            avatar: <Avatar alt="Lucy Wu" src="/images/profile/lucy_wu.webp" sx={{ width: 64, height: 64 }} />,
-            name: 'Lucy Wu',
-            occupation: t("testimonials.t4O"),
-            testimonial: t("testimonials.t4T"),
+            avatar: <Avatar alt="profile_tum" src={lmu_buddy} sx={{width: 64, height: 64}}/>,
+            name: 'Annika',
+            occupation: t("testimonials.t1O"),
+            testimonial: t("testimonials.t1T"),
+            logo_key: 'lmu',
         },
     ];
 
-    const logos = [
-        GoogleLogo,
-        AmazonLogo,
-        TUMLogo,
-        MetaLogo,
-    ];
+    const logos = {
+        "tum": TUMLogo,
+        "lmu": LMULogo,
+    };
+
 
     return (
         <Container
             id="testimonials"
             sx={{
-                pt: { xs: 4, sm: 12 },
-                pb: { xs: 8, sm: 16 },
+                pt: {xs: 4, sm: 12},
+                pb: {xs: 8, sm: 16},
                 position: 'relative',
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
-                gap: { xs: 3, sm: 6 },
+                gap: {xs: 3, sm: 6},
             }}
         >
             <Box
                 sx={{
-                    width: { sm: '100%', md: '60%' },
-                    textAlign: { sm: 'left', md: 'center' },
+                    width: {sm: '100%', md: '60%'},
+                    textAlign: {sm: 'left', md: 'center'},
                 }}
             >
                 <Typography
@@ -92,7 +79,7 @@ export default function Testimonials() {
                 <Typography
                     variant="h5"
                     color="text.secondary"
-                    sx={{ padding: '20px' }}
+                    sx={{padding: '20px'}}
                 >
                     {t("testimonials.subTitle1")}<br/>
                     {t("testimonials.subTitle2")}<br/>
@@ -102,7 +89,7 @@ export default function Testimonials() {
 
             <Grid container spacing={3}>
                 {userTestimonials.map((testimonial, index) => (
-                    <Grid item xs={12} sm={6} key={index} sx={{ display: 'flex' }}>
+                    <Grid item xs={12} sm={6} key={index} sx={{display: 'flex'}}>
                         <Card
                             sx={{
                                 display: 'flex',
@@ -129,7 +116,7 @@ export default function Testimonials() {
                                     subheader={testimonial.occupation}
                                 />
                                 <img
-                                    src={logos[index]}
+                                    src={logos[testimonial.logo_key]}
                                     alt={`Logo ${index + 1}`}
                                     style={logoStyle}
                                 />
