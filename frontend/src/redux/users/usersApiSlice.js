@@ -7,7 +7,7 @@ const initialState = usersAdapter.getInitialState()
 export const usersApiSlice = apiSlice.injectEndpoints({
     endpoints: builder => ({
         getUsers: builder.query({
-            query: () => '/users',
+            query: () => '/api/users',
             validateStatus: (response, result) => {
                 return response.status === 200 && !result.isError
             },
@@ -34,7 +34,7 @@ export const usersApiSlice = apiSlice.injectEndpoints({
             }
         }),
         getUserByEmailAddress: builder.query({
-            query: (emailAddress) => `/users/${emailAddress}`,
+            query: (emailAddress) => `/api/users/${emailAddress}`,
             validateStatus: (response, result) => {
                 return response.status === 200 && !result.isError
             },
@@ -44,7 +44,7 @@ export const usersApiSlice = apiSlice.injectEndpoints({
             }
         }),
         getUserByUserId: builder.query({
-            query: (userId) => `/users/id/${userId}`,
+            query: (userId) => `/api/users/id/${userId}`,
             validateStatus: (response, result) => {
                 return response.status === 200 && !result.isError
             },
@@ -55,7 +55,7 @@ export const usersApiSlice = apiSlice.injectEndpoints({
         }),
         addNewOrganizer: builder.mutation({
             query: (newOrganizer) => ({
-                url: '/users/organizers',
+                url: '/api/users/organizers',
                 method: 'POST',
                 body: newOrganizer
             }),
@@ -66,7 +66,7 @@ export const usersApiSlice = apiSlice.injectEndpoints({
         }),
         addNewVolunteer: builder.mutation({
             query: (newVolunteer) => ({
-                url: '/users/volunteers',
+                url: '/api/users/volunteers',
                 method: 'POST',
                 body: newVolunteer
             }),
@@ -77,7 +77,7 @@ export const usersApiSlice = apiSlice.injectEndpoints({
         }),
         updateUser: builder.mutation({
             query: ({userId, updateData}) => ({
-                url: `/users/${userId}`,
+                url: `/api/users/${userId}`,
                 method: 'PUT',
                 body: updateData
             }),
@@ -91,7 +91,7 @@ export const usersApiSlice = apiSlice.injectEndpoints({
         }),
         validateUser: builder.mutation({
             query: ({userId, updateData}) => ({
-                url: `/users/validate/${userId}`,
+                url: `/api/users/validate/${userId}`,
                 method: 'PUT',
                 body: updateData
             }),
@@ -102,7 +102,7 @@ export const usersApiSlice = apiSlice.injectEndpoints({
         }),
         updateUserCredential: builder.mutation({
             query: ({userId, updateData}) => ({
-                url: `/users/credential/${userId}`,
+                url: `/api/users/credential/${userId}`,
                 method: 'PUT',
                 body: updateData
             }),
@@ -113,7 +113,7 @@ export const usersApiSlice = apiSlice.injectEndpoints({
         }),
         deleteUserById: builder.mutation({
             query: (userId) => ({
-                url: `/users/id/${userId}`,
+                url: `/api/users/id/${userId}`,
                 method: 'DELETE'
             }),
             invalidatesTags: [{type: 'User', id: 'LIST'}], //  ensures that the cache for the user list (LIST) is invalidated, so the UI can refresh accordingly.
@@ -123,7 +123,7 @@ export const usersApiSlice = apiSlice.injectEndpoints({
         }),
         getConversationOverview: builder.query({
                 query: (userId) => ({
-                    url: `/users/${userId}/conversations`,
+                    url: `/api/users/${userId}/conversations`,
                 }),
                 validateStatus: (response, result) => {
                     return response.status === 200 && !result.isError

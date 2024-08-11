@@ -20,13 +20,10 @@ import paymentItemRoutes from "./routes/paymentItemRoutes.js";
 import paymentRoutes from "./routes/paymentRoutes.js";
 import messageRoutes from "./routes/messageRoutes.js";
 
-
 dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 3500;
-
-
 
 connectDB()
 
@@ -38,10 +35,10 @@ app.use(express.json())
 
 app.use(cookieParser())
 
-app.use('/auth', authRoutes)
-app.use('/users', userRoutes)
-app.use('/codes', codeRoutes)
-app.use('/emails', emailRoutes)
+app.use('/api/auth', authRoutes)
+app.use('/api/users', userRoutes)
+app.use('/api/codes', codeRoutes)
+app.use('/api/emails', emailRoutes)
 app.use("/api/payment", paymentRoutes)
 app.use('/api/events', eventRoutes);
 app.use("/api/category", categoryRoutes);
@@ -56,7 +53,6 @@ app.all('*', (req, res) => {
 })
 
 app.use(errorHandler)
-
 
 mongoose.connection.once('open', () => {
     console.log('Connected to MongoDB')

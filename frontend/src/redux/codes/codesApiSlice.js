@@ -7,7 +7,7 @@ const initialState = codesAdapter.getInitialState()
 export const codesApiSlice = apiSlice.injectEndpoints({
     endpoints: builder => ({
         getCodeByEmail: builder.query({
-            query: (id) => '/codes',
+            query: (id) => '/api/codes',
             providesTags: (result, error, id) => [{type: 'Code', id: id}],
             transformResponse: (response, meta) => {
                 const loadedCodes = response.map(code => {
@@ -20,7 +20,7 @@ export const codesApiSlice = apiSlice.injectEndpoints({
         }),
         addNewCode: builder.mutation({
             query: (newCode) => ({
-                url: '/codes',
+                url: '/api/codes',
                 method: 'POST',
                 body: newCode
             }),
@@ -31,7 +31,7 @@ export const codesApiSlice = apiSlice.injectEndpoints({
         }),
         checkCodeValidity: builder.mutation({
             query: (queryBody) => ({
-                url: '/codes/check',
+                url: '/api/codes/check',
                 method: 'POST',
                 body: queryBody
             }),

@@ -4,7 +4,7 @@ export const emailsApiSlice = apiSlice.injectEndpoints({
     endpoints: builder => ({
         sendRegistrationConfirmationEmail: builder.mutation({
             query: (body) => ({
-                url:"/emails/registration",
+                url:"/api/emails/registration",
                 method:"POST",
                 body: body
             }),
@@ -14,7 +14,7 @@ export const emailsApiSlice = apiSlice.injectEndpoints({
         }),
         sendPasswordResetEmail: builder.mutation({
             query: (body) => ({
-                url:"/emails/password-reset",
+                url:"/api/emails/password-reset",
                 method:"POST",
                 body: body
             }),
@@ -24,7 +24,7 @@ export const emailsApiSlice = apiSlice.injectEndpoints({
         }),
         sendApplicationNotificationEmail: builder.mutation({
             query: (body) => ({
-                url:"/emails/application-notification",
+                url:"/api/emails/application-notification",
                 method:"POST",
                 body: body
             }),
@@ -34,7 +34,7 @@ export const emailsApiSlice = apiSlice.injectEndpoints({
         }),
         sendApplicationAcceptedEmail: builder.mutation({
             query: (body) => ({
-                url:"/emails/application-accepted",
+                url:"/api/emails/application-accepted",
                 method:"POST",
                 body: body
             }),
@@ -44,7 +44,7 @@ export const emailsApiSlice = apiSlice.injectEndpoints({
         }),
         sendApplicationDeclinedEmail: builder.mutation({
             query: (body) => ({
-                url:"/emails/application-declined",
+                url:"/api/emails/application-declined",
                 method:"POST",
                 body: body
             }),
@@ -54,7 +54,7 @@ export const emailsApiSlice = apiSlice.injectEndpoints({
         }),
         sendApplicationWithdrawEmail: builder.mutation({
             query: (body) => ({
-                url:"/emails/application-withdraw",
+                url:"/api/emails/application-withdraw",
                 method:"POST",
                 body: body
             }),
@@ -64,7 +64,7 @@ export const emailsApiSlice = apiSlice.injectEndpoints({
         }),
         sendContactEmail: builder.mutation({
             query: (body) => ({
-                url:"/emails/contact",
+                url:"/api/emails/contact",
                 method:"POST",
                 body: body
             }),
