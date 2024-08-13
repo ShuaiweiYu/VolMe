@@ -1,5 +1,4 @@
 {
-  "test": "Funktioniert die Lokalisierung?",
   "PersistLogin" : {
     "noAccess": "Sie haben keinen Zugriff auf diese Seite!",
     "notLoggedIn": "Sie sind nicht eingeloggt, bitte loggen Sie sich ein",

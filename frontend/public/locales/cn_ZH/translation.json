@@ -1,0 +1,56 @@
+{
+  "PersistLogin": {
+
+  },
+  "navBar": {
+    "title": "VolMe",
+    "login": "登录",
+    "signup": "注册",
+    "events": "所有志愿活动",
+    "contact": "联系我们",
+    "wishlist": "心愿单",
+    "myProfile": "我的档案",
+    "myEvents": "我的活动",
+    "logOut": "注销",
+    "noMessages": "没有消息"
+  },
+  "hero": {
+    "find": "在VolME平台上探索你感兴趣的志愿活动。",
+    "post": "或者发布志愿活动来寻找优秀的志愿者们",
+    "findButton": "探索活动",
+    "postButton": "发布活动"
+  },
+  "features": {
+    "bVTitle1": "探索有趣的活动",
+    "bVDescription1": "Find events that match your interests and passions.",
+    "bVTitle2": "步入新的圈子",
+    "bVDescription2": "Connect with like-minded individuals and make new friends.",
+    "bVTitle3": "作出你的贡献",
+    "bVDescription3": "Volunteer for causes you care about and make a difference.",
+    "bOTitle1": "Streamlined Event Posting",
+    "bODescription1": "Easily create and manage your events with our user-friendly interface.",
+    "bOTitle2": "Find Quality Volunteers",
+    "bODescription2": "Connect with dedicated volunteers who are passionate about your events.",
+    "bOTitle3": "Enhanced Visibility",
+    "bODescription3": "Boost your event's reach with our platform's promotional tools.",
+    "for": "作为",
+    "v": "志愿者",
+    "o": "活动组织者",
+    "subTitle": "看看志愿者和志愿活动组织者在VolMe平台能干什么",
+    "title": "齐心协力，我们让志愿活动变得成功"
+  },
+  "testimonials": {
+    "t1O": "Buddy program, Student",
+    "t1T": "I applied dor the buddy program at the University Munich and found it very easy to use. The platform is user-friendly and intuitive, making it simple to apply. I appreciate the detailed event descriptions and the ability to connect with other volunteers.",
+    "t3O": "Volunteer, Student",
+    "t3T": "Finding exciting events to volunteer for has never been easier! Your platform curates a diverse range of opportunities, each with detailed descriptions and easy signup processes. It's empowering to know that my contributions are valued and matched with events that align perfectly with my interests and skills.",
+    "title": "What our clients say",
+    "subTitle1": "See what our customers love about our products.",
+    "subTitle2": "Discover how we excel in efficiency, durability, and satisfaction.",
+    "subTitle3": "Join us for quality, innovation, and reliable support."
+  },
+  "contacts": {
+    "send": "给我们发消息",
+    "info": "联系信息"
+  }
+}

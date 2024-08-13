@@ -2,7 +2,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import { setCredentials } from './auth/authSlice'
 
 const baseQuery = fetchBaseQuery({
-    baseUrl: 'http://3.74.42.109:3500',
+    baseUrl: 'https://api.volme.org',
     credentials: 'include',
     prepareHeaders: (headers, { getState }) => {
         const token = getState().auth.token

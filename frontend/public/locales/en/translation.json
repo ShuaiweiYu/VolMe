@@ -1,5 +1,4 @@
 {
-  "test": "does i18n works?",
   "PersistLogin" : {
     "noAccess": "You don't have access to this page!",
     "notLoggedIn": "You are not logged in, please log in",
@@ -281,7 +280,7 @@
     "eventTitle": "Event Title"
   },
   "hero": {
-    "find": "Find your interested events on VolME.",
+    "find": "Find your interested events on VolMe.",
     "post": "Post your event here to find ideal volunteers.",
     "findButton": "Find Events",
     "postButton": "Post Events"
@@ -325,10 +324,5 @@
   "contacts": {
     "send": "Send us a message",
     "info": "Contact information"
-  },
-  "sideDrawer": {
-  "myProfile": "My Profile",
-  "myEvents": "My Events",
-  "logOut": "Log out"
   }
 }
