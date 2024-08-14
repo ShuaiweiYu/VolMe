@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useRefreshMutation } from "./authApiSlice"
 import { useSelector } from 'react-redux'
 import { selectCurrentToken } from "./authSlice"
@@ -8,13 +8,12 @@ import CircularProgress from '@mui/material/CircularProgress';
 import ErrorComponent from "../../components/ErrorComponent";
 import Grid from "@mui/material/Grid";
 import {useTranslation} from "react-i18next";
-import UseAuth from "./useAuth";
+import useRole from "./useRole";
 import {jwtDecode} from "jwt-decode";
 
 const PersistLogin = ({ children, allowedUsers }) => {
     const token = useSelector(selectCurrentToken)
-    const {role} = UseAuth()
-    const effectRan = useRef(false)
+    const {role} = useRole()
 
     const [trueSuccess, setTrueSuccess] = useState(false)
     const [errorType, setErrorType] = useState(null);
@@ -32,34 +31,31 @@ const PersistLogin = ({ children, allowedUsers }) => {
         if (token === null) {
             setErrorType('notLoggedIn');
         }
-        
-        if (effectRan.current === true) { // React 18 Strict Mode
-            const isTokenExpired = (token) => {
-                const { exp } = jwtDecode(token);
-                return Date.now() >= exp * 1000;
-            }
-            
-            const verifyRefreshToken = async () => {
-                try {
-                    await refresh()
-                    setTrueSuccess(true)
-                } catch (err) {
-                    console.error(err)
-                    setErrorType('sessionExpired');
-                }
-            }
-            
-            if (token) {
-                if (isTokenExpired(token)) {
-                    verifyRefreshToken();
-                } else {
-                    setTrueSuccess(true);
-                }
-            } else {
-                setErrorType('notLoggedIn');
+
+        const isTokenExpired = (token) => {
+            const { exp } = jwtDecode(token);
+            return Date.now() >= exp * 1000;
+        }
+
+        const verifyRefreshToken = async () => {
+            try {
+                await refresh()
+                setTrueSuccess(true)
+            } catch (err) {
+                console.error(err)
+                setErrorType('sessionExpired');
             }
         }
-        return () => effectRan.current = true
+
+        if (token) {
+            if (isTokenExpired(token)) {
+                verifyRefreshToken();
+            } else {
+                setTrueSuccess(true);
+            }
+        } else {
+            setErrorType('notLoggedIn');
+        }
     }, [token, refresh])
 
     if (isLoading) {

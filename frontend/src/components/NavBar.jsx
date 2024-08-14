@@ -9,15 +9,15 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
-import {styled} from "@mui/material";
+import {Drawer, styled} from "@mui/material";
 import {Chat as ChatIcon} from "@mui/icons-material";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import DialogTitle from "@mui/material/DialogTitle";
 import CloseIcon from "@mui/icons-material/Close";
 import {LoginModal, SignUpModal} from "../pages/util/LoginModal";
 import Dialog from "@mui/material/Dialog";
 import {useNavigate} from 'react-router-dom';
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {selectCurrentUserId} from "../redux/auth/authSlice";
 import {getFileUrl} from "../util/fileUploaderWrapper";
 import PersonIcon from "@mui/icons-material/Person";
@@ -26,6 +26,11 @@ import {useSendLogoutMutation} from "../redux/auth/authApiSlice";
 import Chat from "../pages/Chat/Chat";
 import {useTranslation} from "react-i18next";
 import LogoutIcon from '@mui/icons-material/Logout';
+import GTranslateIcon from '@mui/icons-material/GTranslate';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import Wishlist from "../pages/Wishlist";
+import {closeWishlistDrawer, openWishlistDrawer, selectCurrentWishlistStatus} from "../redux/wishlist/wishlistSlice";
 
 const StyledToolbar = styled(Toolbar)(({theme}) => ({
     display: "flex",
@@ -67,20 +72,36 @@ const StyledMenuItem = styled(MenuItem)(({theme}) => ({
 }));
 
 function NavBar() {
+    const dispatch = useDispatch();
+
     const {t, i18n} = useTranslation();
-    const [lang, setLang] = React.useState("en");
 
     const [anchorElUser, setAnchorElUser] = React.useState(null);
+    const [anchorElLng, setAnchorElLng] = React.useState(null);
     const [anchorElMessage, setAnchorElMessage] = React.useState(null);
 
-    const changeLanguage = () => {
-        if (lang === "de") {
-            i18n.changeLanguage("en");
-            setLang("en");
-        } else {
-            i18n.changeLanguage("de");
-            setLang("de");
+    useEffect(() => {
+        const lang = localStorage.getItem("lang");
+        if (lang !== null) {
+            i18n.changeLanguage(lang);
         }
+    }, []);
+
+    const changeLanguage = (lang) => {
+        if (lang === "en") {
+            i18n.changeLanguage("en");
+            localStorage.setItem("lang", "en")
+        } else if (lang === "de") {
+            i18n.changeLanguage("de");
+            localStorage.setItem("lang", "de")
+        } else if (lang === "cn_ZH") {
+            i18n.changeLanguage("cn_ZH");
+            localStorage.setItem("lang", "cn_ZH")
+        }
+    };
+
+    const handleCloseUserMenu = () => {
+        setAnchorElUser(null);
     };
 
     const handleOpenUserMenu = (event) => {
@@ -96,8 +117,13 @@ function NavBar() {
         setAnchorElMessage(null);
     };
 
-    const handleCloseUserMenu = () => {
-        setAnchorElUser(null);
+    const handleOpenLanguageMenu = (event) => {
+        setAnchorElLng(event.currentTarget);
+
+    }
+
+    const handleCloseLanguageMenu = () => {
+        setAnchorElLng(null);
     };
 
     //------******------ LoginModal
@@ -120,6 +146,29 @@ function NavBar() {
     };
 
     //------******------
+
+    //------******------ wishlist
+    const wishlishDrawerIsOpen = useSelector(selectCurrentWishlistStatus)
+
+    const toggleDrawer = () => async () => {
+        // todo: this won't work
+        if (wishlishDrawerIsOpen) {
+            await dispatch(closeWishlistDrawer())
+        } else {
+            await dispatch(openWishlistDrawer())
+        }
+    };
+
+    const WishlistDrawer = () => {
+        return (
+            <Box sx={{width: '600px', marginTop: '65px'}} role="presentation">
+                <Wishlist/>
+            </Box>
+        )
+    }
+
+    //------******------
+
     const navigate = useNavigate();
     const handleNavigate = (path) => {
         navigate(path);
@@ -176,18 +225,6 @@ function NavBar() {
                             {t("navBar.events")}
                         </Typography>
                     </StyledMenuItem>
-                    {user?.data?.response?.role === 'VOLUNTEER' && (
-                        <StyledMenuItem key="wishlist"
-                                        onClick={() => {
-                                            navigate("/wishlist");
-                                        }}
-                                        sx={{py: '6px', px: '12px'}}
-                        >
-                            <Typography variant="body2" color="#5CBC63">
-                                {t("navBar.wishlist")}
-                            </Typography>
-                        </StyledMenuItem>
-                    )}
                     <StyledMenuItem key="contact"
                                     onClick={() => {
                                         navigate("/contact");
@@ -201,15 +238,22 @@ function NavBar() {
                 </Box>
 
                 <Box sx={{flexGrow: 0.05, display: {xs: 'none', md: 'flex'}}}>
-                    <Button onClick={changeLanguage}>
-                        {lang === "de" ? "DE" : "EN"}
+                    <Button onClick={handleOpenLanguageMenu}>
+                        <GTranslateIcon/>
                     </Button>
 
                     {(userId !== "null" && userId !== "undefined" && userId) ? (
                         <Icons>
-                            <IconButton sx={{padding: 0}} onClick={handleOpenMessagesMenu}>
-                                <ChatIcon color="action"/>
+                            {/*<IconButton sx={{padding: 0}} onClick={handleOpenMessagesMenu}>*/}
+                            {/*    <ChatIcon color="action"/>*/}
+                            {/*</IconButton>*/}
+                            <IconButton onClick={toggleDrawer}>
+                                {wishlishDrawerIsOpen ? <FavoriteIcon/> : <FavoriteBorderIcon/>}
                             </IconButton>
+
+                            <Drawer anchor={"right"} open={wishlishDrawerIsOpen} onClose={toggleDrawer}>
+                                <WishlistDrawer/>
+                            </Drawer>
 
                             <Tooltip title="Open settings">
                                 <IconButton onClick={handleOpenUserMenu}>
@@ -298,6 +342,51 @@ function NavBar() {
                     }}
                 >
                     <Menu
+                        anchorEl={anchorElLng}
+                        anchorOrigin={{
+                            vertical: 'top',
+                            horizontal: 'right',
+                        }}
+                        keepMounted
+                        transformOrigin={{
+                            vertical: 'top',
+                            horizontal: 'right',
+                        }}
+                        open={Boolean(anchorElLng)}
+                        onClose={handleCloseLanguageMenu}
+                        sx={{
+                            mt: '45px',
+                            fontFamily: 'PT Sans',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                        }}
+                    >
+                        <MenuItem key="en" onClick={handleCloseLanguageMenu}>
+                            <Button onClick={() => changeLanguage("en")}>
+                                <Typography textAlign="center">English</Typography>
+                            </Button>
+                        </MenuItem>
+                        <MenuItem key="de" onClick={handleCloseLanguageMenu}>
+                            <Button onClick={() => changeLanguage("de")}>
+                                <Typography textAlign="center">Deutsch</Typography>
+                            </Button>
+                        </MenuItem>
+                        <MenuItem key="cn" onClick={handleCloseLanguageMenu}>
+                            <Button onClick={() => changeLanguage("cn_ZH")}>
+                                <Typography textAlign="center">简体中文</Typography>
+                            </Button>
+                        </MenuItem>
+                    </Menu>
+                </Box>
+
+                <Box
+                    variant="h7"
+                    sx={{
+                        flexGrow: 0,
+                        display: {xs: 'none', md: 'flex'},
+                    }}
+                >
+                    <Menu
                         anchorEl={anchorElUser}
                         anchorOrigin={{
                             vertical: 'top',
@@ -340,37 +429,38 @@ function NavBar() {
                     </Menu>
 
                 </Box>
-                <Box
-                    variant="h7"
-                    sx={{
-                        flexGrow: 0,
-                        display: {xs: 'none', md: 'flex'},
-                    }}
-                >
-                    <Menu
-                        anchorEl={anchorElMessage}
-                        anchorOrigin={{
-                            vertical: 'top',
-                            horizontal: 'right',
-                        }}
-                        keepMounted
-                        transformOrigin={{
-                            vertical: 'top',
-                            horizontal: 'right',
-                        }}
-                        open={Boolean(anchorElMessage)}
-                        onClose={handleCloseMessagesMenu}
-                        sx={{
-                            mt: '45px',
-                            fontFamily: 'PT Sans',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                        }}
-                    >
-                        {(userId !== "null" && userId !== "undefined" && userId) &&
-                            <Chat/>}
-                    </Menu>
-                </Box>
+
+                {/*<Box*/}
+                {/*    variant="h7"*/}
+                {/*    sx={{*/}
+                {/*        flexGrow: 0,*/}
+                {/*        display: {xs: 'none', md: 'flex'},*/}
+                {/*    }}*/}
+                {/*>*/}
+                {/*    <Menu*/}
+                {/*        anchorEl={anchorElMessage}*/}
+                {/*        anchorOrigin={{*/}
+                {/*            vertical: 'top',*/}
+                {/*            horizontal: 'right',*/}
+                {/*        }}*/}
+                {/*        keepMounted*/}
+                {/*        transformOrigin={{*/}
+                {/*            vertical: 'top',*/}
+                {/*            horizontal: 'right',*/}
+                {/*        }}*/}
+                {/*        open={Boolean(anchorElMessage)}*/}
+                {/*        onClose={handleCloseMessagesMenu}*/}
+                {/*        sx={{*/}
+                {/*            mt: '45px',*/}
+                {/*            fontFamily: 'PT Sans',*/}
+                {/*            alignItems: 'center',*/}
+                {/*            justifyContent: 'center',*/}
+                {/*        }}*/}
+                {/*    >*/}
+                {/*        {(userId !== "null" && userId !== "undefined" && userId) &&*/}
+                {/*            <Chat/>}*/}
+                {/*    </Menu>*/}
+                {/*</Box>*/}
 
             </StyledToolbar>
         </AppBar>

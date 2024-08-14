@@ -3,8 +3,8 @@ import { createSlice } from '@reduxjs/toolkit'
 const authSlice = createSlice({
     name: 'auth',
     initialState: { 
-        token: null,
-        userId: null
+        token: localStorage.getItem("token"),
+        userId: localStorage.getItem("userId")
     },
     reducers: {
         setCredentials: (state, action) => {
@@ -12,11 +12,15 @@ const authSlice = createSlice({
             state.token = accessToken
             state.userId = userId
             state.role = role
+            localStorage.setItem("token", accessToken)
+            localStorage.setItem("userId", userId)
         },
         logOut: (state, action) => {
             state.token = null
             state.userId = null
             state.role = null
+            localStorage.removeItem("token")
+            localStorage.removeItem("userId")
         },
     }
 })

@@ -7,11 +7,16 @@ const useAuth = () => {
 
     if (token) {
         const decoded = jwtDecode(token)
-        const { role } = decoded.UserInfo
-
-        return { role: role }
+        const { exp } = jwtDecode(token)
+        if (Date.Now() < exp * 1000) {
+            return true
+        } else {
+        //     todo: get refresh token
+            
+            return false
+        }
+    } else {
+        return false;
     }
-
-    return { role: "" }
 }
 export default useAuth

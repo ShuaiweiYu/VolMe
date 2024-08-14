@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
 import {
     Box,
     Typography,
@@ -12,7 +11,7 @@ import {
     DialogContent,
     DialogContentText,
     DialogActions,
-    Dialog
+    Dialog, IconButton
 } from '@mui/material';
 import {
     useDeleteAllWishlistItemsForUserMutation,
@@ -23,38 +22,16 @@ import WishlistSearchBar from '../components/Wishlist/WishlistSearchBar';
 import { ThemeProvider } from "@mui/material/styles";
 import { volmeTheme } from "../theme";
 import { selectCurrentUserId } from "../redux/auth/authSlice";
-import { styled } from "@mui/system";
 import { useTranslation } from "react-i18next";
-
-const StyledButton = styled(Button)(({ theme, variant }) => ({
-    padding: '10px 20px',
-    width: '200px',  // Set a fixed width
-    height: '50px',
-    borderRadius: '30px',
-    ...(variant === 'outlined' && {
-        color: theme.palette.primary.main,
-        border: `1px solid ${theme.palette.primary.main}`,
-        '&:hover': {
-            backgroundColor: theme.palette.primary.light,
-            borderColor: theme.palette.primary.light,
-            color: "white",
-        },
-    }),
-    ...(variant === 'contained' && {
-        color: theme.palette.common.white,
-        backgroundColor: theme.palette.primary.main,
-        '&:hover': {
-            backgroundColor: theme.palette.primary.dark,
-        },
-    }),
-}));
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import LoadingComponent from "../components/LoadingComponent";
+import ErrorComponent from "../components/ErrorComponent";
 
 const WishlistPage = () => {
     const userId = useSelector(selectCurrentUserId);
     const { data: wishlistItems, error, isLoading } = useGetWishlistItemsForUserQuery(userId);
     const [searchTerm, setSearchTerm] = useState('');
     const [filteredItems, setFilteredItems] = useState([]);
-    const [selectedItems, setSelectedItems] = useState([]);
     const [showExpiredNotification, setShowExpiredNotification] = useState(false);
     const [clearWishlist] = useDeleteAllWishlistItemsForUserMutation(userId);
     const [dialogOpen, setDialogOpen] = useState(false);
@@ -110,14 +87,12 @@ const WishlistPage = () => {
     };
 
     if (isLoading) {
-        return <div>Loading...</div>;
+        return <LoadingComponent/>;
     }
 
     if (error) {
-        return <div>Error: {error.message}</div>;
+        return <ErrorComponent message={error.message} />
     }
-
-    const isWishlistEmpty = wishlistItems.length === 0;
 
     return (
         <ThemeProvider theme={volmeTheme}>
@@ -139,7 +114,8 @@ const WishlistPage = () => {
                         </Box>
                     ) : (
                         <>
-                            <Box sx={{ marginBottom: 2 }}>
+                        <Grid container spacing={1}>
+                            <Grid item xs={10}>
                                 <WishlistSearchBar
                                     items={wishlistItems}
                                     setFilteredItems={setFilteredItems}
@@ -148,31 +124,26 @@ const WishlistPage = () => {
                                     onSearchProp={handleSearch}
                                     onClearProp={handleClearSearch}
                                 />
-                            </Box>
+                            </Grid>
+                            <Grid item xs={2}>
+                                <IconButton
+                                    onClick={handleClearWishlist}
+                                    sx={{ width: 56, height: 56 }}
+                                >
+                                    <DeleteForeverIcon sx={{ width: 30, height: 30 }}/>
+                                </IconButton>
+                            </Grid>
+                        </Grid>
+
                             <Grid container spacing={2}>
                                 {filteredItems.map(item => (
-                                    <Grid item key={item._id} xs={12} sm={6} md={6}>
+                                    <Grid item key={item._id} xs={12}>
                                         <WishlistItemCard item={item} />
                                     </Grid>
                                 ))}
                             </Grid>
                         </>
                     )}
-                    <Box sx={{ position: 'fixed', top: '250px', right: '70px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
-                        <Link to="/events" style={{ textDecoration: 'none' }}>
-                            <StyledButton variant="outlined" sx={{ marginRight: 2 }}>
-                                {t("wishlist.backToAll")}
-                            </StyledButton>
-                        </Link>
-                        {!isWishlistEmpty && (
-                            <StyledButton
-                                variant="outlined"
-                                onClick={handleClearWishlist}
-                            >
-                                {t("wishlist.clearWishlist")}
-                            </StyledButton>
-                        )}
-                    </Box>
 
                     <Snackbar
                         open={showExpiredNotification}

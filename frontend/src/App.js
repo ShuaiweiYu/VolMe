@@ -15,18 +15,11 @@ import {userType} from "./util/userType"
 import LandingPage from "./pages/LandingPage";
 import Box from '@mui/material/Box';
 import CheckOut from "./pages/checkOut";
-import Wishlist from "./pages/Wishlist";
 import Chat from "./pages/Chat/Chat";
 import OrganizerProfileDisplayPage from "./pages/Users/OrganizerProfileDisplayPage";
 import Contacts from "./components/LandingPage/Contacts";
 
 function App() {
-    const {t, i18n} = useTranslation();
-
-    const changeLanguage = (lng) => {
-        i18n.changeLanguage(lng);
-    };
-
     return (
         <Box
             sx={(theme) => ({
@@ -46,20 +39,11 @@ function App() {
                     <Route path='*' element={<NoFound/>}/>
                     <Route path='/events' element={<Events/>}/>
                     <Route path="/events/:eventID" element={<EventPage/>}/>
+                    <Route path='/organizer-profile/:userId' element={<OrganizerProfileDisplayPage/>}/>
                     
                     <Route path='/profile' element={
                         <PersistLogin allowedUsers={[userType.VOLUNTEER, userType.ORGANIZER]}>
                             <UserProfile/>
-                        </PersistLogin>
-                    }/>
-                    <Route path='/organizer-profile/:userId' element={
-                        <PersistLogin allowedUsers={[userType.VOLUNTEER]}>
-                            <OrganizerProfileDisplayPage/>
-                        </PersistLogin>
-                    }/>
-                    <Route path="/wishlist" element={
-                        <PersistLogin allowedUsers={[userType.VOLUNTEER]}>
-                            <Wishlist/>
                         </PersistLogin>
                     }/>
 

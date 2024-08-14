@@ -14,11 +14,6 @@ const Chat = () => {
     const {data: conversationOverview, isLoading, isSuccess, refetch} = useGetConversationOverviewQuery(userId)
     const [selectedReceiverId, setSelectedReceiverId] = useState(null);
 
-
-    const handleAvatarError = (event) => {
-        event.target.src = '/path/to/default/image';
-    };
-
     const handleConversationClick = (receiverId) => {
         setSelectedReceiverId(receiverId);
 
@@ -58,7 +53,6 @@ const Chat = () => {
                         >
                             <Avatar
                                 src={getFileUrl(conversation.participant.profilePicturePath, "icon", "preview")}
-                                onError={handleAvatarError}
                             >
                                 <PersonIcon/>
                             </Avatar>

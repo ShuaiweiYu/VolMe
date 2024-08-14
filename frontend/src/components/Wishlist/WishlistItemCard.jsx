@@ -21,31 +21,24 @@ import { useDeleteWishlistItemForUserMutation } from '../../redux/wishlist/wishl
 import { useGetUserByUserIdQuery } from '../../redux/users/usersApiSlice';
 import {getFileUrl} from "../../util/fileUploaderWrapper";
 import {useTranslation} from "react-i18next";
+import {useDispatch} from "react-redux";
+import {closeWishlistDrawer} from "../../redux/wishlist/wishlistSlice";
 
 const WishlistItemCard = ({ item, onDelete, isSelected, onSelectChange }) => {
     const [deleteWishlistItemForUser, { isLoading: deleteLoading, isError: deleteError }] = useDeleteWishlistItemForUserMutation();
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [dialogOpen, setDialogOpen] = useState(false);
+    const dispatch = useDispatch();
     const {t} = useTranslation();
-
 
     const { data: user, isLoading: userLoading, isError: userError } = useGetUserByUserIdQuery(item?.event?.organiser);
 
-
-    const handleToEventClick = () => {
-        if (item?.event) {
-            console.log('Navigate to event:', item?.event?._id);
-        } else {
-            console.log('Cannot navigate: Event ID undefined');
-        }
+    const handleToEventClick = async () => {
+        await dispatch(closeWishlistDrawer())
     };
 
-    const handleApplyNowClick = () => {
-        if (item?.event) {
-            console.log('Apply now for event:', item?.event?._id);
-        } else {
-            console.log('No event to apply for');
-        }
+    const handleApplyNowClick = async () => {
+        await dispatch(closeWishlistDrawer())
     };
 
     const handleShareClick = () => {
@@ -93,8 +86,6 @@ const WishlistItemCard = ({ item, onDelete, isSelected, onSelectChange }) => {
         }
         setSnackbarOpen(false);
     };
-
-    //const isUpcoming = item.isUpcoming;
 
     const isUpcoming = new Date(item?.event?.startDate) > new Date();
 
