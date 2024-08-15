@@ -866,17 +866,17 @@ export const SignUpModal = ({handleClose}) => {
     // const steps = [t('credentials.signUp.stepInfo1'), t('credentials.signUp.stepInfo2'), t('credentials.signUp.stepInfo3')];
     const steps = [t('credentials.signUp.stepInfo1'), t('credentials.signUp.stepInfo2')];
 
-    // const handleNextAndCheckEmail = async (event) => {
-    //     event.preventDefault();
-    //
-    //     const user = await getUserByEmailAddress(email)
-    //     if (user.data?.status === 200) {
-    //         setEmailError(t('credentials.signUp.signUpErrorDuplication'))
-    //         alert(t('credentials.signUp.signUpErrorDuplication'))
-    //     } else {
-    //         setActiveStep((prevActiveStep) => prevActiveStep + 1);
-    //     }
-    // }
+    const handleNextAndCheckEmail = async (event) => {
+        event.preventDefault();
+
+        const user = await getUserByEmailAddress(email)
+        if (user.data?.status === 200) {
+            setEmailError(t('credentials.signUp.signUpErrorDuplication'))
+            alert(t('credentials.signUp.signUpErrorDuplication'))
+        } else {
+            setActiveStep((prevActiveStep) => prevActiveStep + 1);
+        }
+    }
 
     const handleBack = (event) => {
         event.preventDefault();
