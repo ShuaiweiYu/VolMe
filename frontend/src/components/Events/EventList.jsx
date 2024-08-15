@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useGetEventsQuery } from "../../redux/events/eventApiSlice";
+import React, {useState} from 'react';
+import {useGetEventsQuery} from "../../redux/events/eventApiSlice";
 import {Box, Grid, Pagination, CircularProgress, Typography} from "@mui/material";
 import EventItem from "./EventItem";
 import {getFileUrl} from "../../util/fileUploaderWrapper";
@@ -7,12 +7,10 @@ import {useSelector} from "react-redux";
 import {selectCurrentUserId} from "../../redux/auth/authSlice";
 import {useGetUserByUserIdQuery} from "../../redux/users/usersApiSlice";
 
-
-const EventList = ({ searchTerm, location, time ,language}) => {
+const EventList = ({searchTerm, location, time, language}) => {
     const [page, setPage] = useState(1);
     const userId = useSelector(selectCurrentUserId);
-    const { data: user, isSuccessUser,errorUser, isLoadingUser } = useGetUserByUserIdQuery(userId);
-
+    const {data: user, isSuccessUser, errorUser, isLoadingUser} = useGetUserByUserIdQuery(userId);
 
     const {
         data: events,
@@ -21,7 +19,7 @@ const EventList = ({ searchTerm, location, time ,language}) => {
         isSuccess,
         isError,
         error
-    } = useGetEventsQuery({ page: page, keyword: searchTerm, location: location, time: time ,language :language});
+    } = useGetEventsQuery({page: page, keyword: searchTerm, location: location, time: time, language: language});
 
     const sortedEvents = events?.response?.events.slice().sort((a, b) => {
         const aType = a.response?.organiser?.subscriptionType !== 'FREE';
@@ -32,7 +30,7 @@ const EventList = ({ searchTerm, location, time ,language}) => {
 
     return (
         <>
-            <Grid container columns={12} spacing={{ xs: 1, md: 2 }}>
+            <Grid container columns={12} spacing={{xs: 1, md: 2}}>
                 {(isFetching || isLoading) ? (
                     <Box
                         sx={{
@@ -43,7 +41,7 @@ const EventList = ({ searchTerm, location, time ,language}) => {
                             height: '100vh'
                         }}
                     >
-                        <CircularProgress />
+                        <CircularProgress/>
                     </Box>
                 ) : isError ? (
                     <Box
@@ -62,7 +60,8 @@ const EventList = ({ searchTerm, location, time ,language}) => {
                 ) : isSuccess && (
                     <>
                         {sortedEvents.map((event, index) => (
-                            <Grid item xs={12} md={6} key={index} display="flex" alignItems="center" justifyContent="center">
+                            <Grid item xs={12} md={6} lg={4} xl={3} key={index} display="flex" alignItems="center"
+                                  justifyContent="center">
                                 <EventItem
                                     eventID={event._id}
                                     title={event.title}
@@ -79,7 +78,7 @@ const EventList = ({ searchTerm, location, time ,language}) => {
             </Grid>
             <Box display="flex" justifyContent="center">
                 {isSuccess && <Pagination
-                    sx={{ padding: 2 }}
+                    sx={{padding: 2}}
                     count={events.response.pages}
                     page={page}
                     onChange={(event, value) => {

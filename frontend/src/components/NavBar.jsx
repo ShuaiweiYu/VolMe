@@ -150,8 +150,7 @@ function NavBar() {
     //------******------ wishlist
     const wishlishDrawerIsOpen = useSelector(selectCurrentWishlistStatus)
 
-    const toggleDrawer = () => async () => {
-        // todo: this won't work
+    const toggleDrawer = async () => {
         if (wishlishDrawerIsOpen) {
             await dispatch(closeWishlistDrawer())
         } else {
@@ -235,6 +234,18 @@ function NavBar() {
                             {t("navBar.contact")}
                         </Typography>
                     </StyledMenuItem>
+                    {user?.data?.response?.role === 'ORGANIZER' && (
+                        <StyledMenuItem key="post"
+                                        onClick={() => {
+                                            navigate("/create-event");
+                                        }}
+                                        sx={{py: '6px', px: '12px'}}
+                        >
+                            <Typography variant="body2" color="#5CBC63">
+                                create event
+                            </Typography>
+                        </StyledMenuItem>
+                    )}
                 </Box>
 
                 <Box sx={{flexGrow: 0.05, display: {xs: 'none', md: 'flex'}}}>

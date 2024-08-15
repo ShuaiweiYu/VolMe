@@ -1,15 +1,18 @@
 import React, {useEffect, useState} from 'react';
-import Filter from '../../components/Filter/Filter.jsx';
 import EventList from '../../components/Events/EventList';
-import {Box, Button, Stack} from "@mui/material";
-import SearchBar from '../../components/SearchBar'
+import {Box, Button, Paper, Stack} from "@mui/material";
 import Grid from "@mui/material/Grid";
 import {useNavigate} from "react-router-dom";
 import {useSelector} from "react-redux";
 import {selectCurrentUserId} from "../../redux/auth/authSlice";
 import {useGetUserByUserIdQuery} from "../../redux/users/usersApiSlice";
 import {styled} from "@mui/system";
-
+import TextField from "@mui/material/TextField";
+import InputAdornment from "@mui/material/InputAdornment";
+import IconButton from "@mui/material/IconButton";
+import SearchIcon from "@mui/icons-material/Search";
+import ClearIcon from "@mui/icons-material/Clear";
+import Autocomplete from "@mui/material/Autocomplete";
 
 const styles = {
     container: {
@@ -66,6 +69,152 @@ const StyledButton = styled(Button)(({theme, variant}) => ({
     }),
 }));
 
+const SearchBar = ({searchTermProp, setSearchTermProp, onSearchProp, onClearProp, label}) => {
+    const handleKeyDown = (e) => {
+        if (e.key === 'Enter') {
+            onSearchProp();
+        }
+    };
+
+    return (
+        <TextField
+            id="searchInput"
+            label={label}
+            sx={{paddingBottom: '20px'}}
+            value={searchTermProp}
+            fullWidth
+            onChange={(e) => setSearchTermProp(e.target.value)}
+            onKeyDown={handleKeyDown}
+            InputLabelProps={{shrink: true}}
+            InputProps={{
+                endAdornment: (
+                    <InputAdornment position="end">
+                        {!searchTermProp && <SearchIcon/>}
+                        {searchTermProp && (
+                            <IconButton
+                                onClick={onClearProp}
+                                edge="end"
+                            >
+                                <ClearIcon/>
+                            </IconButton>
+                        )}
+                    </InputAdornment>
+                ),
+            }}
+        />
+    );
+};
+
+const MultipleFilter = ({handleTimeChange, handleLocationChange, handleLanguageChange}) => {
+    const date = ["Past", "Future"]
+    const location = ["Munich", "Garching bei München"]
+    const languages = ["English", "German", "Italian", "Spanish"]
+    const category = ["a", "b"]
+    return (
+        <Grid container spacing={2}>
+            <Grid item xs={3}>
+                <Autocomplete
+                    // multiple
+                    id="tags-outlined"
+                    options={date}
+                    filterSelectedOptions
+                    onChange={(event, newValue) => handleTimeChange(newValue)}
+                    renderInput={(params) => (
+                        <TextField
+                            {...params}
+                            label="Date"
+                            placeholder="Favorites"
+                        />
+                    )}
+                />
+            </Grid>
+            <Grid item xs={3}>
+                <Autocomplete
+                    // multiple
+                    id="tags-outlined"
+                    options={location}
+                    filterSelectedOptions
+                    onChange={(event, newValue) => handleLocationChange(newValue)}
+                    renderInput={(params) => (
+                        <TextField
+                            {...params}
+                            label="Location"
+                            placeholder="Favorites"
+                        />
+                    )}
+                />
+            </Grid>
+            <Grid item xs={3}>
+                <Autocomplete
+                    // multiple
+                    id="tags-outlined"
+                    options={languages}
+                    filterSelectedOptions
+                    onChange={(event, newValue) => handleLanguageChange(newValue)}
+                    renderInput={(params) => (
+                        <TextField
+                            {...params}
+                            label="Languages"
+                            placeholder="Favorites"
+                        />
+                    )}
+                />
+            </Grid>
+            <Grid item xs={3}>
+                <Autocomplete
+                    // multiple
+                    id="tags-outlined"
+                    options={category}
+                    filterSelectedOptions
+                    onChange={(event, newValue) => handleLanguageChange(newValue)}
+                    renderInput={(params) => (
+                        <TextField
+                            {...params}
+                            label="Category"
+                            placeholder="Favorites"
+                        />
+                    )}
+                />
+            </Grid>
+        </Grid>
+    )
+}
+
+const ToolBar = ({
+                     searchTermProp,
+                     setSearchTermProp,
+                     onSearchProp,
+                     onClearProp,
+                     label,
+                     handleTimeChange,
+                     handleLocationChange,
+                     handleLanguageChange
+                 }) => {
+    return (
+        <Box
+            sx={{
+                '& > :not(style)': {
+                    m: 1,
+                    width: "100%",
+                    height: 80,
+                },
+            }}
+        >
+            {/*<Paper elevation={0}>*/}
+                <Grid container spacing={2}>
+                    <Grid item xs={2}>
+                        <SearchBar searchTermProp={searchTermProp} setSearchTermProp={setSearchTermProp}
+                                   onSearchProp={onSearchProp} onClearProp={onClearProp} label={label}/>
+                    </Grid>
+                    <Grid item xs={10}>
+                        <MultipleFilter handleLanguageChange={handleLanguageChange} handleTimeChange={handleTimeChange} handleLocationChange={handleLocationChange}/>
+                    </Grid>
+                </Grid>
+            {/*</Paper>*/}
+        </Box>
+
+    )
+}
 
 const Events = () => {
     const [selectedLocation, setSelectedLocation] = useState([]);
@@ -104,7 +253,6 @@ const Events = () => {
         setRenderEventList(false);
     };
 
-
     const handleTimeChange = (event) => {
         //add search events by....
         const value = event.target.value;
@@ -120,7 +268,6 @@ const Events = () => {
         setRenderEventList(false);
 
     };
-
 
     const handleLanguageChange = (event) => {
         //add search events by....
@@ -151,29 +298,18 @@ const Events = () => {
 
 
     return (
-        <Stack direction="row" justifyContent="space-around" margin={10}>
+        <Stack direction="row" justifyContent="space-around" marginTop={1} marginLeft={5} marginRight={5}>
             <Grid container spacing={2}>
-                <Grid item xs={3}>
-                    <Box
-                        position='fixed'
-                        sx={{
-                            '& .MuiTextField-root': {width: '240px'},
-                            marginBottom: '10px',
-                            paddingBottom: '10px'
-                        }}>
-                        <SearchBar searchTermProp={searchTermProp} setSearchTermProp={setSearchTermProp}
-                                   onSearchProp={handleSearch} onClearProp={handleClear} label={"Enter event name"}/>
-                        <Filter handleChange={handleChange} handleTimeChange={handleTimeChange}
-                                handleLanguageChange={handleLanguageChange}/>
-                        {user?.response.role === 'ORGANIZER' &&
-                            <Box sx={{width: "80%", display: 'flex', justifyContent: 'center', padding: '20px'}}>
-                                <StyledButton variant="contained" onClick={() => handleNavigate('/create-event')}>Post an
-                                    event
-                                </StyledButton>
-                            </Box>}
-                    </Box>
+                <Grid item xs={12}>
+                    {/*todo: 把eventlist放在这里，不要单独做成一个组件，然后根据相应的关键词来做筛选*/}
+                    {/*<ToolBar searchTermProp={searchTermProp} setSearchTermProp={setSearchTermProp}*/}
+                    {/*         onSearchProp={handleSearch} onClearProp={handleClear} label={"Enter event name"}*/}
+                    {/*         handleLocationChange={handleChange}*/}
+                    {/*         handleLanguageChange={handleLanguageChange}*/}
+                    {/*         handleTimeChange={handleTimeChange}*/}
+                    {/*/>*/}
                 </Grid>
-                <Grid item xs={9} style={styles.right}>
+                <Grid item xs={12} style={styles.right}>
                     {renderEventList &&
                         <EventList searchTerm={searchTermProp} location={selectedLocation} time={selectedTime}
                                    language={selectedLanguage}/>}

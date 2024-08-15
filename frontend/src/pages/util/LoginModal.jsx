@@ -674,84 +674,84 @@ const Step2ForOrganizer = ({
     );
 };
 
-const Step3 = ({code, setCode, codeCheckError, resendCode}) => {
-    const {t} = useTranslation();
-    const [isCooldown, setIsCooldown] = useState(false);
-    const [seconds, setSeconds] = useState(60);
-
-    const StyledLink = styled(Link)(({theme, disabled}) => {
-        const grey500 = theme.palette.grey ? theme.palette.grey[500] : '#9e9e9e'; // 默认灰色值
-        const primaryColor = theme.palette.primary ? theme.palette.primary.main : '#1976d2'; // 默认主色值
-
-        return {
-            cursor: disabled ? 'not-allowed' : 'pointer',
-            color: disabled ? grey500 : primaryColor,
-            pointerEvents: disabled ? 'none' : 'auto',
-            textDecoration: 'none',
-            '&:hover': {
-                textDecoration: disabled ? 'none' : 'underline',
-            },
-        };
-    });
-
-    useEffect(() => {
-        let timer;
-        if (isCooldown) {
-            timer = setInterval(() => {
-                setSeconds((prevSeconds) => {
-                    if (prevSeconds <= 1) {
-                        clearInterval(timer);
-                        setIsCooldown(false);
-                        return 60;
-                    }
-                    return prevSeconds - 1;
-                });
-            }, 1000);
-        }
-        return () => clearInterval(timer);
-    }, [isCooldown]);
-
-    const handleResendCode = () => {
-        if (!isCooldown) {
-            resendCode();
-            setIsCooldown(true);
-        }
-    };
-
-    return (
-        <Box>
-            <Typography>
-                {t('credentials.signUp.step3info')}
-            </Typography>
-            <TextField
-                id="outlined-organizer-username"
-                label={t('credentials.signUp.step3label')}
-                variant="outlined"
-                fullWidth
-                value={code}
-                onChange={(event) => setCode(event.target.value)}
-                required
-                margin="normal"
-            />
-            {codeCheckError && (
-                <Typography color="error">
-                    {t('credentials.signUp.codeCheckError')}
-                </Typography>
-            )}
-            <Typography>
-                {t('credentials.signUp.resendInfo')}
-            </Typography>
-            <StyledLink onClick={handleResendCode} disabled={isCooldown}>
-                <span>{t('credentials.signUp.resend')}</span>
-            </StyledLink>
-            {isCooldown && (
-                <Typography>
-                    {t('credentials.signUp.resendCooldown')} {seconds} {t('credentials.signUp.seconds')}
-                </Typography>
-            )}
-        </Box>
-    );
-};
+// const Step3 = ({code, setCode, codeCheckError, resendCode}) => {
+//     const {t} = useTranslation();
+//     const [isCooldown, setIsCooldown] = useState(false);
+//     const [seconds, setSeconds] = useState(60);
+//
+//     const StyledLink = styled(Link)(({theme, disabled}) => {
+//         const grey500 = theme.palette.grey ? theme.palette.grey[500] : '#9e9e9e'; // 默认灰色值
+//         const primaryColor = theme.palette.primary ? theme.palette.primary.main : '#1976d2'; // 默认主色值
+//
+//         return {
+//             cursor: disabled ? 'not-allowed' : 'pointer',
+//             color: disabled ? grey500 : primaryColor,
+//             pointerEvents: disabled ? 'none' : 'auto',
+//             textDecoration: 'none',
+//             '&:hover': {
+//                 textDecoration: disabled ? 'none' : 'underline',
+//             },
+//         };
+//     });
+//
+//     useEffect(() => {
+//         let timer;
+//         if (isCooldown) {
+//             timer = setInterval(() => {
+//                 setSeconds((prevSeconds) => {
+//                     if (prevSeconds <= 1) {
+//                         clearInterval(timer);
+//                         setIsCooldown(false);
+//                         return 60;
+//                     }
+//                     return prevSeconds - 1;
+//                 });
+//             }, 1000);
+//         }
+//         return () => clearInterval(timer);
+//     }, [isCooldown]);
+//
+//     const handleResendCode = () => {
+//         if (!isCooldown) {
+//             resendCode();
+//             setIsCooldown(true);
+//         }
+//     };
+//
+//     return (
+//         <Box>
+//             <Typography>
+//                 {t('credentials.signUp.step3info')}
+//             </Typography>
+//             <TextField
+//                 id="outlined-organizer-username"
+//                 label={t('credentials.signUp.step3label')}
+//                 variant="outlined"
+//                 fullWidth
+//                 value={code}
+//                 onChange={(event) => setCode(event.target.value)}
+//                 required
+//                 margin="normal"
+//             />
+//             {codeCheckError && (
+//                 <Typography color="error">
+//                     {t('credentials.signUp.codeCheckError')}
+//                 </Typography>
+//             )}
+//             <Typography>
+//                 {t('credentials.signUp.resendInfo')}
+//             </Typography>
+//             <StyledLink onClick={handleResendCode} disabled={isCooldown}>
+//                 <span>{t('credentials.signUp.resend')}</span>
+//             </StyledLink>
+//             {isCooldown && (
+//                 <Typography>
+//                     {t('credentials.signUp.resendCooldown')} {seconds} {t('credentials.signUp.seconds')}
+//                 </Typography>
+//             )}
+//         </Box>
+//     );
+// };
 
 const Step4 = ({handleClose, handleLogin}) => {
     const {t} = useTranslation();
@@ -862,20 +862,21 @@ export const SignUpModal = ({handleClose}) => {
             return !!(username && address && username.length <= 80 && address.length <= 50 && selectedCity && selectedState && selectedCountry && postCode && postCode.length <= 10)
         }
     }
+    
+    // const steps = [t('credentials.signUp.stepInfo1'), t('credentials.signUp.stepInfo2'), t('credentials.signUp.stepInfo3')];
+    const steps = [t('credentials.signUp.stepInfo1'), t('credentials.signUp.stepInfo2')];
 
-    const steps = [t('credentials.signUp.stepInfo1'), t('credentials.signUp.stepInfo2'), t('credentials.signUp.stepInfo3')];
-
-    const handleNextAndCheckEmail = async (event) => {
-        event.preventDefault();
-
-        const user = await getUserByEmailAddress(email)
-        if (user.data?.status === 200) {
-            setEmailError(t('credentials.signUp.signUpErrorDuplication'))
-            alert(t('credentials.signUp.signUpErrorDuplication'))
-        } else {
-            setActiveStep((prevActiveStep) => prevActiveStep + 1);
-        }
-    }
+    // const handleNextAndCheckEmail = async (event) => {
+    //     event.preventDefault();
+    //
+    //     const user = await getUserByEmailAddress(email)
+    //     if (user.data?.status === 200) {
+    //         setEmailError(t('credentials.signUp.signUpErrorDuplication'))
+    //         alert(t('credentials.signUp.signUpErrorDuplication'))
+    //     } else {
+    //         setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    //     }
+    // }
 
     const handleBack = (event) => {
         event.preventDefault();
@@ -917,13 +918,13 @@ export const SignUpModal = ({handleClose}) => {
 
         if (user.data?.status === 201) {
             setId(user.data.response._id)
-            const codeResponse = await addNewCode({userId: user.data.response._id, usage: "REGISTRATION"})
-            const sendCodeResponse = await sendCode({
-                userId: user.data.response._id,
-                usage: "REGISTRATION",
-                username: username,
-                user_email_address: email
-            })
+            // const codeResponse = await addNewCode({userId: user.data.response._id, usage: "REGISTRATION"})
+            // const sendCodeResponse = await sendCode({
+            //     userId: user.data.response._id,
+            //     usage: "REGISTRATION",
+            //     username: username,
+            //     user_email_address: email
+            // })
             alert(t('credentials.signUp.signUpSuccess'))
             setActiveStep((prevActiveStep) => prevActiveStep + 1);
         } else {
@@ -931,25 +932,25 @@ export const SignUpModal = ({handleClose}) => {
         }
     }
 
-    const handleCheckCode = async (event) => {
-        const result = await checkCode({userId: id, usage: "REGISTRATION", inputValue: code})
-        if (result.data?.status === 200) {
-            await validateUser({userId: id, updateData: {isValidUser: true}});
-            setActiveStep((prevActiveStep) => prevActiveStep + 1);
-        } else {
-            setCodeCheckError(t('credentials.signUp.codeCheckError'))
-        }
-    }
+    // const handleCheckCode = async (event) => {
+    //     const result = await checkCode({userId: id, usage: "REGISTRATION", inputValue: code})
+    //     if (result.data?.status === 200) {
+    //         await validateUser({userId: id, updateData: {isValidUser: true}});
+    //         setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    //     } else {
+    //         setCodeCheckError(t('credentials.signUp.codeCheckError'))
+    //     }
+    // }
 
-    const resendCode = async () => {
-        const codeResponse = await addNewCode({userId: id, usage: "REGISTRATION"})
-        const sendCodeResponse = await sendCode({
-            userId: id,
-            usage: "REGISTRATION",
-            username: username,
-            user_email_address: email
-        })
-    }
+    // const resendCode = async () => {
+    //     const codeResponse = await addNewCode({userId: id, usage: "REGISTRATION"})
+    //     const sendCodeResponse = await sendCode({
+    //         userId: id,
+    //         usage: "REGISTRATION",
+    //         username: username,
+    //         user_email_address: email
+    //     })
+    // }
 
     const handleLogin = async () => {
         try {
@@ -1043,14 +1044,16 @@ export const SignUpModal = ({handleClose}) => {
                                     setPostalCode={setPostCode}
                                 />)}
 
-                            {activeStep === 2 && <Step3
-                                code={code}
-                                setCode={setCode}
-                                codeCheckError={codeCheckError}
-                                resendCode={resendCode}
-                            />}
+                            {/*{activeStep === 2 && <Step3*/}
+                            {/*    code={code}*/}
+                            {/*    setCode={setCode}*/}
+                            {/*    codeCheckError={codeCheckError}*/}
+                            {/*    resendCode={resendCode}*/}
+                            {/*/>}*/}
 
-                            {activeStep === 3 && <Step4 handleClose={handleClose} handleLogin={handleLogin}/>}
+                            {activeStep === 2 && <Step4 handleClose={handleClose} handleLogin={handleLogin}/>}
+
+                            {/*{activeStep === 3 && <Step4 handleClose={handleClose} handleLogin={handleLogin}/>}*/}
                         </Box>
                         <Box sx={{
                             display: 'flex',
@@ -1106,22 +1109,22 @@ export const SignUpModal = ({handleClose}) => {
                                 </>
                             )}
 
-                            {activeStep === 2 && (
-                                <Button
-                                    variant="contained"
-                                    type="button"
-                                    onClick={handleCheckCode}
-                                    disabled={code === ''}
-                                    sx={{
-                                        maxWidth: 300,
-                                        width: '100%'
-                                    }}
-                                    endIcon={isCheckCodeLoading ?
-                                        <CircularProgress size={24} style={{color: 'white'}}/> : <SendIcon/>}
-                                >
-                                    {t('credentials.signUp.confirmButton')}
-                                </Button>
-                            )}
+                            {/*{activeStep === 2 && (*/}
+                            {/*    <Button*/}
+                            {/*        variant="contained"*/}
+                            {/*        type="button"*/}
+                            {/*        onClick={handleCheckCode}*/}
+                            {/*        disabled={code === ''}*/}
+                            {/*        sx={{*/}
+                            {/*            maxWidth: 300,*/}
+                            {/*            width: '100%'*/}
+                            {/*        }}*/}
+                            {/*        endIcon={isCheckCodeLoading ?*/}
+                            {/*            <CircularProgress size={24} style={{color: 'white'}}/> : <SendIcon/>}*/}
+                            {/*    >*/}
+                            {/*        {t('credentials.signUp.confirmButton')}*/}
+                            {/*    </Button>*/}
+                            {/*)}*/}
                         </Box>
                     </Stack>
                 </form>
@@ -1202,36 +1205,37 @@ export const LoginModal = ({handleClose, requireNavigation}) => {
                 setLoginError(t('credentials.login.loginNoUserError'))
             } else if (loginData.error?.status === 401 && loginData.error?.data.message === "Unauthorized") {
                 setLoginError(t('credentials.login.loginWrongCredential'))
-            } else if (loginData.error?.status === 401 && loginData.error?.data.message === "Unconfirmed") {
-                setLoginError(t('credentials.login.loginUnconfirmed'))
-                setId(loginData.error?.data.userId)
-                setShowConfirmArea(true)
-            }
+            } 
+            // else if (loginData.error?.status === 401 && loginData.error?.data.message === "Unconfirmed") {
+            //     setLoginError(t('credentials.login.loginUnconfirmed'))
+            //     setId(loginData.error?.data.userId)
+            //     setShowConfirmArea(true)
+            // }
         } catch (error) {
             console.log(error)
         }
     }
 
-    const resendCode = async () => {
-        const codeResponse = await addNewCode({userId: id, usage: "REGISTRATION"})
-        const sendCodeResponse = await sendCode({
-            userId: id,
-            usage: "REGISTRATION",
-            username: username,
-            user_email_address: email
-        })
-    }
+    // const resendCode = async () => {
+    //     const codeResponse = await addNewCode({userId: id, usage: "REGISTRATION"})
+    //     const sendCodeResponse = await sendCode({
+    //         userId: id,
+    //         usage: "REGISTRATION",
+    //         username: username,
+    //         user_email_address: email
+    //     })
+    // }
 
-    const handleCheckCode = async (event) => {
-        const result = await checkCode({userId: id, usage: "REGISTRATION", inputValue: code})
-        if (result.data?.status === 200) {
-            await validateUser({userId: id, updateData: {isValidUser: true}});
-            setShowConfirmArea(false)
-            setLoginError("")
-        } else {
-            setCodeCheckError(t('credentials.signUp.codeCheckError'))
-        }
-    }
+    // const handleCheckCode = async (event) => {
+    //     const result = await checkCode({userId: id, usage: "REGISTRATION", inputValue: code})
+    //     if (result.data?.status === 200) {
+    //         await validateUser({userId: id, updateData: {isValidUser: true}});
+    //         setShowConfirmArea(false)
+    //         setLoginError("")
+    //     } else {
+    //         setCodeCheckError(t('credentials.signUp.codeCheckError'))
+    //     }
+    // }
 
     return (
         <Box
@@ -1298,24 +1302,24 @@ export const LoginModal = ({handleClose, requireNavigation}) => {
 
                     {loginError && <Alert severity="error">{loginError}</Alert>}
 
-                    {showConfirmArea && (
-                        <>
-                            <Step3
-                                code={code}
-                                setCode={setCode}
-                                codeCheckError={codeCheckError}
-                                resendCode={resendCode}
-                            />
-                            <Button
-                                variant="contained"
-                                type="button"
-                                onClick={handleCheckCode}
-                                disabled={code === ''}
-                                style={{width: '100%'}}>
-                                {t('credentials.signUp.confirmButton')}
-                            </Button>
-                        </>
-                    )}
+                    {/*{showConfirmArea && (*/}
+                    {/*    <>*/}
+                    {/*        <Step3*/}
+                    {/*            code={code}*/}
+                    {/*            setCode={setCode}*/}
+                    {/*            codeCheckError={codeCheckError}*/}
+                    {/*            resendCode={resendCode}*/}
+                    {/*        />*/}
+                    {/*        <Button*/}
+                    {/*            variant="contained"*/}
+                    {/*            type="button"*/}
+                    {/*            onClick={handleCheckCode}*/}
+                    {/*            disabled={code === ''}*/}
+                    {/*            style={{width: '100%'}}>*/}
+                    {/*            {t('credentials.signUp.confirmButton')}*/}
+                    {/*        </Button>*/}
+                    {/*    </>*/}
+                    {/*)}*/}
                 </Stack>
                 <Divider style={{marginTop: "10px"}}/>
                 <Box sx={{mt: 2}}>

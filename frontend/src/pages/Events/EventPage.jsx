@@ -80,7 +80,7 @@ const StyledButton = styled(Button)(({theme, variant}) => ({
     }),
 }));
 
-const EventPage2 = () => {
+const EventPage = () => {
     const {t} = useTranslation();
 
     const {eventID} = useParams();
@@ -951,5 +951,5 @@ const EventPage2 = () => {
     );
 };
 
-export default EventPage2;
+export default EventPage;
 
