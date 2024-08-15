@@ -6,12 +6,11 @@ import {UserModel} from "../models/user/User.js";
 // @desc Post an event
 // @route POST /event
 const createEvent = asyncHandler(async (req, res) => {
+    const title = req.body.title;
+    const organiser = req.body.organiser;
 
-    const title=req.body.title;
-    const organiser=req.body.organiser;
-
-    const startDate=req.body.startDate;
-    const endDate=req.body.endDate;
+    const startDate = req.body.startDate;
+    const endDate = req.body.endDate;
 
     const selectedCountry = req.body.selectedCountry;
     const selectedState = req.body.selectedState;
@@ -20,93 +19,93 @@ const createEvent = asyncHandler(async (req, res) => {
     const houseNumber = req.body.houseNumber;
     const zipCode = req.body.zipCode;
 
-    const description=req.body.description;
-    const peopleNeeded=req.body.peopleNeeded;
-    const requiredFiles=req.body.requiredFiles;
-    const languages=req.body.languages;
-    const category=req.body.category;
-    const uploadURL=req.body.uploadURL;
-    const creationPlan=req.body.creationPlan;
+    const description = req.body.description;
+    const peopleNeeded = req.body.peopleNeeded;
+    const requiredFiles = req.body.requiredFiles;
+    const languages = req.body.languages;
+    const category = req.body.category;
+    const uploadURL = req.body.uploadURL;
+    const creationPlan = req.body.creationPlan;
 
     const eventObj = new Event(title, organiser, startDate, endDate, selectedCountry, selectedState, selectedCity, address, houseNumber,
         zipCode, description, peopleNeeded, category, requiredFiles, languages, uploadURL, creationPlan);
     const event = await EventModel.create(eventObj)
 
-  if (event) { // created
-    res.status(201).json({
-      message: 'New Event created',
-      event: event
-    });
-  } else {
-    res.status(400).json({ message: 'Invalid event data received' });
-  }
+    if (event) { // created
+        res.status(201).json({
+            message: 'New Event created',
+            event: event
+        });
+    } else {
+        res.status(400).json({message: 'Invalid event data received'});
+    }
 
 });
 
 // @desc Update event details
 // @route PUT /event/:id
 const updateEvent = asyncHandler(async (req, res) => {
-  const eventData = req.body;
+    const eventData = req.body;
 
-  console.log(eventData.title);
-  const event = await EventModel.findByIdAndUpdate(req.params.id, eventData, { new: true });
+    console.log(eventData.title);
+    const event = await EventModel.findByIdAndUpdate(req.params.id, eventData, {new: true});
 
-  await event.save();
+    await event.save();
 
-  if (!event) {
-    return res.status(400).json({ message: 'Event not found' })
-  }
+    if (!event) {
+        return res.status(400).json({message: 'Event not found'})
+    }
 
-  res.json(event)
-  res.status(200).json({ message: `Event: ${event.title} ID: ${event._id} is updated` })
+    res.json(event)
+    res.status(200).json({message: `Event: ${event.title} ID: ${event._id} is updated`})
 
 });
 
 // @desc Delete an event
 // @route DELETE /event/:id
 const deleteEvent = asyncHandler(async (req, res) => {
-  try {
-    const event = await EventModel.findByIdAndDelete(req.params.id);
-    res.json(event)
+    try {
+        const event = await EventModel.findByIdAndDelete(req.params.id);
+        res.json(event)
 
-    if (!event) {
-      return res.status(400).json({message: 'Event not found'})
+        if (!event) {
+            return res.status(400).json({message: 'Event not found'})
+        }
+
+        // Delete associated wishlist items
+        await WishlistItemModel.deleteMany({event: event._id});
+
+        return res.status(200).json({message: `Event: ${event.title} ID: ${event._id} is deleted`})
+
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json(error);
     }
-
-    // Delete associated wishlist items
-    await WishlistItemModel.deleteMany({ event: event._id });
-
-    return res.status(200).json({ message: `Event: ${event.title} ID: ${event._id} is deleted`})
-
-  }catch (error) {
-    console.error(error);
-    return res.status(500).json(error);
-  }
 });
 
 // @desc Get all events
 // @route GET /event
-const getEvents=asyncHandler(async (req,res)=>{
-  try {
+const getEvents = asyncHandler(async (req, res) => {
+    try {
+        const pageSize = 12
+        const page = Number(req.query.page) || 1
+        const keyword = req.query.keyword
+            ? {title: {$regex: req.query.keyword, $options: 'i'}}
+            : {};
 
-    const pageSize = 6
-    const keyword = req.query.keyword
-        ? {title: {$regex: req.query.keyword, $options: 'i'}}
-        : {};
+        let location = {};
+        if (req.query.location) {
+            const locationsArray = req.query.location.split(',').map(city => city.trim());
+            location = {'selectedCity.name': {$in: locationsArray}};
+        }
 
-      let location = {};
-      if (req.query.location) {
-          const locationsArray = req.query.location.split(',').map(city => city.trim());
-          location = { 'selectedCity.name': { $in: locationsArray } };
-      }
-
-      const languages = req.query.language ? req.query.language.split(',') : [];
-      const languageFilter = languages.length
-          ? { languages: { $in: languages } }
-          : {};
+        const languages = req.query.language ? req.query.language.split(',') : [];
+        const languageFilter = languages.length
+            ? {languages: {$in: languages}}
+            : {};
 
 
-      const now = new Date();
+        const now = new Date();
         let timeFilter = {};
         const times = req.query.time.split(",")
 
@@ -136,7 +135,6 @@ const getEvents=asyncHandler(async (req,res)=>{
         const events = await EventModel.find(filter).limit(pageSize);
 
         const totalPages = Math.ceil(count / pageSize)
-        const page = 1
 
         res.json({
             events, page: page,
@@ -195,7 +193,7 @@ const getAllEvents = asyncHandler(async (req, res) => {
 })
 
 const addEventReview = asyncHandler(async (req, res) => {
-    const { eventID, userID, rating, comment } = req.body;
+    const {eventID, userID, rating, comment} = req.body;
 
     const event = await EventModel.findById(req.params.id);
 
@@ -219,7 +217,7 @@ const addEventReview = asyncHandler(async (req, res) => {
             event.reviews.reduce((acc, item) => item.rating + acc, 0) / event.reviews.length;
 
         await event.save();
-        res.status(201).json({ message: 'Review added' });
+        res.status(201).json({message: 'Review added'});
     } else {
         res.status(404);
         throw new Error('Event not found');
@@ -227,7 +225,7 @@ const addEventReview = asyncHandler(async (req, res) => {
 });
 
 const deleteEventReview = asyncHandler(async (req, res) => {
-    const { eventID, userID, reviewID } = req.body;
+    const {eventID, userID, reviewID} = req.body;
 
     try {
 
@@ -237,13 +235,13 @@ const deleteEventReview = asyncHandler(async (req, res) => {
         const event = await EventModel.findById(req.params.id);
 
         if (!event) {
-            return res.status(404).json({ message: 'Event not found' });
+            return res.status(404).json({message: 'Event not found'});
         }
 
         const review = event.reviews.id(reviewID);
 
         if (!review) {
-            return res.status(404).json({ message: 'Review not found' });
+            return res.status(404).json({message: 'Review not found'});
         }
 
         /*
@@ -253,36 +251,36 @@ const deleteEventReview = asyncHandler(async (req, res) => {
 
          */
 
-        event.reviews.pull({ _id: reviewID });
+        event.reviews.pull({_id: reviewID});
         await event.save();
-        res.status(200).json({ message: 'Review removed' });
+        res.status(200).json({message: 'Review removed'});
 
     } catch (error) {
         console.error(error);
-        res.status(500).json({ message: 'Server error' });
+        res.status(500).json({message: 'Server error'});
     }
 });
 
-const getTopEvents=asyncHandler(async (req,res)=>{
-  try {
-    const events = await EventModel.find({}).sort({rating:-1}).limit(4)
-    res.json(events);
+const getTopEvents = asyncHandler(async (req, res) => {
+    try {
+        const events = await EventModel.find({}).sort({rating: -1}).limit(4)
+        res.json(events);
 
-  } catch (error) {
-    console.error(error);
-    res.status(400).json(error.message)
-  }
+    } catch (error) {
+        console.error(error);
+        res.status(400).json(error.message)
+    }
 })
 
-const getNewEvents=asyncHandler(async (req,res)=>{
-  try {
-    const events = await EventModel.find({}).sort({_id:-1}).limit(5)
-    res.json(events);
+const getNewEvents = asyncHandler(async (req, res) => {
+    try {
+        const events = await EventModel.find({}).sort({_id: -1}).limit(5)
+        res.json(events);
 
-  } catch (error) {
-    console.error(error);
-    res.status(400).json(error.message)
-  }
+    } catch (error) {
+        console.error(error);
+        res.status(400).json(error.message)
+    }
 })
 
 const getMonthRange = () => {
@@ -312,16 +310,16 @@ const getUserMonthlyEventsCount = asyncHandler(async (req, res) => {
 });
 
 export default {
-  createEvent,
-  updateEvent,
-  deleteEvent,
-  getEvents,
-  getEventById,
-  getEventsByOrganiser,
-  getAllEvents,
-  addEventReview,
-  deleteEventReview,
-  getTopEvents,
-  getNewEvents,
+    createEvent,
+    updateEvent,
+    deleteEvent,
+    getEvents,
+    getEventById,
+    getEventsByOrganiser,
+    getAllEvents,
+    addEventReview,
+    deleteEventReview,
+    getTopEvents,
+    getNewEvents,
     getUserMonthlyEventsCount
 };

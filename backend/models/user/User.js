@@ -11,7 +11,7 @@ class User {
         this.profilePicturePath = "";
         this.phoneNumber = "";
         this.isBlocked = false
-        this.isValidUser = false
+        this.isValidUser = true
     }
 }
 

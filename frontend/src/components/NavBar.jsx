@@ -242,7 +242,7 @@ function NavBar() {
                                         sx={{py: '6px', px: '12px'}}
                         >
                             <Typography variant="body2" color="#5CBC63">
-                                create event
+                                Create event
                             </Typography>
                         </StyledMenuItem>
                     )}

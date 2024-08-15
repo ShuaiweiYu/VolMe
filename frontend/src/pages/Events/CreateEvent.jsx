@@ -8,12 +8,11 @@ import {toast} from "react-toastify";
 import {
     TextField,
     Button,
-    Typography, Container, Stack, ButtonGroup, FormControl, InputLabel, Select, MenuItem,
+    Typography, Container, Stack,
     Box,
-    Grid, FormControlLabel, Checkbox, FormGroup, Divider
+    Grid, FormControlLabel, Checkbox, Divider
 } from '@mui/material';
 import Autocomplete from '@mui/material/Autocomplete';
-import {t} from "i18next";
 import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
 import {DateTimePicker, LocalizationProvider} from "@mui/x-date-pickers";
@@ -23,7 +22,6 @@ import DescriptionEditor from "../../components/CreateEventPage/DescriptionEdito
 import {useSelector} from "react-redux";
 import {selectCurrentUserId} from "../../redux/auth/authSlice";
 import ImageUploadBox from "../../components/Upload/ImageUploadBox";
-import {LANGUAGE} from '../../components/CreateEventPage/language';
 import {useCheckSubscriptionValidityMutation} from '../../redux/payment/paymentApiSlice'
 import {useGetUserByUserIdQuery} from '../../redux/users/usersApiSlice'
 import {useGetEventCountByIdMutation} from '../../redux/events/eventApiSlice'
@@ -60,8 +58,7 @@ const CreateEvent = () => {
     const [title, setTitle] = useState("");
     const organiser = useSelector(selectCurrentUserId);
     const organizerObj = useGetUserByUserIdQuery(organiser)
-
-    //const [location, setLocation] = useState("");
+    
     const [country, setCountry] = useState([]);
     const [state, setState] = useState([]);
     const [city, setCity] = useState([]);
@@ -77,14 +74,14 @@ const CreateEvent = () => {
 
     const [description, setDescription] = useState("");
     const [peopleNeeded, setPeopleNeeded] = useState(null);
-    const [category, setCategory] = useState("");
+    const [categorylist, setCategorylist] = useState([]);
+    const categories = ["a", "b", "c"]
 
     const [languages, setLanguages] = useState([]);
     const languageList = ["English", "German", "Spanish", "French", "Chinese", "Italian"];
 
     const [uploadEventImage] = useUploadEventImageMutation();
     const [createEvent] = useCreateEventMutation();
-    const categories = ["a", "b", "c"]
 
     const [uploadURL, setUploadURL] = useState([]);
     const [renderUploadURL, setRenderUploadURL] = useState(false);
@@ -206,7 +203,7 @@ const CreateEvent = () => {
                 //"location": location,
                 "description": description,
                 "peopleNeeded": peopleNeeded,
-                "category": category,
+                "category": "",
                 "requiredFiles": requiredFiles,
                 "languages": languages,
                 "uploadURL": uploadURL,
@@ -225,7 +222,6 @@ const CreateEvent = () => {
             toast.error("Failed to create event. Please try again.");
         }
     };
-
 
     useEffect(() => {
         setCountry(Country.getAllCountries());
@@ -254,8 +250,6 @@ const CreateEvent = () => {
         setDescription(content);
     };
 
-    const today = dayjs();
-
     return (
         <Box id="create-event">
             <Container component="main" maxWidth="md">
@@ -269,14 +263,14 @@ const CreateEvent = () => {
                     >
                         <Stack container spacing={2}>
                             <Grid item xs={12} sm={6}>
-                                <Typography variant="h2" sx={{margin: '20px 0'}}>{t("createEvent.nameEvent")}</Typography>
+                                <Typography variant="h2"
+                                            sx={{margin: '20px 0'}}>{t("createEvent.nameEvent")}</Typography>
                                 <TextField
                                     required
                                     fullWidth
                                     id="eventtitle"
                                     label={t("createEvent.eventTitle")}
                                     autoFocus
-                                    //placeholder="Name your event here"
                                     value={title}
                                     onChange={(event) => setTitle(event.target.value)}
                                     sx={{borderRadius: '30px'}}
@@ -393,7 +387,8 @@ const CreateEvent = () => {
                             <Grid item xs={12} sm={6}>
                                 <Box>
                                     <Divider sx={{margin: '20px 0'}}/>
-                                    <Typography variant="h2" sx={{margin: '20px 0'}}>{t("createEvent.date")}</Typography>
+                                    <Typography variant="h2"
+                                                sx={{margin: '20px 0'}}>{t("createEvent.date")}</Typography>
                                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                                         <Stack direction="row" spacing={2}>
                                             <DateTimePicker
@@ -457,31 +452,31 @@ const CreateEvent = () => {
                                             onChange={(event) => setPeopleNeeded(event.target.value)}
                                         />
                                     </Grid>
-                                    <Grid item xs={8}>
-                                        <FormControl fullWidth required>
-                                            <InputLabel id="category-label">Category</InputLabel>
-                                            <Select
-                                                labelId="category-label"
-                                                id="category-select"
-                                                value={category}
-                                                label={t("createEvent.category")}
-                                                onChange={(event) => setCategory(event.target.value)}
-                                            >
-                                                {categories?.map((cat) => (
-                                                    <MenuItem key={cat._id} value={cat._id}>
-                                                        {cat.name}
-                                                    </MenuItem>
-                                                ))}
-                                            </Select>
-                                        </FormControl>
-                                    </Grid>
+                                    {/*<Grid item xs={8}>*/}
+                                    {/*    <FormControl fullWidth required>*/}
+                                    {/*        <InputLabel id="category-label">Category</InputLabel>*/}
+                                    {/*        <Select*/}
+                                    {/*            labelId="category-label"*/}
+                                    {/*            id="category-select"*/}
+                                    {/*            value={category}*/}
+                                    {/*            label={t("createEvent.category")}*/}
+                                    {/*            onChange={(event) => setCategory(event.target.value)}*/}
+                                    {/*        >*/}
+                                    {/*            {categories?.map((cat) => (*/}
+                                    {/*                <MenuItem key={cat._id} value={cat._id}>*/}
+                                    {/*                    {cat.name}*/}
+                                    {/*                </MenuItem>*/}
+                                    {/*            ))}*/}
+                                    {/*        </Select>*/}
+                                    {/*    </FormControl>*/}
+                                    {/*</Grid>*/}
                                 </Grid>
                             </Stack>
 
-                            <Box sx={{ marginTop: 2 }}>
-                                <Divider sx={{ margin: '20px 0' }} />
+                            <Box sx={{marginTop: 2}}>
+                                <Divider sx={{margin: '20px 0'}}/>
                                 <Typography variant="h2">Select Required Documents</Typography>
-                                <Box sx={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', gap: 2 }}>
+                                <Box sx={{display: 'flex', flexDirection: 'row', flexWrap: 'wrap', gap: 2}}>
                                     {[...defaultOptions, ...requiredFiles].map((option, index) => (
                                         <FormControlLabel
                                             key={index}
@@ -495,7 +490,7 @@ const CreateEvent = () => {
                                         />
                                     ))}
                                 </Box>
-                                <Stack direction="row" spacing={2} sx={{ marginTop: 2 }}>
+                                <Stack direction="row" spacing={2} sx={{marginTop: 2}}>
                                     <TextField
                                         label="Add Custom Option"
                                         value={newOption}
@@ -528,7 +523,8 @@ const CreateEvent = () => {
 
                             <Grid item xs={12} sm={6}>
                                 <Divider sx={{margin: '20px 0'}}/>
-                                <Typography variant="h2" sx={{margin: '20px 0'}}>{t("createEvent.addPictures")}</Typography>
+                                <Typography variant="h2"
+                                            sx={{margin: '20px 0'}}>{t("createEvent.addPictures")}</Typography>
                                 <ImageUploadBox onURLChange={handleURLChange}/>
                             </Grid>
 
@@ -576,7 +572,8 @@ const CreateEvent = () => {
                                                 borderColor: "primary",
                                             }}
                                         >
-                                            <Typography variant="h3" color="primary">{t("createEvent.cancel")}</Typography>
+                                            <Typography variant="h3"
+                                                        color="primary">{t("createEvent.cancel")}</Typography>
                                         </StyledButton>
                                     </Grid>
                                 </Grid>
