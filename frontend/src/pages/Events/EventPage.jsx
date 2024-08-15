@@ -46,7 +46,6 @@ import {DateTimePicker, LocalizationProvider} from "@mui/x-date-pickers";
 import Autocomplete from "@mui/material/Autocomplete";
 import {City, Country, State} from "country-state-city";
 import LoadingComponent from "../../components/LoadingComponent";
-import {useFetchCategoriesQuery, useFetchCategoryByIdQuery} from "../../redux/events/categoryApiSlice";
 import {styled} from "@mui/system";
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
@@ -115,7 +114,7 @@ const EventPage = () => {
     const [newOption, setNewOption] = useState('');
 
     const [updateEvent] = useUpdateEventMutation();
-    const {data: categories} = useFetchCategoriesQuery();
+    const categories = ["a", "b", "c"]
     const languageList = ["English", "German", "Spanish", "French", "Chinese", "Italian"];
 
     const userID = useSelector(selectCurrentUserId);
@@ -127,9 +126,8 @@ const EventPage = () => {
     const [isInWishlist, setIsInWishlist] = useState(false);
     const [addWishList] = useAddWishlistItemMutation();
     const [deleteWishList] = useDeleteWishlistItemByEventMutation();
-
-    const {data: categoryObj} = useFetchCategoryByIdQuery(event?.response?.category);
-    const categoryName = categoryObj?.name;
+    
+    const categoryName = "categoryName";
 
     const [createReview] = useCreateReviewMutation();
     const [deleteReview] = useDeleteReviewMutation();

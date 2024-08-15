@@ -41,7 +41,6 @@ app.use('/api/codes', codeRoutes)
 app.use('/api/emails', emailRoutes)
 app.use("/api/payment", paymentRoutes)
 app.use('/api/events', eventRoutes);
-app.use("/api/category", categoryRoutes);
 app.use("/api/applications",applicationRoutes)
 app.use("/api/documents",documentRoutes)
 app.use("/api/wishlist",wishlistItemRoutes)

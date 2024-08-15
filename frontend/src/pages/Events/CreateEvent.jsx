@@ -4,7 +4,6 @@ import {
     useCreateEventMutation,
     useUploadEventImageMutation,
 } from "../../redux/events/eventApiSlice";
-import {useFetchCategoriesQuery} from "../../redux/events/categoryApiSlice";
 import {toast} from "react-toastify";
 import {
     TextField,
@@ -85,7 +84,7 @@ const CreateEvent = () => {
 
     const [uploadEventImage] = useUploadEventImageMutation();
     const [createEvent] = useCreateEventMutation();
-    const {data: categories} = useFetchCategoriesQuery();
+    const categories = ["a", "b", "c"]
 
     const [uploadURL, setUploadURL] = useState([]);
     const [renderUploadURL, setRenderUploadURL] = useState(false);
