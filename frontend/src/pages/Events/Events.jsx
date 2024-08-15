@@ -1,18 +1,18 @@
 import React, {useEffect, useState} from 'react';
-import EventList from '../../components/Events/EventList';
-import {Box, Button, Paper, Stack} from "@mui/material";
+import {Box, Button, CircularProgress, Pagination, Paper, Stack, Typography} from "@mui/material";
 import Grid from "@mui/material/Grid";
-import {useNavigate} from "react-router-dom";
 import {useSelector} from "react-redux";
 import {selectCurrentUserId} from "../../redux/auth/authSlice";
 import {useGetUserByUserIdQuery} from "../../redux/users/usersApiSlice";
-import {styled} from "@mui/system";
 import TextField from "@mui/material/TextField";
 import InputAdornment from "@mui/material/InputAdornment";
 import IconButton from "@mui/material/IconButton";
 import SearchIcon from "@mui/icons-material/Search";
 import ClearIcon from "@mui/icons-material/Clear";
 import Autocomplete from "@mui/material/Autocomplete";
+import {useGetEventsQuery} from "../../redux/events/eventApiSlice";
+import EventItem from "../../components/Events/EventItem";
+import {getFileUrl} from "../../util/fileUploaderWrapper";
 
 const styles = {
     container: {
@@ -45,29 +45,6 @@ const styles = {
         marginTop: '10px',
     }
 };
-
-const StyledButton = styled(Button)(({theme, variant}) => ({
-    padding: '10px 20px',
-    width: '200px',  // Set a fixed width
-    height: '50px',
-    borderRadius: '30px',
-    ...(variant === 'outlined' && {
-        color: theme.palette.primary.main,
-        border: `1px solid ${theme.palette.primary.main}`,
-        '&:hover': {
-            backgroundColor: theme.palette.primary.light,
-            borderColor: theme.palette.primary.light,
-            color: "white",
-        },
-    }),
-    ...(variant === 'contained' && {
-        color: theme.palette.common.white,
-        backgroundColor: theme.palette.primary.main,
-        '&:hover': {
-            backgroundColor: theme.palette.primary.dark,
-        },
-    }),
-}));
 
 const SearchBar = ({searchTermProp, setSearchTermProp, onSearchProp, onClearProp, label}) => {
     const handleKeyDown = (e) => {
@@ -114,7 +91,7 @@ const MultipleFilter = ({handleTimeChange, handleLocationChange, handleLanguageC
         <Grid container spacing={2}>
             <Grid item xs={3}>
                 <Autocomplete
-                    // multiple
+                    multiple
                     id="tags-outlined"
                     options={date}
                     filterSelectedOptions
@@ -123,14 +100,13 @@ const MultipleFilter = ({handleTimeChange, handleLocationChange, handleLanguageC
                         <TextField
                             {...params}
                             label="Date"
-                            placeholder="Favorites"
                         />
                     )}
                 />
             </Grid>
             <Grid item xs={3}>
                 <Autocomplete
-                    // multiple
+                    multiple
                     id="tags-outlined"
                     options={location}
                     filterSelectedOptions
@@ -139,14 +115,13 @@ const MultipleFilter = ({handleTimeChange, handleLocationChange, handleLanguageC
                         <TextField
                             {...params}
                             label="Location"
-                            placeholder="Favorites"
                         />
                     )}
                 />
             </Grid>
             <Grid item xs={3}>
                 <Autocomplete
-                    // multiple
+                    multiple
                     id="tags-outlined"
                     options={languages}
                     filterSelectedOptions
@@ -155,14 +130,13 @@ const MultipleFilter = ({handleTimeChange, handleLocationChange, handleLanguageC
                         <TextField
                             {...params}
                             label="Languages"
-                            placeholder="Favorites"
                         />
                     )}
                 />
             </Grid>
             <Grid item xs={3}>
                 <Autocomplete
-                    // multiple
+                    multiple
                     id="tags-outlined"
                     options={category}
                     filterSelectedOptions
@@ -171,7 +145,6 @@ const MultipleFilter = ({handleTimeChange, handleLocationChange, handleLanguageC
                         <TextField
                             {...params}
                             label="Category"
-                            placeholder="Favorites"
                         />
                     )}
                 />
@@ -223,64 +196,30 @@ const Events = () => {
     const [selectedTime, setSelectedTime] = useState([]);
     const [selectedLanguage, setSelectedLanguage] = useState([]);
     const userId = useSelector(selectCurrentUserId);
-    const {data: user, isSuccessUser, errorUser, isLoadingUser} = useGetUserByUserIdQuery(userId);
-
-
-    const navigate = useNavigate();
-    const handleNavigate = (path) => {
-        navigate(path);
-    };
+    const { data: user, isSuccessUser, errorUser, isLoadingUser } = useGetUserByUserIdQuery(userId, {
+        skip: !userId, // Skip the query if userId is null or undefined
+    });
 
     const handleSearch = () => {
-        // todo: Add search functionality here using find event by name
     };
 
     const handleClear = () => {
         setSearchTermProp('');
     };
 
-    const handleChange = (event) => {
-        //add search events by....
-        const value = event.target.value;
-        setSelectedLocation((prevSelectedLocation) => {
-            // If the value is already in the array, remove it, otherwise add it
-            if (prevSelectedLocation.includes(value)) {
-                return prevSelectedLocation.filter((item) => item !== value);
-            } else {
-                return [...prevSelectedLocation, value];
-            }
-        });
+    const handleChange = (newValue) => {
+        setSelectedLocation(newValue);
         setRenderEventList(false);
     };
 
-    const handleTimeChange = (event) => {
-        //add search events by....
-        const value = event.target.value;
-
-        setSelectedTime((prevSelectedTime) => {
-            // If the value is already in the array, remove it, otherwise add it
-            if (prevSelectedTime.includes(value)) {
-                return prevSelectedTime.filter((item) => item !== value);
-            } else {
-                return [...prevSelectedTime, value];
-            }
-        });
+    const handleTimeChange = (newValue) => {
+        setSelectedTime(newValue);
         setRenderEventList(false);
 
     };
 
-    const handleLanguageChange = (event) => {
-        //add search events by....
-        const value = event.target.value;
-
-        setSelectedLanguage((prevSelectedLanguage) => {
-            // If the value is already in the array, remove it, otherwise add it
-            if (prevSelectedLanguage.includes(value)) {
-                return prevSelectedLanguage.filter((item) => item !== value);
-            } else {
-                return [...prevSelectedLanguage, value];
-            }
-        });
+    const handleLanguageChange = (newValue) => {
+        setSelectedLanguage(newValue);
         setRenderEventList(false);
     };
 
@@ -295,24 +234,102 @@ const Events = () => {
     useEffect(() => {
         setRenderEventList(true);
     }, [selectedLanguage]);
+    
+    
+    // eventlist
+    const [page, setPage] = useState(1);
+
+    const {
+        data: events,
+        isLoading,
+        isFetching,
+        isSuccess,
+        isError,
+        error
+    } = useGetEventsQuery({page: page, keyword: searchTermProp, location: selectedLocation, time: selectedTime, language: selectedLanguage});
+    // todo: get location from this list
+    // todo: get category from this list
+
+    const sortedEvents = events?.response?.events.slice().sort((a, b) => {
+        const aType = a.response?.organiser?.subscriptionType !== 'FREE';
+        const bType = b.response?.organiser?.subscriptionType !== 'FREE';
+        if (aType !== bType) return bType - aType;
+        return b.isSponsored - a.isSponsored;
+    });
 
 
     return (
         <Stack direction="row" justifyContent="space-around" marginTop={1} marginLeft={5} marginRight={5}>
             <Grid container spacing={2}>
                 <Grid item xs={12}>
-                    {/*todo: 把eventlist放在这里，不要单独做成一个组件，然后根据相应的关键词来做筛选*/}
-                    {/*<ToolBar searchTermProp={searchTermProp} setSearchTermProp={setSearchTermProp}*/}
-                    {/*         onSearchProp={handleSearch} onClearProp={handleClear} label={"Enter event name"}*/}
-                    {/*         handleLocationChange={handleChange}*/}
-                    {/*         handleLanguageChange={handleLanguageChange}*/}
-                    {/*         handleTimeChange={handleTimeChange}*/}
-                    {/*/>*/}
+                    <ToolBar searchTermProp={searchTermProp} setSearchTermProp={setSearchTermProp}
+                             onSearchProp={handleSearch} onClearProp={handleClear} label={"Enter event name"}
+                             handleLocationChange={handleChange}
+                             handleLanguageChange={handleLanguageChange}
+                             handleTimeChange={handleTimeChange}
+                    />
                 </Grid>
-                <Grid item xs={12} style={styles.right}>
-                    {renderEventList &&
-                        <EventList searchTerm={searchTermProp} location={selectedLocation} time={selectedTime}
-                                   language={selectedLanguage}/>}
+                <Grid item xs={12}>
+                    <Stack>
+                        <Grid container columns={12} spacing={{xs: 1, md: 2}}>
+                            {(isFetching || isLoading) ? (
+                                <Box
+                                    sx={{
+                                        display: 'flex',
+                                        justifyContent: 'center',
+                                        alignItems: 'center',
+                                        width: '100%',
+                                        height: '100vh'
+                                    }}
+                                >
+                                    <CircularProgress/>
+                                </Box>
+                            ) : isError ? (
+                                <Box
+                                    sx={{
+                                        display: 'flex',
+                                        justifyContent: 'center',
+                                        alignItems: 'center',
+                                        width: '100%',
+                                        height: '100vh'
+                                    }}
+                                >
+                                    <Typography variant="h6" color="error">
+                                        {error?.data?.message || 'An error occurred while fetching events.'}
+                                    </Typography>
+                                </Box>
+                            ) : isSuccess && (
+                                <>
+                                    {sortedEvents.map((event, index) => (
+                                        <Grid item xs={12} md={6} lg={4} xl={3} key={index} display="flex" alignItems="center"
+                                              justifyContent="center">
+                                            <EventItem
+                                                eventID={event._id}
+                                                title={event.title}
+                                                date={event.startDate}
+                                                image={getFileUrl(event.uploadURL[0], "image", "default")}
+                                                description={event.description}
+                                                promotion={event.isSponsored}
+                                                type={user?.response.role === 'VOLUNTEER' ? 'event-listing-volunteer' : 'event-listing'}
+                                            />
+                                        </Grid>
+                                    ))}
+                                </>
+                            )}
+                        </Grid>
+                        <Box display="flex" justifyContent="center">
+                            {isSuccess && <Pagination
+                                sx={{padding: 2}}
+                                count={events.response.pages}
+                                page={page}
+                                onChange={(event, value) => {
+                                    setPage(value);
+                                }}
+                                variant="outlined"
+                                size="small"
+                            />}
+                        </Box>
+                    </Stack>
                 </Grid>
             </Grid>
         </Stack>

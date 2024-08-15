@@ -258,10 +258,11 @@ function NavBar() {
                             {/*<IconButton sx={{padding: 0}} onClick={handleOpenMessagesMenu}>*/}
                             {/*    <ChatIcon color="action"/>*/}
                             {/*</IconButton>*/}
-                            <IconButton onClick={toggleDrawer}>
+                            {user?.data?.response?.role !== 'ORGANIZER' && 
+                                <IconButton onClick={toggleDrawer}>
                                 {wishlishDrawerIsOpen ? <FavoriteIcon/> : <FavoriteBorderIcon/>}
-                            </IconButton>
-
+                            </IconButton>}
+                            
                             <Drawer anchor={"right"} open={wishlishDrawerIsOpen} onClose={toggleDrawer}>
                                 <WishlistDrawer/>
                             </Drawer>

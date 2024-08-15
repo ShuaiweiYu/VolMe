@@ -12,7 +12,6 @@ import codeRoutes from './routes/codeRoutes.js';
 import authRoutes from './routes/authRoutes.js'
 import emailRoutes from './routes/emailRoutes.js'
 import eventRoutes from "./routes/eventRoutes.js";
-import categoryRoutes from "./routes/categoryRoutes.js";
 import applicationRoutes from "./routes/applicationRoutes.js";
 import documentRoutes from "./routes/documentRoutes.js";
 import wishlistItemRoutes from "./routes/wishlistItemRoutes.js";
