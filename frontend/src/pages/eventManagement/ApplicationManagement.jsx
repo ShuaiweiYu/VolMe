@@ -37,6 +37,8 @@ const ApplicationManagement = ({eventId, eventObj}) => {
         isSuccess: isGetDeclinedApplicationSuccess,
     } = useGetDeclinedApplicationsByEventQuery({eventID: eventId, page: declinePage})
 
+    // todo：加一个工具栏，可以导出文件，但是要付费用户才能操作
+
     const peopleAmountSatisfied = isGetAcceptedApplicationSuccess ? (acceptedApplicationResponse.response.applications.length === eventObj.peopleNeeded) : false
     
     const isStarted = Date.now() > new Date(eventObj.startDate).getTime();

@@ -39,8 +39,6 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import {useNavigate} from 'react-router-dom';
 
-// todo: pass content layout when xs
-
 const StyledButton = styled(Button)(({ theme, variant }) => ({
     padding: '10px 20px',
     width: '200px',  // Set a fixed width
