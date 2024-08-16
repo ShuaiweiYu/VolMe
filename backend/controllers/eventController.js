@@ -27,8 +27,27 @@ const createEvent = asyncHandler(async (req, res) => {
     const uploadURL = req.body.uploadURL;
     const creationPlan = req.body.creationPlan;
 
-    const eventObj = new Event(title, organiser, startDate, endDate, selectedCountry, selectedState, selectedCity, address, houseNumber,
-        zipCode, description, peopleNeeded, category, requiredFiles, languages, uploadURL, creationPlan);
+    const isRegular = req.body.isRegular;
+    const isRegularUntil = req.body.isRegularUntil;
+
+    const eventObj = new Event(title, organiser, creationPlan)
+    if (startDate) eventObj.startDate = startDate;
+    if (endDate) eventObj.endDate = endDate;
+    if (selectedCountry) eventObj.selectedCountry = selectedCountry;
+    if (selectedState) eventObj.selectedState = selectedState;
+    if (selectedCity) eventObj.selectedCity = selectedCity;
+    if (address) eventObj.address = address;
+    if (houseNumber) eventObj.houseNumber = houseNumber;
+    if (zipCode) eventObj.zipCode = zipCode;
+    if (description) eventObj.description = description;
+    if (peopleNeeded) eventObj.peopleNeeded = peopleNeeded;
+    if (requiredFiles) eventObj.requiredFiles = requiredFiles;
+    if (languages) eventObj.languages = languages;
+    if (category) eventObj.category = category;
+    if (uploadURL) eventObj.uploadURL = uploadURL;
+    if (isRegular) eventObj.isRegular = isRegular;
+    if (isRegularUntil) eventObj.isRegularUntil = isRegularUntil;
+
     const event = await EventModel.create(eventObj)
 
     if (event) { // created
@@ -309,6 +328,28 @@ const getUserMonthlyEventsCount = asyncHandler(async (req, res) => {
     }
 });
 
+const getCitiesByEventCount = async (req, res) => {
+    try {
+        // 聚合查询以计算每个城市的事件数量
+        const cities = await Event.aggregate([
+            {
+                $group: {
+                    _id: "$selectedCity", // 按城市分组
+                    eventCount: { $sum: 1 } // 计算每个城市的事件数量
+                }
+            },
+            {
+                $sort: { eventCount: -1 } // 按事件数量从高到低排序
+            }
+        ]);
+
+        res.status(200).json(cities);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "服务器错误" });
+    }
+};
+
 export default {
     createEvent,
     updateEvent,
@@ -321,5 +362,6 @@ export default {
     deleteEventReview,
     getTopEvents,
     getNewEvents,
-    getUserMonthlyEventsCount
+    getUserMonthlyEventsCount,
+    getCitiesByEventCount
 };

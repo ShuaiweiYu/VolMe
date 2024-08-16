@@ -15,6 +15,7 @@ class User {
     }
 }
 
+// todo: 加一个自我介绍区域
 const UserSchema = new Schema({
     emailAddress: {
         type: String,

@@ -3,28 +3,29 @@ import mongoose from 'mongoose';
 const {ObjectId} = mongoose.Schema;
 
 class Event {
-    constructor(title, organiser, startDate, endDate, selectedCountry, selectedState, selectedCity, address, houseNumber, zipCode, description, peopleNeeded, category, requiredFiles, languages, uploadURL, creationPlan) {
+    constructor(title, organiser, creationPlan) {
         this.title = title
         this.organiser = organiser
-        this.uploadURL = uploadURL
+        this.uploadURL = []
 
-        this.startDate = startDate
-        this.endDate = endDate
+        this.startDate = null
+        this.endDate = null
 
-        this.selectedCountry = selectedCountry
-        this.selectedState = selectedState
-        this.selectedCity = selectedCity
-        this.address = address
-        this.houseNumber = houseNumber
-        this.zipCode = zipCode
+        this.selectedCountry = null
+        this.selectedState = null
+        this.selectedCity = null
+        this.address = null
+        this.houseNumber = null
+        this.zipCode = null
 
-        this.peopleNeeded = peopleNeeded
-        this.description = description
-        this.requiredFiles = requiredFiles
-        this.languages = languages
-        this.category = category
+        this.peopleNeeded = null
+        this.description = null
+        this.requiredFiles = null
+        this.languages = null
+        this.category = null
         this.averageRating = 0
         this.isRegular = false
+        this.isRegularUntil = null
         this.rating = 0
         this.reviews = []
         this.numReviews = 0

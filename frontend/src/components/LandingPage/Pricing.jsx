@@ -17,6 +17,9 @@ import {useSelector} from "react-redux";
 import {selectCurrentUserId} from "../../redux/auth/authSlice";
 import {useGetUserByUserIdQuery} from "../../redux/users/usersApiSlice";
 
+// todo: 1. 只给组织者展示这个价格页面
+// todo: 2. 价格页面要做多语言，该怎么实现？
+// todo: 3. 免费：每个活动5人，邮箱和电话支持，每月1个活动 付费1：无上限人数，邮箱和电话优先支持，可以自定义问题，可以使用扫码签到 付费2：无上限人数，邮箱和电话极速支持，可以自定义问题，可以自定义需要上传的pdf文件，可以使用扫码签到 单次付费：无上限人数，邮箱和电话支持，可以自定义问题，可以自定义需要上传的pdf文件，可以使用扫码签到
 const Pricing = () => {
     const { t } = useTranslation();
     const { data: items, isSuccess } = useGetPaymentItemsQuery();
@@ -26,7 +29,6 @@ const Pricing = () => {
     const navigate = useNavigate(); // Initialize navigate function
 
     const handleChoosePlan = (item) => {
-        // Redirect to checkout page with chosen plan
         navigate('/checkout', { state: { chosenPlan: item } });
     };
 

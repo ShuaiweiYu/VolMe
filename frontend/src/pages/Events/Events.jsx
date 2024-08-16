@@ -14,37 +14,49 @@ import {useGetEventsQuery} from "../../redux/events/eventApiSlice";
 import EventItem from "../../components/Events/EventItem";
 import {getFileUrl} from "../../util/fileUploaderWrapper";
 
-const styles = {
-    container: {
-        display: 'flex',
-    },
-    left: {
-        flex: '0 0 30%',  // Adjust the width percentage as needed
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',  // Center children horizontally
-        padding: '20px',
-        boxSizing: 'border-box',
-        justifyContent: 'flex-start',
-    },
-    right: {
-        flex: '1',
-        display: 'flex',
-        flexDirection: 'column',
-        padding: '20px',
-        boxSizing: 'border-box',
-    },
-    button: {
-        padding: '10px',
-        borderRadius: '20px',
-        border: 'none',
-        backgroundColor: '#28a745',
-        color: '#fff',
-        cursor: 'pointer',
-        width: '150px',
-        marginTop: '10px',
-    }
-};
+const date = []
+const location = []
+const languages = ["English", "German", "French", "Italien", "Spanish", "Chinese"]
+// todo:这个在前端定义就行了，不需要从后端获取
+const category = [
+    "Community Service",
+    "Education and Literacy",
+    "Environment and Conservation",
+    "Health and Medicine",
+    "Animal Welfare",
+    "Arts and Culture",
+    "Disaster Relief",
+    "Youth and Children",
+    "Seniors and Elderly",
+    "Sports and Recreation",
+    "Human Rights",
+    "Social Justice",
+    "Homelessness and Housing",
+    "Hunger and Food Security",
+    "Mental Health",
+    "International Volunteering",
+    "Crisis Intervention",
+    "Others"
+];
+// const volunteerCategoriesChinese = [
+//     "社区服务",
+//     "教育与扫盲",
+//     "环境与保护",
+//     "健康与医疗",
+//     "动物福利",
+//     "艺术与文化",
+//     "灾难救援",
+//     "青少年与儿童",
+//     "老年人",
+//     "体育与娱乐",
+//     "人权",
+//     "社会正义",
+//     "无家可归与住房",
+//     "饥饿与粮食安全",
+//     "心理健康",
+//     "国际志愿服务",
+//     "危机干预"
+// ];
 
 const SearchBar = ({searchTermProp, setSearchTermProp, onSearchProp, onClearProp, label}) => {
     const handleKeyDown = (e) => {
@@ -83,10 +95,6 @@ const SearchBar = ({searchTermProp, setSearchTermProp, onSearchProp, onClearProp
 };
 
 const MultipleFilter = ({handleTimeChange, handleLocationChange, handleLanguageChange}) => {
-    const date = ["Past", "Future"]
-    const location = ["Munich", "Garching bei München"]
-    const languages = ["English", "German", "Italian", "Spanish"]
-    const category = ["a", "b"]
     return (
         <Grid container spacing={2}>
             <Grid item xs={3}>
@@ -225,18 +233,10 @@ const Events = () => {
 
     useEffect(() => {
         setRenderEventList(true);
-    }, [selectedLocation]);
-
-    useEffect(() => {
-        setRenderEventList(true);
-    }, [selectedTime]);
-
-    useEffect(() => {
-        setRenderEventList(true);
-    }, [selectedLanguage]);
+    }, [selectedLocation, selectedTime, selectedLanguage]);
     
-    
-    // eventlist
+
+    // -----------------> eventlist
     const [page, setPage] = useState(1);
 
     const {
@@ -269,6 +269,7 @@ const Events = () => {
                              handleTimeChange={handleTimeChange}
                     />
                 </Grid>
+                {/*-----------------> eventlist*/}
                 <Grid item xs={12}>
                     <Stack>
                         <Grid container columns={12} spacing={{xs: 1, md: 2}}>

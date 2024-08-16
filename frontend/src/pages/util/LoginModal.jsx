@@ -793,6 +793,7 @@ const Step4 = ({handleClose, handleLogin}) => {
     )
 }
 
+// todo: 加宽一点，第二步太窄了
 export const SignUpModal = ({handleClose}) => {
     const {t} = useTranslation();
     const [activeStep, setActiveStep] = useState(0);
