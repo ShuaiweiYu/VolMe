@@ -224,16 +224,6 @@ function NavBar() {
                             {t("navBar.events")}
                         </Typography>
                     </StyledMenuItem>
-                    <StyledMenuItem key="contact"
-                                    onClick={() => {
-                                        navigate("/contact");
-                                    }}
-                                    sx={{py: '6px', px: '12px'}}
-                    >
-                        <Typography variant="body2" color="#5CBC63">
-                            {t("navBar.contact")}
-                        </Typography>
-                    </StyledMenuItem>
                     {user?.data?.response?.role === 'ORGANIZER' && (
                         <StyledMenuItem key="post"
                                         onClick={() => {
@@ -246,6 +236,16 @@ function NavBar() {
                             </Typography>
                         </StyledMenuItem>
                     )}
+                    <StyledMenuItem key="contact"
+                                    onClick={() => {
+                                        navigate("/contact");
+                                    }}
+                                    sx={{py: '6px', px: '12px'}}
+                    >
+                        <Typography variant="body2" color="#5CBC63">
+                            {t("navBar.contact")}
+                        </Typography>
+                    </StyledMenuItem>
                 </Box>
 
                 <Box sx={{flexGrow: 0.05, display: {xs: 'none', md: 'flex'}}}>

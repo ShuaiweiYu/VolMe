@@ -136,7 +136,6 @@ const deleteUserById = asyncHandler(async (req, res) => {
     res.json({ message: reply });
 });
 
-
 // @desc Create a new organizer
 // @route POST /users/organizers
 const createNewOrganizer = asyncHandler(async (req, res) => {

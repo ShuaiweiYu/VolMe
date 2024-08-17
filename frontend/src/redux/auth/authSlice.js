@@ -32,3 +32,5 @@ export default authSlice.reducer
 export const selectCurrentToken = (state) => state.auth.token
 
 export const selectCurrentUserId = (state) => state.auth.userId
+
+export const selectCurrentRole = (state) => state.auth.role

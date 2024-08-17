@@ -75,6 +75,19 @@ const Pricing = ({setBuyPlan, isYearlyPlan, setIsYearlyPlan, lockPlan}) => {
     const {data: items, isSuccess} = useGetPaymentItemsQuery()
     const {t} = useTranslation();
 
+    const item1 = items?.find(item => item.name === 'Free');
+    const item2 = items?.find(item => item.name === 'Basic');
+    const item3 = items?.find(item => item.name === 'Premium');
+    const item4 = items?.find(item => item.name === 'Pay As You Go');
+
+    const getYearlyPrice = (price) => {
+        return (price * 12).toFixed(2);
+    }
+
+    const getDiscountedYearlyPrice = (price) => {
+        return (price * 12 * 0.8).toFixed(2);
+    }
+
     const handleSwitchChange = (event) => {
         setIsYearlyPlan(event.target.checked);
     };
@@ -86,26 +99,26 @@ const Pricing = ({setBuyPlan, isYearlyPlan, setIsYearlyPlan, lockPlan}) => {
                     <Container
                         id="pricing"
                         sx={{
-                            pt: { xs: 4, sm: 12 },
-                            pb: { xs: 8, sm: 16 },
+                            pt: {xs: 4, sm: 12},
+                            pb: {xs: 8, sm: 16},
                             position: 'relative',
                             display: 'flex',
                             flexDirection: 'column',
-                            gap: { xs: 3, sm: 6 },
+                            gap: {xs: 3, sm: 6},
                             borderRadius: '15px',
-                            width: { xs: '80%', sm: '90%', md: '100%' },
+                            width: {xs: '80%', sm: '90%', md: '100%'},
                         }}
                     >
                         <Grid container spacing={3} alignItems="center">
-                            <Grid item xs={12} sm={4}>
+                            <Grid item xs={12}>
                                 <Box display="flex" alignItems="center" justifyContent="center">
                                     <Switch
                                         checked={isYearlyPlan}
                                         onChange={handleSwitchChange}
-                                        inputProps={{ 'aria-label': 'controlled' }}
+                                        inputProps={{'aria-label': 'controlled'}}
                                         disabled={lockPlan}
                                     />
-                                    <Typography sx={{ ml: 1 }}>
+                                    <Typography sx={{ml: 1}}>
                                         {isYearlyPlan ? t("pricing.monthly") : t("pricing.yearly")}
                                     </Typography>
                                 </Box>
@@ -113,172 +126,811 @@ const Pricing = ({setBuyPlan, isYearlyPlan, setIsYearlyPlan, lockPlan}) => {
                         </Grid>
 
                         <Grid container spacing={4}>
-                            {items.map((item) => {
-                                if (item.name === "Free") return null;
-
-                                const yearlyPrice = (item.price * 12).toFixed(2);
-                                const discountedYearlyPrice = (item.price * 12 * 0.95).toFixed(2);
-
-                                return (
-                                    <Grid
-                                        item
-                                        key={item.name}
-                                        xs={12}
-                                        sm={6}
-                                        md={3}
-                                    >
-                                        <Card
+                            <Grid
+                                item
+                                key="item2"
+                                xs={12}
+                                sm={6}
+                                md={4}
+                                sx={{
+                                    display: 'flex',
+                                    justifyContent: 'center'
+                                }}
+                            >
+                                {/*订阅1*/}
+                                <Card
+                                    sx={{
+                                        width: 500,
+                                        minHeight: 400,
+                                        p: 2,
+                                        backgroundColor: "#FCFCF6",
+                                        display: 'flex',
+                                        flexDirection: 'column',
+                                        gap: 2,
+                                        borderRadius: 5,
+                                    }}
+                                >
+                                    <CardContent sx={{flex: '1 1 auto'}}>
+                                        <Box
                                             sx={{
-                                                width: 250,
-                                                height: 400,
-                                                p: 2,
-                                                backgroundColor: "#FCFCF6",
+                                                mb: 1,
                                                 display: 'flex',
-                                                flexDirection: 'column',
-                                                gap: 2,
-                                                borderRadius: 5,
+                                                justifyContent: 'space-between',
+                                                alignItems: 'center',
                                             }}
                                         >
-                                            <CardContent>
+                                            <Typography component="h3" variant="h3">
+                                                {t("pricing.item2_title")}
+                                            </Typography>
+                                        </Box>
+
+                                        {isYearlyPlan ? (
+                                            <>
                                                 <Box
                                                     sx={{
-                                                        mb: 1,
                                                         display: 'flex',
-                                                        justifyContent: 'space-between',
-                                                        alignItems: 'center',
+                                                        alignItems: 'basedescriptionItem',
                                                     }}
                                                 >
-                                                    <Typography component="h3" variant="h3">
-                                                        {item.name}
+                                                    <Typography component="h3" variant="h2" color="grey.400">
+                                                                        <span style={{textDecoration: 'line-through'}}>
+                                                                            €{getYearlyPrice(item2.price)}
+                                                                        </span>
                                                     </Typography>
                                                 </Box>
-
-                                                {item.price !== 0 && (
-                                                    <>
-                                                        {isYearlyPlan && item.name !== "Pay As You Go"? (
-                                                            <>
-                                                                <Box
-                                                                    sx={{
-                                                                        display: 'flex',
-                                                                        alignItems: 'basedescriptionItem',
-                                                                    }}
-                                                                >
-                                                                    <Typography component="h3" variant="h2" color="grey.400">
-                                                                        <span style={{ textDecoration: 'line-through' }}>
-                                                                            €{yearlyPrice}
-                                                                        </span>
-                                                                    </Typography>
-                                                                </Box>
-                                                                <Box
-                                                                    sx={{
-                                                                        display: 'flex',
-                                                                        alignItems: 'basedescriptionItem',
-                                                                    }}
-                                                                >
-                                                                    <Typography component="h3" variant="h2">
-                                                                        €{discountedYearlyPrice}
-                                                                    </Typography>
-                                                                    <Typography component="h3" variant="h6">
-                                                                        &nbsp; {t("pricing.peryear")}
-                                                                    </Typography>
-                                                                </Box>
-                                                                {item.price < item.basePrice &&
-                                                                    <Typography component="text" variant="subtitle2">
-                                                                        {t("pricing.sale")} {format(new Date(item.isOnSaleUntil), 'yyyy-MM-dd HH:mm')}
-                                                                    </Typography>}
-                                                            </>
-                                                        ) : (
-                                                            <>
-                                                                {item.price < item.basePrice ? (
-                                                                    <>
-                                                                        <Box
-                                                                            sx={{
-                                                                                display: 'flex',
-                                                                                alignItems: 'basedescriptionItem',
-                                                                            }}
-                                                                        >
-                                                                            <Typography component="h3" variant="h2" color="grey.400">
-                                                                                <span style={{ textDecoration: 'line-through' }}>
-                                                                                    €{item.basePrice}
-                                                                                </span>
-                                                                            </Typography>
-                                                                        </Box>
-                                                                        <Box
-                                                                            sx={{
-                                                                                display: 'flex',
-                                                                                alignItems: 'basedescriptionItem',
-                                                                            }}
-                                                                        >
-                                                                            <Typography component="h3" variant="h2">
-                                                                                €{item.price}
-                                                                            </Typography>
-                                                                            <Typography component="h3" variant="h6">
-                                                                                &nbsp; {item.name === 'Pay As You Go' ? t("pricing.perevent") : t("pricing.permonth")}
-                                                                            </Typography>
-                                                                        </Box>
-                                                                        <Typography component="text" variant="subtitle2">
-                                                                            {t("pricing.sale")} {format(new Date(item.isOnSaleUntil), 'yyyy-MM-dd HH:mm')}
-                                                                        </Typography>
-                                                                    </>
-                                                                ) : (
-                                                                    <>
-                                                                        <Box
-                                                                            sx={{
-                                                                                display: 'flex',
-                                                                                alignItems: 'basedescriptionItem',
-                                                                            }}
-                                                                        >
-                                                                            <Typography component="h3" variant="h2">
-                                                                                €{item.price}
-                                                                            </Typography>
-                                                                            <Typography component="h3" variant="h6">
-                                                                                &nbsp; {item.name === 'Pay As You Go' ? t("pricing.perevent") : t("pricing.permonth")}
-                                                                            </Typography>
-                                                                        </Box>
-                                                                    </>
-                                                                )}
-                                                            </>
-                                                        )}
-                                                    </>
-                                                )}
-                                                <Divider
+                                                <Box
                                                     sx={{
-                                                        my: 2,
-                                                        opacity: 0.2,
-                                                        borderColor: 'grey.500',
+                                                        display: 'flex',
+                                                        alignItems: 'basedescriptionItem',
                                                     }}
-                                                />
-                                                {item.description.map((descriptionItem) => (
+                                                >
+                                                    <Typography component="h3" variant="h2">
+                                                        €{getDiscountedYearlyPrice(item2.price)}
+                                                    </Typography>
+                                                    <Typography component="h3" variant="h6">
+                                                        &nbsp; {t("pricing.peryear")}
+                                                    </Typography>
+                                                </Box>
+                                                {item2.price < item2.basePrice &&
+                                                    <Typography component="text" variant="subtitle2">
+                                                        {t("pricing.sale")} {format(new Date(item2.isOnSaleUntil), 'yyyy-MM-dd HH:mm')}
+                                                    </Typography>}
+                                            </>
+                                        ) : (<>
+                                            {item2.price < item2.basePrice ? (
+                                                <>
                                                     <Box
-                                                        key={descriptionItem}
                                                         sx={{
-                                                            py: 1,
                                                             display: 'flex',
-                                                            gap: 1.5,
-                                                            alignItems: 'center',
+                                                            alignItems: 'basedescriptionItem',
                                                         }}
                                                     >
-                                                        <CheckCircleRoundedIcon
-                                                            sx={{
-                                                                width: 20,
-                                                                color: 'primary.main',
-                                                            }}
-                                                        />
-                                                        <Typography component="text" variant="subtitle2">
-                                                            {descriptionItem}
+                                                        <Typography component="h3" variant="h2"
+                                                                    color="grey.400">
+                                                                <span style={{textDecoration: 'line-through'}}>
+                                                                    €{item2.basePrice}
+                                                                </span>
                                                         </Typography>
                                                     </Box>
-                                                ))}
-                                            </CardContent>
-                                            <CardActions>
-                                                <Button fullWidth variant="contained" onClick={() => setBuyPlan(item)} disabled={lockPlan}>
-                                                    {t("pricing.choose")}
-                                                </Button>
-                                            </CardActions>
-                                        </Card>
-                                    </Grid>
-                                );
-                            })}
+                                                    <Box
+                                                        sx={{
+                                                            display: 'flex',
+                                                            alignItems: 'basedescriptionItem',
+                                                        }}
+                                                    >
+                                                        <Typography component="h3" variant="h2">
+                                                            €{item2.price}
+                                                        </Typography>
+                                                        <Typography component="h3" variant="h6">
+                                                            &nbsp; {t("pricing.permonth")}
+                                                        </Typography>
+                                                    </Box>
+                                                    <Typography
+                                                        component="text"
+                                                        variant="subtitle2"
+                                                    >
+                                                        {t("pricing.sale")} {format(new Date(item2.isOnSaleUntil), 'yyyy-MM-dd HH:mm')}
+                                                    </Typography>
+                                                </>
+                                            ) : (
+                                                <>
+                                                    <Box
+                                                        sx={{
+                                                            display: 'flex',
+                                                            alignItems: 'basedescriptionItem',
+                                                        }}
+                                                    >
+                                                        <Typography component="h3" variant="h2">
+                                                            €{item2.price}
+                                                        </Typography>
+                                                        <Typography component="h3" variant="h6">
+                                                            &nbsp; {t("pricing.permonth")}
+                                                        </Typography>
+                                                    </Box>
+                                                </>
+                                            )}
+                                        </>)}
+
+                                        <Divider
+                                            sx={{
+                                                my: 2,
+                                                opacity: 0.2,
+                                                borderColor: 'grey.500',
+                                            }}
+                                        />
+                                        {/*description2-1*/}
+                                        <Box
+                                            key="description2-1"
+                                            sx={{
+                                                py: 1,
+                                                display: 'flex',
+                                                gap: 1.5,
+                                                alignItems: 'center',
+                                            }}
+                                        >
+                                            <CheckCircleRoundedIcon
+                                                sx={{
+                                                    width: 20,
+                                                    color: 'primary.main',
+                                                }}
+                                            />
+                                            <Typography
+                                                component="text"
+                                                variant="subtitle2"
+                                            >
+                                                {t("pricing.item1_description2-1")}
+                                            </Typography>
+                                        </Box>
+                                        {/*description2-2*/}
+                                        <Box
+                                            key="description2-2"
+                                            sx={{
+                                                py: 1,
+                                                display: 'flex',
+                                                gap: 1.5,
+                                                alignItems: 'center',
+                                            }}
+                                        >
+                                            <CheckCircleRoundedIcon
+                                                sx={{
+                                                    width: 20,
+                                                    color: 'primary.main',
+                                                }}
+                                            />
+                                            <Typography
+                                                component="text"
+                                                variant="subtitle2"
+                                            >
+                                                {t("pricing.item1_description2-2")}
+                                            </Typography>
+                                        </Box>
+                                        {/*description2-3*/}
+                                        <Box
+                                            key="description2-3"
+                                            sx={{
+                                                py: 1,
+                                                display: 'flex',
+                                                gap: 1.5,
+                                                alignItems: 'center',
+                                            }}
+                                        >
+                                            <CheckCircleRoundedIcon
+                                                sx={{
+                                                    width: 20,
+                                                    color: 'primary.main',
+                                                }}
+                                            />
+                                            <Typography
+                                                component="text"
+                                                variant="subtitle2"
+                                            >
+                                                {t("pricing.item1_description2-3")}
+                                            </Typography>
+                                        </Box>
+                                        {/*description2-4*/}
+                                        <Box
+                                            key="description2-4"
+                                            sx={{
+                                                py: 1,
+                                                display: 'flex',
+                                                gap: 1.5,
+                                                alignItems: 'center',
+                                            }}
+                                        >
+                                            <CheckCircleRoundedIcon
+                                                sx={{
+                                                    width: 20,
+                                                    color: 'primary.main',
+                                                }}
+                                            />
+                                            <Typography
+                                                component="text"
+                                                variant="subtitle2"
+                                            >
+                                                {t("pricing.item1_description2-4")}
+                                            </Typography>
+                                        </Box>
+                                        {/*description2-5*/}
+                                        <Box
+                                            key="description2-5"
+                                            sx={{
+                                                py: 1,
+                                                display: 'flex',
+                                                gap: 1.5,
+                                                alignItems: 'center',
+                                            }}
+                                        >
+                                            <CheckCircleRoundedIcon
+                                                sx={{
+                                                    width: 20,
+                                                    color: 'primary.main',
+                                                }}
+                                            />
+                                            <Typography
+                                                component="text"
+                                                variant="subtitle2"
+                                            >
+                                                {t("pricing.item1_description2-5")}
+                                            </Typography>
+                                        </Box>
+                                    </CardContent>
+                                    <CardActions>
+                                        <Button fullWidth variant="contained" onClick={() => setBuyPlan(item2)}
+                                                disabled={lockPlan}>
+                                            {t("pricing.choose")}
+                                        </Button>
+                                    </CardActions>
+                                </Card>
+                            </Grid>
+                            <Grid
+                                item
+                                key="item3"
+                                xs={12}
+                                sm={6}
+                                md={4}
+                                sx={{
+                                    display: 'flex',
+                                    justifyContent: 'center'
+                                }}
+                            >
+                                {/*订阅2*/}
+                                <Card
+                                    sx={{
+                                        width: 500,
+                                        minHeight: 400,
+                                        p: 2,
+                                        backgroundColor: "#FCFCF6",
+                                        display: 'flex',
+                                        flexDirection: 'column',
+                                        gap: 2,
+                                        borderRadius: 5,
+                                    }}
+                                >
+                                    <CardContent sx={{flex: '1 1 auto'}}>
+                                        <Box
+                                            sx={{
+                                                mb: 1,
+                                                display: 'flex',
+                                                justifyContent: 'space-between',
+                                                alignItems: 'center',
+                                            }}
+                                        >
+                                            <Typography component="h3" variant="h3">
+                                                {t("pricing.item3_title")}
+                                            </Typography>
+                                        </Box>
+
+                                        {isYearlyPlan ? (
+                                            <>
+                                                <Box
+                                                    sx={{
+                                                        display: 'flex',
+                                                        alignItems: 'basedescriptionItem',
+                                                    }}
+                                                >
+                                                    <Typography component="h3" variant="h2" color="grey.400">
+                                                                        <span style={{textDecoration: 'line-through'}}>
+                                                                            €{getYearlyPrice(item3.price)}
+                                                                        </span>
+                                                    </Typography>
+                                                </Box>
+                                                <Box
+                                                    sx={{
+                                                        display: 'flex',
+                                                        alignItems: 'basedescriptionItem',
+                                                    }}
+                                                >
+                                                    <Typography component="h3" variant="h2">
+                                                        €{getDiscountedYearlyPrice(item3.price)}
+                                                    </Typography>
+                                                    <Typography component="h3" variant="h6">
+                                                        &nbsp; {t("pricing.peryear")}
+                                                    </Typography>
+                                                </Box>
+                                                {item3.price < item3.basePrice &&
+                                                    <Typography component="text" variant="subtitle2">
+                                                        {t("pricing.sale")} {format(new Date(item3.isOnSaleUntil), 'yyyy-MM-dd HH:mm')}
+                                                    </Typography>}
+                                            </>
+                                        ) : (<>
+                                            {item3.price < item3.basePrice ? (
+                                                <>
+                                                    <Box
+                                                        sx={{
+                                                            display: 'flex',
+                                                            alignItems: 'basedescriptionItem',
+                                                        }}
+                                                    >
+                                                        <Typography component="h3" variant="h2"
+                                                                    color="grey.400">
+                                                                <span style={{textDecoration: 'line-through'}}>
+                                                                    €{item3.basePrice}
+                                                                </span>
+                                                        </Typography>
+                                                    </Box>
+                                                    <Box
+                                                        sx={{
+                                                            display: 'flex',
+                                                            alignItems: 'basedescriptionItem',
+                                                        }}
+                                                    >
+                                                        <Typography component="h3" variant="h2">
+                                                            €{item3.price}
+                                                        </Typography>
+                                                        <Typography component="h3" variant="h6">
+                                                            &nbsp; {t("pricing.permonth")}
+                                                        </Typography>
+                                                    </Box>
+                                                    <Typography
+                                                        component="text"
+                                                        variant="subtitle2"
+                                                    >
+                                                        {t("pricing.sale")} {format(new Date(item3.isOnSaleUntil), 'yyyy-MM-dd HH:mm')}
+                                                    </Typography>
+                                                </>
+                                            ) : (
+                                                <>
+                                                    <Box
+                                                        sx={{
+                                                            display: 'flex',
+                                                            alignItems: 'basedescriptionItem',
+                                                        }}
+                                                    >
+                                                        <Typography component="h3" variant="h2">
+                                                            €{item3.price}
+                                                        </Typography>
+                                                        <Typography component="h3" variant="h6">
+                                                            &nbsp; {t("pricing.permonth")}
+                                                        </Typography>
+                                                    </Box>
+                                                </>
+                                            )}
+                                        </>)}
+
+
+                                        <Divider
+                                            sx={{
+                                                my: 2,
+                                                opacity: 0.2,
+                                                borderColor: 'grey.500',
+                                            }}
+                                        />
+                                        {/*description3-1*/}
+                                        <Box
+                                            key="description3-1"
+                                            sx={{
+                                                py: 1,
+                                                display: 'flex',
+                                                gap: 1.5,
+                                                alignItems: 'center',
+                                            }}
+                                        >
+                                            <CheckCircleRoundedIcon
+                                                sx={{
+                                                    width: 20,
+                                                    color: 'primary.main',
+                                                }}
+                                            />
+                                            <Typography
+                                                component="text"
+                                                variant="subtitle2"
+                                            >
+                                                {t("pricing.item1_description3-1")}
+                                            </Typography>
+                                        </Box>
+                                        {/*description3-2*/}
+                                        <Box
+                                            key="description3-2"
+                                            sx={{
+                                                py: 1,
+                                                display: 'flex',
+                                                gap: 1.5,
+                                                alignItems: 'center',
+                                            }}
+                                        >
+                                            <CheckCircleRoundedIcon
+                                                sx={{
+                                                    width: 20,
+                                                    color: 'primary.main',
+                                                }}
+                                            />
+                                            <Typography
+                                                component="text"
+                                                variant="subtitle2"
+                                            >
+                                                {t("pricing.item1_description3-2")}
+                                            </Typography>
+                                        </Box>
+                                        {/*description3-3*/}
+                                        <Box
+                                            key="description3-3"
+                                            sx={{
+                                                py: 1,
+                                                display: 'flex',
+                                                gap: 1.5,
+                                                alignItems: 'center',
+                                            }}
+                                        >
+                                            <CheckCircleRoundedIcon
+                                                sx={{
+                                                    width: 20,
+                                                    color: 'primary.main',
+                                                }}
+                                            />
+                                            <Typography
+                                                component="text"
+                                                variant="subtitle2"
+                                            >
+                                                {t("pricing.item1_description3-3")}
+                                            </Typography>
+                                        </Box>
+                                        {/*description3-4*/}
+                                        <Box
+                                            key="description3-4"
+                                            sx={{
+                                                py: 1,
+                                                display: 'flex',
+                                                gap: 1.5,
+                                                alignItems: 'center',
+                                            }}
+                                        >
+                                            <CheckCircleRoundedIcon
+                                                sx={{
+                                                    width: 20,
+                                                    color: 'primary.main',
+                                                }}
+                                            />
+                                            <Typography
+                                                component="text"
+                                                variant="subtitle2"
+                                            >
+                                                {t("pricing.item1_description3-4")}
+                                            </Typography>
+                                        </Box>
+                                        {/*description3-5*/}
+                                        <Box
+                                            key="description3-5"
+                                            sx={{
+                                                py: 1,
+                                                display: 'flex',
+                                                gap: 1.5,
+                                                alignItems: 'center',
+                                            }}
+                                        >
+                                            <CheckCircleRoundedIcon
+                                                sx={{
+                                                    width: 20,
+                                                    color: 'primary.main',
+                                                }}
+                                            />
+                                            <Typography
+                                                component="text"
+                                                variant="subtitle2"
+                                            >
+                                                {t("pricing.item1_description3-5")}
+                                            </Typography>
+                                        </Box>
+                                        {/*description3-6*/}
+                                        <Box
+                                            key="description3-6"
+                                            sx={{
+                                                py: 1,
+                                                display: 'flex',
+                                                gap: 1.5,
+                                                alignItems: 'center',
+                                            }}
+                                        >
+                                            <CheckCircleRoundedIcon
+                                                sx={{
+                                                    width: 20,
+                                                    color: 'primary.main',
+                                                }}
+                                            />
+                                            <Typography
+                                                component="text"
+                                                variant="subtitle2"
+                                            >
+                                                {t("pricing.item1_description3-6")}
+                                            </Typography>
+                                        </Box>
+                                        {/*description3-7*/}
+                                        <Box
+                                            key="description3-7"
+                                            sx={{
+                                                py: 1,
+                                                display: 'flex',
+                                                gap: 1.5,
+                                                alignItems: 'center',
+                                            }}
+                                        >
+                                            <CheckCircleRoundedIcon
+                                                sx={{
+                                                    width: 20,
+                                                    color: 'primary.main',
+                                                }}
+                                            />
+                                            <Typography
+                                                component="text"
+                                                variant="subtitle2"
+                                            >
+                                                {t("pricing.item1_description3-7")}
+                                            </Typography>
+                                        </Box>
+                                    </CardContent>
+                                    <CardActions>
+                                        <Button fullWidth variant="contained" onClick={() => setBuyPlan(item3)}
+                                                disabled={lockPlan}>
+                                            {t("pricing.choose")}
+                                        </Button>
+                                    </CardActions>
+                                </Card>
+                            </Grid>
+                            <Grid
+                                item
+                                key="item4"
+                                xs={12}
+                                sm={6}
+                                md={4}
+                                sx={{
+                                    display: 'flex',
+                                    justifyContent: 'center'
+                                }}
+                            >
+                                {/*一次性*/}
+                                <Card
+                                    sx={{
+                                        width: 500,
+                                        minHeight: 400,
+                                        p: 2,
+                                        backgroundColor: "#FCFCF6",
+                                        display: 'flex',
+                                        flexDirection: 'column',
+                                        gap: 2,
+                                        borderRadius: 5,
+                                    }}
+                                >
+                                    <CardContent sx={{flex: '1 1 auto'}}>
+                                        <Box
+                                            sx={{
+                                                mb: 1,
+                                                display: 'flex',
+                                                justifyContent: 'space-between',
+                                                alignItems: 'center',
+                                            }}
+                                        >
+                                            <Typography component="h3" variant="h3">
+                                                {t("pricing.item4_title")}
+                                            </Typography>
+                                        </Box>
+
+                                        {item4.price < item4.basePrice ? (
+                                            <>
+                                                <Box
+                                                    sx={{
+                                                        display: 'flex',
+                                                        alignItems: 'basedescriptionItem',
+                                                    }}
+                                                >
+                                                    <Typography component="h3" variant="h2"
+                                                                color="grey.400">
+                                                                <span style={{textDecoration: 'line-through'}}>
+                                                                    €{item4.basePrice}
+                                                                </span>
+                                                    </Typography>
+                                                </Box>
+                                                <Box
+                                                    sx={{
+                                                        display: 'flex',
+                                                        alignItems: 'basedescriptionItem',
+                                                    }}
+                                                >
+                                                    <Typography component="h3" variant="h2">
+                                                        €{item4.price}
+                                                    </Typography>
+                                                    <Typography component="h3" variant="h6">
+                                                        &nbsp; {t("pricing.perevent")}
+                                                    </Typography>
+                                                </Box>
+                                                <Typography
+                                                    component="text"
+                                                    variant="subtitle2"
+                                                >
+                                                    {t("pricing.sale")} {format(new Date(item4.isOnSaleUntil), 'yyyy-MM-dd HH:mm')}
+                                                </Typography>
+                                            </>
+                                        ) : (
+                                            <>
+                                                <Box
+                                                    sx={{
+                                                        display: 'flex',
+                                                        alignItems: 'basedescriptionItem',
+                                                    }}
+                                                >
+                                                    <Typography component="h3" variant="h2">
+                                                        €{item4.price}
+                                                    </Typography>
+                                                    <Typography component="h3" variant="h6">
+                                                        &nbsp; {t("pricing.perevent")}
+                                                    </Typography>
+                                                </Box>
+                                            </>
+                                        )}
+
+
+                                        <Divider
+                                            sx={{
+                                                my: 2,
+                                                opacity: 0.2,
+                                                borderColor: 'grey.500',
+                                            }}
+                                        />
+                                        {/*description4-1*/}
+                                        <Box
+                                            key="description4-1"
+                                            sx={{
+                                                py: 1,
+                                                display: 'flex',
+                                                gap: 1.5,
+                                                alignItems: 'center',
+                                            }}
+                                        >
+                                            <CheckCircleRoundedIcon
+                                                sx={{
+                                                    width: 20,
+                                                    color: 'primary.main',
+                                                }}
+                                            />
+                                            <Typography
+                                                component="text"
+                                                variant="subtitle2"
+                                            >
+                                                {t("pricing.item1_description3-1")}
+                                            </Typography>
+                                        </Box>
+                                        {/*description4-3*/}
+                                        <Box
+                                            key="description4-3"
+                                            sx={{
+                                                py: 1,
+                                                display: 'flex',
+                                                gap: 1.5,
+                                                alignItems: 'center',
+                                            }}
+                                        >
+                                            <CheckCircleRoundedIcon
+                                                sx={{
+                                                    width: 20,
+                                                    color: 'primary.main',
+                                                }}
+                                            />
+                                            <Typography
+                                                component="text"
+                                                variant="subtitle2"
+                                            >
+                                                {t("pricing.item1_description3-3")}
+                                            </Typography>
+                                        </Box>
+                                        {/*description4-4*/}
+                                        <Box
+                                            key="description4-4"
+                                            sx={{
+                                                py: 1,
+                                                display: 'flex',
+                                                gap: 1.5,
+                                                alignItems: 'center',
+                                            }}
+                                        >
+                                            <CheckCircleRoundedIcon
+                                                sx={{
+                                                    width: 20,
+                                                    color: 'primary.main',
+                                                }}
+                                            />
+                                            <Typography
+                                                component="text"
+                                                variant="subtitle2"
+                                            >
+                                                {t("pricing.item1_description3-4")}
+                                            </Typography>
+                                        </Box>
+                                        {/*description4-5*/}
+                                        <Box
+                                            key="description4-5"
+                                            sx={{
+                                                py: 1,
+                                                display: 'flex',
+                                                gap: 1.5,
+                                                alignItems: 'center',
+                                            }}
+                                        >
+                                            <CheckCircleRoundedIcon
+                                                sx={{
+                                                    width: 20,
+                                                    color: 'primary.main',
+                                                }}
+                                            />
+                                            <Typography
+                                                component="text"
+                                                variant="subtitle2"
+                                            >
+                                                {t("pricing.item1_description3-5")}
+                                            </Typography>
+                                        </Box>
+                                        {/*description4-6*/}
+                                        <Box
+                                            key="description4-6"
+                                            sx={{
+                                                py: 1,
+                                                display: 'flex',
+                                                gap: 1.5,
+                                                alignItems: 'center',
+                                            }}
+                                        >
+                                            <CheckCircleRoundedIcon
+                                                sx={{
+                                                    width: 20,
+                                                    color: 'primary.main',
+                                                }}
+                                            />
+                                            <Typography
+                                                component="text"
+                                                variant="subtitle2"
+                                            >
+                                                {t("pricing.item1_description3-6")}
+                                            </Typography>
+                                        </Box>
+                                        {/*description4-7*/}
+                                        <Box
+                                            key="description4-7"
+                                            sx={{
+                                                py: 1,
+                                                display: 'flex',
+                                                gap: 1.5,
+                                                alignItems: 'center',
+                                            }}
+                                        >
+                                            <CheckCircleRoundedIcon
+                                                sx={{
+                                                    width: 20,
+                                                    color: 'primary.main',
+                                                }}
+                                            />
+                                            <Typography
+                                                component="text"
+                                                variant="subtitle2"
+                                            >
+                                                {t("pricing.item1_description3-7")}
+                                            </Typography>
+                                        </Box>
+                                    </CardContent>
+                                    <CardActions>
+                                        <Button fullWidth variant="contained" onClick={() => setBuyPlan(item4)}
+                                                disabled={lockPlan}>
+                                            {t("pricing.choose")}
+                                        </Button>
+                                    </CardActions>
+                                </Card>
+                            </Grid>
                         </Grid>
                     </Container>
                 </>
@@ -331,18 +983,18 @@ const Cart = ({chosenPlan, isYearlyPlan, lockPlan, setLockPlan}) => {
                 <Container
                     id="cart"
                     sx={{
-                        pt: { xs: 4, sm: 12 },
-                        pb: { xs: 8, sm: 16 },
+                        pt: {xs: 4, sm: 12},
+                        pb: {xs: 8, sm: 16},
                         position: 'relative',
                         display: 'flex',
                         flexDirection: 'column',
-                        gap: { xs: 3, sm: 6 },
-                        width: { xs: '80%', sm: '90%', md: '100%' },
+                        gap: {xs: 3, sm: 6},
+                        width: {xs: '80%', sm: '90%', md: '100%'},
                         mx: 'auto', // Center horizontally
-                        px: { xs: 2, sm: 4 }, // Padding left and right
+                        px: {xs: 2, sm: 4}, // Padding left and right
                     }}
                 >
-                    <Paper sx={{ p: { xs: 2, sm: 4 }, borderRadius: '15px', backgroundColor: "#FCFCF6", }}>
+                    <Paper sx={{p: {xs: 2, sm: 4}, borderRadius: '15px', backgroundColor: "#FCFCF6",}}>
                         <Typography component="h2" variant="h2" align="center" gutterBottom>
                             {t("pricing.details")}
                         </Typography>
@@ -354,7 +1006,7 @@ const Cart = ({chosenPlan, isYearlyPlan, lockPlan, setLockPlan}) => {
                                 <Typography component="h3" variant="h3">
                                     {chosenPlan.name}
                                     {chosenPlan.name !== "Pay As You Go" && (
-                                        <Typography component="span" variant="subtitle1" sx={{ ml: 1 }}>
+                                        <Typography component="span" variant="subtitle1" sx={{ml: 1}}>
                                             ({isYearlyPlan ? "Yearly Plan" : "Monthly Plan"})
                                         </Typography>
                                     )}
@@ -384,24 +1036,27 @@ const Cart = ({chosenPlan, isYearlyPlan, lockPlan, setLockPlan}) => {
                                     </Box>
                                 ))}
                             </Grid>
-                            <Grid item xs={12} sm={4} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2 }}>
+                            <Grid item xs={12} sm={4}
+                                  sx={{display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2}}>
                                 <Typography component="text" variant="subtitle2" align="center">
                                     {t("pricing.price")}:
                                 </Typography>
                                 {getPrice()}
                                 {chosenPlan.name === "Pay As You Go" && (
-                                    <QuantitySelector quantity={quantity} setQuantity={setQuantity} lockPlan={lockPlan}/>
+                                    <QuantitySelector quantity={quantity} setQuantity={setQuantity}
+                                                      lockPlan={lockPlan}/>
                                 )}
-                                {user.data?.response?.subscriptionId && 
+                                {user.data?.response?.subscriptionId &&
                                     <Alert severity="warning">
                                         You already have a subscription, please cancel it and then make your purchase!
                                     </Alert>
                                 }
-                                <Button variant="contained" color="primary" onClick={renderPayPalButton} sx={{ minWidth: 120 }}>
+                                <Button variant="contained" color="primary" onClick={renderPayPalButton}
+                                        sx={{minWidth: 120}}>
                                     {t("pricing.confirm")}
                                 </Button>
                                 {showPayPalButton && (
-                                    <PayPalButton />
+                                    <PayPalButton/>
                                 )}
                             </Grid>
                         </Grid>
@@ -426,7 +1081,8 @@ const CheckOut = () => {
 
     return (
         <Grid>
-            <Pricing setBuyPlan={setBuyPlan} isYearlyPlan={isYearlyPlan} setIsYearlyPlan={setIsYearlyPlan} lockPlan={lockPlan}/>
+            <Pricing setBuyPlan={setBuyPlan} isYearlyPlan={isYearlyPlan} setIsYearlyPlan={setIsYearlyPlan}
+                     lockPlan={lockPlan}/>
             <Cart chosenPlan={chosenPlan} isYearlyPlan={isYearlyPlan} lockPlan={lockPlan} setLockPlan={setLockPlan}/>
         </Grid>
     )

@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Box, Button, CircularProgress, Pagination, Paper, Stack, Typography} from "@mui/material";
+import {Box, CircularProgress, Pagination, Stack, Typography} from "@mui/material";
 import Grid from "@mui/material/Grid";
 import {useSelector} from "react-redux";
 import {selectCurrentUserId} from "../../redux/auth/authSlice";
@@ -13,30 +13,74 @@ import Autocomplete from "@mui/material/Autocomplete";
 import {useGetEventsQuery} from "../../redux/events/eventApiSlice";
 import EventItem from "../../components/Events/EventItem";
 import {getFileUrl} from "../../util/fileUploaderWrapper";
+import AC from "./image/AC.jpg"
+import AW from "./image/AW.jpg"
+import CI from "./image/CI.jpg"
+import CS from "./image/CS.jpg"
+import DR from "./image/DR.jpg"
+import EC from "./image/EC.jpg"
+import EL from "./image/EL.jpg"
+import HF from "./image/HF.jpg"
+import HH from "./image/HH.jpg"
+import HR from "./image/HR.jpg"
+import IV from "./image/IV.jpg"
+import MH from "./image/MH.jpg"
+import OT from "./image/OT.jpg"
+import SE from "./image/SE.jpg"
+import SJ from "./image/SJ.jpg"
+import SR from "./image/SR.jpg"
+import YC from "./image/OT.jpg"
+import HM from "./image/HM.jpg"
+import Divider from "@mui/material/Divider";
 
 const date = []
 const location = []
-const languages = ["English", "German", "French", "Italien", "Spanish", "Chinese"]
-// todo:这个在前端定义就行了，不需要从后端获取
+const languages = [
+    {key: "EN", value: "English"},
+    {key: "DE", value: "German"},
+    {key: "IT", value: "Italien"},
+    {key: "ES", value: "Spanish"},
+    {key: "CN", value: "Chinese"}
+]
 const category = [
-    "Community Service",
-    "Education and Literacy",
-    "Environment and Conservation",
-    "Health and Medicine",
-    "Animal Welfare",
-    "Arts and Culture",
-    "Disaster Relief",
-    "Youth and Children",
-    "Seniors and Elderly",
-    "Sports and Recreation",
-    "Human Rights",
-    "Social Justice",
-    "Homelessness and Housing",
-    "Hunger and Food Security",
-    "Mental Health",
-    "International Volunteering",
-    "Crisis Intervention",
-    "Others"
+    {key: "CS", value: "Community Service"},
+    {key: "EL", value: "Education and Literacy"},
+    {key: "EC", value: "Environment and Conservation"},
+    {key: "HM", value: "Health and Medicine"},
+    {key: "AW", value: "Animal Welfare"},
+    {key: "AC", value: "Arts and Culture"},
+    {key: "DR", value: "Disaster Relief"},
+    {key: "YC", value: "Youth and Children"},
+    {key: "SE", value: "Seniors and Elderly"},
+    {key: "SR", value: "Sports and Recreation"},
+    {key: "HR", value: "Human Rights"},
+    {key: "SJ", value: "Social Justice"},
+    {key: "HH", value: "Homelessness and Housing"},
+    {key: "HF", value: "Hunger and Food Security"},
+    {key: "MH", value: "Mental Health"},
+    {key: "IV", value: "International Volunteering"},
+    {key: "CI", value: "Crisis Intervention"},
+    {key: "OT", value: "Others"}
+];
+const images = [
+    {key: "CS", value: CS},
+    {key: "EL", value: EL},
+    {key: "EC", value: EC},
+    {key: "HM", value: HM},
+    {key: "AW", value: AW},
+    {key: "AC", value: AC},
+    {key: "DR", value: DR},
+    {key: "YC", value: YC},
+    {key: "SE", value: SE},
+    {key: "SR", value: SR},
+    {key: "HR", value: HR},
+    {key: "SJ", value: SJ},
+    {key: "HH", value: HH},
+    {key: "HF", value: HF},
+    {key: "MH", value: MH},
+    {key: "IV", value: IV},
+    {key: "CI", value: CI},
+    {key: "OT", value: OT}
 ];
 // const volunteerCategoriesChinese = [
 //     "社区服务",
@@ -97,7 +141,7 @@ const SearchBar = ({searchTermProp, setSearchTermProp, onSearchProp, onClearProp
 const MultipleFilter = ({handleTimeChange, handleLocationChange, handleLanguageChange}) => {
     return (
         <Grid container spacing={2}>
-            <Grid item xs={3}>
+            <Grid item xs={12} md={3}>
                 <Autocomplete
                     multiple
                     id="tags-outlined"
@@ -112,7 +156,7 @@ const MultipleFilter = ({handleTimeChange, handleLocationChange, handleLanguageC
                     )}
                 />
             </Grid>
-            <Grid item xs={3}>
+            <Grid item xs={12} md={3}>
                 <Autocomplete
                     multiple
                     id="tags-outlined"
@@ -127,12 +171,13 @@ const MultipleFilter = ({handleTimeChange, handleLocationChange, handleLanguageC
                     )}
                 />
             </Grid>
-            <Grid item xs={3}>
+            <Grid item xs={12} md={3}>
                 <Autocomplete
                     multiple
                     id="tags-outlined"
                     options={languages}
                     filterSelectedOptions
+                    getOptionLabel={(option) => option.value}
                     onChange={(event, newValue) => handleLanguageChange(newValue)}
                     renderInput={(params) => (
                         <TextField
@@ -142,12 +187,13 @@ const MultipleFilter = ({handleTimeChange, handleLocationChange, handleLanguageC
                     )}
                 />
             </Grid>
-            <Grid item xs={3}>
+            <Grid item xs={12} md={3}>
                 <Autocomplete
                     multiple
                     id="tags-outlined"
                     options={category}
                     filterSelectedOptions
+                    getOptionLabel={(option) => option.value}
                     onChange={(event, newValue) => handleLanguageChange(newValue)}
                     renderInput={(params) => (
                         <TextField
@@ -172,26 +218,17 @@ const ToolBar = ({
                      handleLanguageChange
                  }) => {
     return (
-        <Box
-            sx={{
-                '& > :not(style)': {
-                    m: 1,
-                    width: "100%",
-                    height: 80,
-                },
-            }}
-        >
-            {/*<Paper elevation={0}>*/}
-                <Grid container spacing={2}>
-                    <Grid item xs={2}>
-                        <SearchBar searchTermProp={searchTermProp} setSearchTermProp={setSearchTermProp}
-                                   onSearchProp={onSearchProp} onClearProp={onClearProp} label={label}/>
-                    </Grid>
-                    <Grid item xs={10}>
-                        <MultipleFilter handleLanguageChange={handleLanguageChange} handleTimeChange={handleTimeChange} handleLocationChange={handleLocationChange}/>
-                    </Grid>
+        <Box>
+            <Grid container spacing={2}>
+                <Grid item xs={12} md={2}>
+                    <SearchBar searchTermProp={searchTermProp} setSearchTermProp={setSearchTermProp}
+                               onSearchProp={onSearchProp} onClearProp={onClearProp} label={label}/>
                 </Grid>
-            {/*</Paper>*/}
+                <Grid item xs={12} md={10}>
+                    <MultipleFilter handleLanguageChange={handleLanguageChange} handleTimeChange={handleTimeChange}
+                                    handleLocationChange={handleLocationChange}/>
+                </Grid>
+            </Grid>
         </Box>
 
     )
@@ -200,11 +237,10 @@ const ToolBar = ({
 const Events = () => {
     const [selectedLocation, setSelectedLocation] = useState([]);
     const [searchTermProp, setSearchTermProp] = useState('');
-    const [renderEventList, setRenderEventList] = useState(false);
     const [selectedTime, setSelectedTime] = useState([]);
     const [selectedLanguage, setSelectedLanguage] = useState([]);
     const userId = useSelector(selectCurrentUserId);
-    const { data: user, isSuccessUser, errorUser, isLoadingUser } = useGetUserByUserIdQuery(userId, {
+    const {data: user, isSuccessUser, errorUser, isLoadingUser} = useGetUserByUserIdQuery(userId, {
         skip: !userId, // Skip the query if userId is null or undefined
     });
 
@@ -217,24 +253,15 @@ const Events = () => {
 
     const handleChange = (newValue) => {
         setSelectedLocation(newValue);
-        setRenderEventList(false);
     };
 
     const handleTimeChange = (newValue) => {
         setSelectedTime(newValue);
-        setRenderEventList(false);
-
     };
 
     const handleLanguageChange = (newValue) => {
-        setSelectedLanguage(newValue);
-        setRenderEventList(false);
+        setSelectedLanguage(newValue.map(item => item.key));
     };
-
-    useEffect(() => {
-        setRenderEventList(true);
-    }, [selectedLocation, selectedTime, selectedLanguage]);
-    
 
     // -----------------> eventlist
     const [page, setPage] = useState(1);
@@ -246,10 +273,19 @@ const Events = () => {
         isSuccess,
         isError,
         error
-    } = useGetEventsQuery({page: page, keyword: searchTermProp, location: selectedLocation, time: selectedTime, language: selectedLanguage});
+    } = useGetEventsQuery({
+        page: page,
+        keyword: searchTermProp,
+        location: selectedLocation,
+        time: selectedTime,
+        language: selectedLanguage
+    });
     // todo: get location from this list
     // todo: get category from this list
 
+    console.log(events)
+
+    // todo: change ordering
     const sortedEvents = events?.response?.events.slice().sort((a, b) => {
         const aType = a.response?.organiser?.subscriptionType !== 'FREE';
         const bType = b.response?.organiser?.subscriptionType !== 'FREE';
@@ -259,7 +295,8 @@ const Events = () => {
 
 
     return (
-        <Stack direction="row" justifyContent="space-around" marginTop={1} marginLeft={5} marginRight={5}>
+        <Stack direction={{xs: 'column', md: 'row'}} justifyContent="space-around" marginTop={1} marginLeft={5}
+               marginRight={5}>
             <Grid container spacing={2}>
                 <Grid item xs={12}>
                     <ToolBar searchTermProp={searchTermProp} setSearchTermProp={setSearchTermProp}
@@ -271,66 +308,67 @@ const Events = () => {
                 </Grid>
                 {/*-----------------> eventlist*/}
                 <Grid item xs={12}>
-                    <Stack>
-                        <Grid container columns={12} spacing={{xs: 1, md: 2}}>
-                            {(isFetching || isLoading) ? (
-                                <Box
-                                    sx={{
-                                        display: 'flex',
-                                        justifyContent: 'center',
-                                        alignItems: 'center',
-                                        width: '100%',
-                                        height: '100vh'
-                                    }}
-                                >
-                                    <CircularProgress/>
-                                </Box>
-                            ) : isError ? (
-                                <Box
-                                    sx={{
-                                        display: 'flex',
-                                        justifyContent: 'center',
-                                        alignItems: 'center',
-                                        width: '100%',
-                                        height: '100vh'
-                                    }}
-                                >
-                                    <Typography variant="h6" color="error">
-                                        {error?.data?.message || 'An error occurred while fetching events.'}
-                                    </Typography>
-                                </Box>
-                            ) : isSuccess && (
-                                <>
-                                    {sortedEvents.map((event, index) => (
-                                        <Grid item xs={12} md={6} lg={4} xl={3} key={index} display="flex" alignItems="center"
-                                              justifyContent="center">
-                                            <EventItem
-                                                eventID={event._id}
-                                                title={event.title}
-                                                date={event.startDate}
-                                                image={getFileUrl(event.uploadURL[0], "image", "default")}
-                                                description={event.description}
-                                                promotion={event.isSponsored}
-                                                type={user?.response.role === 'VOLUNTEER' ? 'event-listing-volunteer' : 'event-listing'}
-                                            />
-                                        </Grid>
-                                    ))}
-                                </>
-                            )}
-                        </Grid>
-                        <Box display="flex" justifyContent="center">
-                            {isSuccess && <Pagination
-                                sx={{padding: 2}}
-                                count={events.response.pages}
-                                page={page}
-                                onChange={(event, value) => {
-                                    setPage(value);
+                    <Grid container columns={12} spacing={{xs: 1, md: 2}}>
+                        {(isFetching || isLoading) ? (
+                            <Box
+                                sx={{
+                                    display: 'flex',
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                    width: '100%',
+                                    height: '100vh',
                                 }}
-                                variant="outlined"
-                                size="small"
-                            />}
-                        </Box>
-                    </Stack>
+                            >
+                                <CircularProgress/>
+                            </Box>
+                        ) : isError ? (
+                            <Box
+                                sx={{
+                                    display: 'flex',
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                    width: '100%',
+                                    height: '100vh',
+                                }}
+                            >
+                                <Typography variant="h6" color="error">
+                                    {error?.data?.message || 'An error occurred while fetching events.'}
+                                </Typography>
+                            </Box>
+                        ) : isSuccess && (
+                            <>
+                                {sortedEvents.map((event, index) => (
+                                    <Grid item xs={12} md={6} lg={4} xl={3} key={index} display="flex"
+                                          alignItems="center"
+                                          justifyContent="center">
+                                        <EventItem
+                                            eventID={event._id}
+                                            title={event.title}
+                                            date={event.startDate}
+                                            image={event.uploadURL.length !== 0 ? getFileUrl(event.uploadURL[0], "image", "default") : images.find(img => img.key === event.category)?.value}
+                                            description={event.description}
+                                            promotion={event.isSponsored}
+                                            type={user?.response.role === 'VOLUNTEER' ? 'event-listing-volunteer' : 'event-listing'}
+                                        />
+                                    </Grid>
+                                ))}
+                            </>
+                        )}
+                    </Grid>
+                </Grid>
+                <Grid item xs={12}>
+                    <Box display="flex" justifyContent="center">
+                        {isSuccess && <Pagination
+                            sx={{padding: 2}}
+                            count={events.response.pages}
+                            page={page}
+                            onChange={(event, value) => {
+                                setPage(value);
+                            }}
+                            variant="outlined"
+                            size="small"
+                        />}
+                    </Box>
                 </Grid>
             </Grid>
         </Stack>

@@ -12,10 +12,10 @@ class User {
         this.phoneNumber = "";
         this.isBlocked = false
         this.isValidUser = true
+        this.introduction = ""
     }
 }
 
-// todo: 加一个自我介绍区域
 const UserSchema = new Schema({
     emailAddress: {
         type: String,
@@ -25,6 +25,9 @@ const UserSchema = new Schema({
     username: {
         type: String,
         required: true
+    },
+    introduction: {
+        type: String,
     },
     hashedPassword: {
         type: String,

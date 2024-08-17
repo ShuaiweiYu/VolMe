@@ -75,7 +75,7 @@ const EventSchema = mongoose.Schema({
     peopleNeeded: {type: Number},
     description: {type: String},
     requiredFiles: [String],
-    category: [String],
+    category: String,
     uploadURL: [String],
 
     languages: [String],

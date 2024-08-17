@@ -58,12 +58,15 @@ const EventItem = ({
     }, [wishlistItems, eventID, event]);
 
     const [deleteApplication] = useDeleteApplicationMutation();
+
     const handleWithdraw = async (req, res) => {
         await deleteApplication(applicationID)
     }
+
     const handleWithdrawOrganiser = async (req, res) => {
         await deleteEvent(eventID)
     }
+
     const handleLike = async () => {
         try {
             if (liked) {
@@ -79,6 +82,7 @@ const EventItem = ({
             toast.error("Failed to update your wish list.");
         }
     };
+
     const getStatusIcon = (status) => {
         switch (status) {
             case 'ACCEPTED':
@@ -118,8 +122,6 @@ const EventItem = ({
         return dayjs(date).format('YYYY/MM/DD');
     };
 
-    const formattedDate = formatDate(date);
-
     const dateString = `${formatDate(event?.response?.startDate)} - ${formatDate(event?.response?.endDate)}`
 
     return (
@@ -127,7 +129,8 @@ const EventItem = ({
             variant="outlined"
             sx={{
                 position: 'relative',
-                width: 400,
+                width: '100%',
+                maxWidth: 400,
                 height: 450,
                 borderRadius: '15px',
                 display: 'flex',
@@ -154,33 +157,33 @@ const EventItem = ({
                 )}
             </CardContent>
             <CardActions sx={{display: 'flex', justifyContent: 'space-between', alignSelf: 'stretch'}}>
-                {type == "event-listing-volunteer" && (
+                {type === "event-listing-volunteer" && (
                     <IconButton aria-label="share" onClick={handleShareClick} disabled={!isUpcoming}>
                         <Share/>
                     </IconButton>
                 )}
-                {type == "event-listing-volunteer" && (
+                {type === "event-listing-volunteer" && (
                     <IconButton variant="outlined" color="neutral" sx={{mr: 'auto'}} onClick={handleLike}
                                 disabled={!isUpcoming}>
                         {liked ? <Favorite/> : <FavoriteBorder/>}
                     </IconButton>
                 )}
-                {type == "my-events-volunteer-future" &&
+                {type === "my-events-volunteer-future" &&
                     <Button variant="outlined" onClick={handleWithdraw}>
                         Withdraw Application
                     </Button>
                 }
-                {type == "my-events-volunteer-draft" &&
+                {type === "my-events-volunteer-draft" &&
                     <Button variant="outlined" onClick={handleWithdraw}>
                         Discard Draft
                     </Button>
                 }
-                {type == "my-events-volunteer-draft" &&
+                {type === "my-events-volunteer-draft" &&
                     <Button variant="outlined" component={RouterLink} to={`/application/${eventID}/${applicationID}`}>
                         Edit Draft
                     </Button>
                 }
-                {type == "my-events-organiser-future" && (
+                {type === "my-events-organiser-future" && (
                     <Button variant="outlined" onClick={handleWithdrawOrganiser}>
                         Withdraw
                     </Button>
@@ -188,13 +191,13 @@ const EventItem = ({
                 <Button variant="outlined" component={RouterLink} to={`/events/${eventID}`}>
                     View
                 </Button>
-                {type == "event-listing-volunteer" && (
+                {type === "event-listing-volunteer" && (
                     <Button variant="outlined" component={RouterLink} to={`/application/${eventID}`}
                             disabled={!isUpcoming}>
                         Apply
                     </Button>
                 )}
-                {(type == "my-events-organiser-future" || type == "my-events-organiser") && (
+                {(type === "my-events-organiser-future" || type === "my-events-organiser") && (
                     <Button variant="outlined" component={RouterLink} to={`/events/management/${eventID}`}>
                         Manage
                     </Button>

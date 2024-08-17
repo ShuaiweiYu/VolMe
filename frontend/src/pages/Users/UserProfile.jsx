@@ -5,8 +5,7 @@ import VolunteerProfilePage from './VolunteerProfilePage';
 import OrganizerProfilePage from './OrganizerProfilePage';
 import ErrorComponent from "../../components/ErrorComponent";
 import LoadingComponent from "../../components/LoadingComponent";
-//
-import OrganizerProfileForVolunteerProfilePage from "./OrganizerProfileDisplayPage";
+// todo: add introduction
 
 const UserProfilePageContainer = () => {
     const userId = useSelector(selectCurrentUserId);
