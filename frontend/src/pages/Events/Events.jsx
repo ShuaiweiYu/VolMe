@@ -1,16 +1,13 @@
 import React, {useEffect, useState} from 'react';
-import {Box, CircularProgress, Pagination, Stack, Typography} from "@mui/material";
+import {Box, CircularProgress, Pagination, Stack, styled, Typography} from "@mui/material";
 import Grid from "@mui/material/Grid";
-import {useSelector} from "react-redux";
-import {selectCurrentUserId} from "../../redux/auth/authSlice";
-import {useGetUserByUserIdQuery} from "../../redux/users/usersApiSlice";
 import TextField from "@mui/material/TextField";
 import InputAdornment from "@mui/material/InputAdornment";
 import IconButton from "@mui/material/IconButton";
 import SearchIcon from "@mui/icons-material/Search";
 import ClearIcon from "@mui/icons-material/Clear";
 import Autocomplete from "@mui/material/Autocomplete";
-import {useGetEventsQuery} from "../../redux/events/eventApiSlice";
+import {useGetEventsQuery, useGetEventCityQuery} from "../../redux/events/eventApiSlice";
 import EventItem from "../../components/Events/EventItem";
 import {getFileUrl} from "../../util/fileUploaderWrapper";
 import AC from "./image/AC.jpg"
@@ -31,10 +28,13 @@ import SJ from "./image/SJ.jpg"
 import SR from "./image/SR.jpg"
 import YC from "./image/OT.jpg"
 import HM from "./image/HM.jpg"
-import Divider from "@mui/material/Divider";
+import useRole from "../../redux/auth/useRole";
+import {LocalizationProvider} from '@mui/x-date-pickers/LocalizationProvider';
+import {DatePicker, DateTimePicker} from "@mui/x-date-pickers";
+import dayjs from "dayjs";
+import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
 
 const date = []
-const location = []
 const languages = [
     {key: "EN", value: "English"},
     {key: "DE", value: "German"},
@@ -101,6 +101,8 @@ const images = [
 //     "国际志愿服务",
 //     "危机干预"
 // ];
+// todo:多语言
+// todo：----------！！！！！！拿不到event的信息了
 
 const SearchBar = ({searchTermProp, setSearchTermProp, onSearchProp, onClearProp, label}) => {
     const handleKeyDown = (e) => {
@@ -138,29 +140,73 @@ const SearchBar = ({searchTermProp, setSearchTermProp, onSearchProp, onClearProp
     );
 };
 
-const MultipleFilter = ({handleTimeChange, handleLocationChange, handleLanguageChange}) => {
+const MultipleFilter = ({
+                            startDate,
+                            endDate,
+                            handleStartTimeChange,
+                            handleEndTimeChange,
+                            handleLocationChange,
+                            handleLanguageChange,
+                            handleCategoryChange
+                        }) => {
+    const [cities, setCities] = useState([]);
+
+    const {data: citylist, isSuccess: isGetCitylistSuccess} = useGetEventCityQuery();
+
+    useEffect(() => {
+        if (isGetCitylistSuccess) {
+            setCities(citylist.response.map(city => city.city));
+        }
+    }, [isGetCitylistSuccess, citylist]);
+
+    const FullWidthDatePicker = styled(DatePicker)(({theme}) => ({
+        width: '100%',
+        margin: theme.spacing(1, 0),
+    }));
+
     return (
         <Grid container spacing={2}>
-            <Grid item xs={12} md={3}>
-                <Autocomplete
-                    multiple
-                    id="tags-outlined"
-                    options={date}
-                    filterSelectedOptions
-                    onChange={(event, newValue) => handleTimeChange(newValue)}
-                    renderInput={(params) => (
-                        <TextField
-                            {...params}
-                            label="Date"
+            <Grid item xs={12} md={6}>
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <Stack direction="row" spacing={1}>
+                        <FullWidthDatePicker
+                            label={"Start date"}
+                            value={startDate}
+                            minDate={dayjs()}
+                            maxDate={dayjs().add(1, "year")}
+                            onChange={(newValue) => handleStartTimeChange(newValue)}
+                            renderInput={(props) => (
+                                <TextField
+                                    {...props}
+                                    fullWidth
+                                    margin="normal"
+                                    required
+                                />
+                            )}
                         />
-                    )}
-                />
+                        <FullWidthDatePicker
+                            label={"End date"}
+                            value={endDate}
+                            minDate={startDate || dayjs()}
+                            maxDate={dayjs().add(1, "year")}
+                            onChange={(newValue) => handleEndTimeChange(newValue)}
+                            renderInput={(props) => (
+                                <TextField
+                                    {...props}
+                                    fullWidth
+                                    margin="normal"
+                                    required
+                                />
+                            )}
+                        />
+                    </Stack>
+                </LocalizationProvider>
             </Grid>
-            <Grid item xs={12} md={3}>
+            <Grid item xs={12} md={2}>
                 <Autocomplete
                     multiple
                     id="tags-outlined"
-                    options={location}
+                    options={cities}
                     filterSelectedOptions
                     onChange={(event, newValue) => handleLocationChange(newValue)}
                     renderInput={(params) => (
@@ -171,7 +217,7 @@ const MultipleFilter = ({handleTimeChange, handleLocationChange, handleLanguageC
                     )}
                 />
             </Grid>
-            <Grid item xs={12} md={3}>
+            <Grid item xs={12} md={2}>
                 <Autocomplete
                     multiple
                     id="tags-outlined"
@@ -187,14 +233,14 @@ const MultipleFilter = ({handleTimeChange, handleLocationChange, handleLanguageC
                     )}
                 />
             </Grid>
-            <Grid item xs={12} md={3}>
+            <Grid item xs={12} md={2}>
                 <Autocomplete
                     multiple
                     id="tags-outlined"
                     options={category}
                     filterSelectedOptions
                     getOptionLabel={(option) => option.value}
-                    onChange={(event, newValue) => handleLanguageChange(newValue)}
+                    onChange={(event, newValue) => handleCategoryChange(newValue)}
                     renderInput={(params) => (
                         <TextField
                             {...params}
@@ -213,9 +259,13 @@ const ToolBar = ({
                      onSearchProp,
                      onClearProp,
                      label,
-                     handleTimeChange,
+                     startDate,
+                     endDate,
+                     handleStartTimeChange,
+                     handleEndTimeChange,
                      handleLocationChange,
-                     handleLanguageChange
+                     handleLanguageChange,
+                     handleCategoryChange
                  }) => {
     return (
         <Box>
@@ -225,8 +275,14 @@ const ToolBar = ({
                                onSearchProp={onSearchProp} onClearProp={onClearProp} label={label}/>
                 </Grid>
                 <Grid item xs={12} md={10}>
-                    <MultipleFilter handleLanguageChange={handleLanguageChange} handleTimeChange={handleTimeChange}
-                                    handleLocationChange={handleLocationChange}/>
+                    <MultipleFilter
+                        startDate={startDate}
+                        endDate={endDate}
+                        handleStartTimeChange={handleStartTimeChange}
+                        handleEndTimeChange={handleEndTimeChange}
+                        handleLocationChange={handleLocationChange}
+                        handleLanguageChange={handleLanguageChange}
+                        handleCategoryChange={handleCategoryChange}/>
                 </Grid>
             </Grid>
         </Box>
@@ -235,14 +291,14 @@ const ToolBar = ({
 }
 
 const Events = () => {
-    const [selectedLocation, setSelectedLocation] = useState([]);
     const [searchTermProp, setSearchTermProp] = useState('');
-    const [selectedTime, setSelectedTime] = useState([]);
+    const [startDate, setStartDate] = useState();
+    const [endDate, setEndDate] = useState();
+    const [selectedLocation, setSelectedLocation] = useState([]);
     const [selectedLanguage, setSelectedLanguage] = useState([]);
-    const userId = useSelector(selectCurrentUserId);
-    const {data: user, isSuccessUser, errorUser, isLoadingUser} = useGetUserByUserIdQuery(userId, {
-        skip: !userId, // Skip the query if userId is null or undefined
-    });
+    const [selectedCategory, setSelectedCategory] = useState([]);
+
+    const {role} = useRole()
 
     const handleSearch = () => {
     };
@@ -255,12 +311,20 @@ const Events = () => {
         setSelectedLocation(newValue);
     };
 
-    const handleTimeChange = (newValue) => {
-        setSelectedTime(newValue);
+    const handleStartTimeChange = (newValue) => {
+        setStartDate(newValue)
+    };
+
+    const handleEndTimeChange = (newValue) => {
+        setEndDate(newValue)
     };
 
     const handleLanguageChange = (newValue) => {
         setSelectedLanguage(newValue.map(item => item.key));
+    };
+
+    const handleCategoryChange = (newValue) => {
+        setSelectedCategory(newValue.map(item => item.key));
     };
 
     // -----------------> eventlist
@@ -276,14 +340,12 @@ const Events = () => {
     } = useGetEventsQuery({
         page: page,
         keyword: searchTermProp,
+        startDate: startDate,
+        endDate: endDate,
         location: selectedLocation,
-        time: selectedTime,
-        language: selectedLanguage
+        language: selectedLanguage,
+        category: selectedCategory
     });
-    // todo: get location from this list
-    // todo: get category from this list
-
-    console.log(events)
 
     // todo: change ordering
     const sortedEvents = events?.response?.events.slice().sort((a, b) => {
@@ -298,12 +360,20 @@ const Events = () => {
         <Stack direction={{xs: 'column', md: 'row'}} justifyContent="space-around" marginTop={1} marginLeft={5}
                marginRight={5}>
             <Grid container spacing={2}>
-                <Grid item xs={12}>
-                    <ToolBar searchTermProp={searchTermProp} setSearchTermProp={setSearchTermProp}
-                             onSearchProp={handleSearch} onClearProp={handleClear} label={"Enter event name"}
-                             handleLocationChange={handleChange}
-                             handleLanguageChange={handleLanguageChange}
-                             handleTimeChange={handleTimeChange}
+                <Grid item xs={12} paddingTop="10px">
+                    <ToolBar
+                        searchTermProp={searchTermProp}
+                        setSearchTermProp={setSearchTermProp}
+                        onSearchProp={handleSearch}
+                        onClearProp={handleClear}
+                        label={"Enter event name"}
+                        startDate={startDate}
+                        endDate={endDate}
+                        handleStartTimeChange={handleStartTimeChange}
+                        handleEndTimeChange={handleEndTimeChange}
+                        handleLocationChange={handleChange}
+                        handleLanguageChange={handleLanguageChange}
+                        handleCategoryChange={handleCategoryChange}
                     />
                 </Grid>
                 {/*-----------------> eventlist*/}
@@ -348,7 +418,7 @@ const Events = () => {
                                             image={event.uploadURL.length !== 0 ? getFileUrl(event.uploadURL[0], "image", "default") : images.find(img => img.key === event.category)?.value}
                                             description={event.description}
                                             promotion={event.isSponsored}
-                                            type={user?.response.role === 'VOLUNTEER' ? 'event-listing-volunteer' : 'event-listing'}
+                                            type={role === 'VOLUNTEER' ? 'event-listing-volunteer' : 'event-listing'}
                                         />
                                     </Grid>
                                 ))}

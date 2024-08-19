@@ -1,12 +1,12 @@
-import { EVENT_URL, UPLOAD_URL } from "../constants";
-import { apiSlice } from "../apiSlice";
+import {EVENT_URL, UPLOAD_URL} from "../constants";
+import {apiSlice} from "../apiSlice";
 
 export const eventApiSlice = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
         getEvents: builder.query({
-            query: ({page,keyword,location,time,language} ) => ({
+            query: ({page, keyword, location, startDate, endDate, language, category}) => ({
                 url: `${EVENT_URL}?page=${page}`,
-                params: { keyword,location,time,language },
+                params: {keyword, location, startDate, endDate, language, category},
             }),
             keepUnusedDataFor: 5,
             providesTags: ["Events"],
@@ -14,40 +14,24 @@ export const eventApiSlice = apiSlice.injectEndpoints({
                 return {response: response, status: meta.response.status};
             },
         }),
-
         getEventById: builder.query({
-            query: ( eventId ) => `${EVENT_URL}/${eventId}`,
+            query: (eventId) => `${EVENT_URL}/event/${eventId}`,
             providesTags: (result, error, eventId) => [
-                { type: "Event", id: eventId },
+                {type: "Event", id: eventId},
             ],
             transformResponse: (response, meta) => {
                 return {response: response, status: meta.response.status};
             },
         }),
         getEventsByOrganiser: builder.query({
-            query: ( organiserId ) => `${EVENT_URL}/organiser/${organiserId}`,
+            query: (organiserId) => `${EVENT_URL}/organiser/${organiserId}`,
             providesTags: (result, error, eventId) => [
-                { type: "Event", id: eventId },
+                {type: "Event", id: eventId},
             ],
             transformResponse: (response, meta) => {
                 return {response: response, status: meta.response.status};
             },
         }),
-
-        allEvents: builder.query({
-            query: () => `${EVENT_URL}/allEvents`,
-            transformResponse: (response, meta) => {
-                return {response: response, status: meta.response.status};
-            },
-        }),
-
-        getEventDetails: builder.query({
-            query: (eventID) => ({
-                url: `${EVENT_URL}/${eventID}`,
-            }),
-            keepUnusedDataFor: 5,
-        }),
-
         createEvent: builder.mutation({
             query: (eventData) => ({
                 url: `${EVENT_URL}`,
@@ -60,9 +44,8 @@ export const eventApiSlice = apiSlice.injectEndpoints({
             invalidatesTags: ["Event"],
 
         }),
-
         updateEvent: builder.mutation({
-            query: ({ eventID, eventData }) => ({
+            query: ({eventID, eventData}) => ({
                 url: `${EVENT_URL}/${eventID}`,
                 method: "PUT",
                 body: eventData,
@@ -71,7 +54,6 @@ export const eventApiSlice = apiSlice.injectEndpoints({
                 return {response: response, status: meta.response.status};
             },
         }),
-
         uploadEventImage: builder.mutation({
             query: (data) => ({
                 url: `${UPLOAD_URL}`,
@@ -82,7 +64,6 @@ export const eventApiSlice = apiSlice.injectEndpoints({
                 return {response: response, status: meta.response.status};
             },
         }),
-
         deleteEvent: builder.mutation({
             query: (eventId) => ({
                 url: `${EVENT_URL}/${eventId}`,
@@ -94,50 +75,21 @@ export const eventApiSlice = apiSlice.injectEndpoints({
             invalidatesTags: ["Event"]
 
         }),
-
         createReview: builder.mutation({
-            query: ( { eventID, userID, rating, comment } ) => ({
+            query: ({eventID, userID, rating, comment}) => ({
                 url: `${EVENT_URL}/${eventID}`,
                 method: "POST",
-                body: { userID, rating, comment }
+                body: {userID, rating, comment}
             }),
             transformResponse: (response, meta) => {
                 return {response: response, status: meta.response.status};
             },
         }),
-
         deleteReview: builder.mutation({
-            query: ( { eventID, reviewID } ) => ({
+            query: ({eventID, reviewID}) => ({
                 url: `${EVENT_URL}/${eventID}`,
                 method: "DELETE",
-                body: { reviewID }
-            }),
-            transformResponse: (response, meta) => {
-                return { response: response, status: meta.response.status };
-            },
-        }),
-
-        getTopEvents: builder.query({
-            query: () => `${EVENT_URL}/top`,
-            keepUnusedDataFor: 5,
-            transformResponse: (response, meta) => {
-                return {response: response, status: meta.response.status};
-            },
-        }),
-
-        getNewEvents: builder.query({
-            query: () => `${EVENT_URL}/new`,
-            keepUnusedDataFor: 5,
-            transformResponse: (response, meta) => {
-                return {response: response, status: meta.response.status};
-            },
-        }),
-
-        getFilteredProducts: builder.query({
-            query: ({ checked, radio }) => ({
-                url: `${EVENT_URL}/filtered-products`,
-                method: "POST",
-                body: { checked, radio },
+                body: {reviewID}
             }),
             transformResponse: (response, meta) => {
                 return {response: response, status: meta.response.status};
@@ -153,6 +105,12 @@ export const eventApiSlice = apiSlice.injectEndpoints({
                 return {response: response, status: meta.response.status};
             },
         }),
+        getEventCity: builder.query({
+            query: () => `${EVENT_URL}/city`,
+            transformResponse: (response, meta) => {
+                return {response: response, status: meta.response.status};
+            },
+        }),
     })
 })
 
@@ -160,18 +118,14 @@ export const {
     useGetEventByIdQuery,
     useGetEventsByOrganiserQuery,
     useGetEventsQuery,
-    useGetEventDetailsQuery,
-    useAllEventsQuery,
     useCreateEventMutation,
     useUpdateEventMutation,
     useDeleteEventMutation,
     useCreateReviewMutation,
     useDeleteReviewMutation,
-    useGetTopEventsQuery,
-    useGetNewEventsQuery,
     useUploadEventImageMutation,
-    useGetFilteredEventsQuery,
-    useGetEventCountByIdMutation
+    useGetEventCountByIdMutation,
+    useGetEventCityQuery
 } = eventApiSlice
 
 

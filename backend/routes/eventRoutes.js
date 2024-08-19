@@ -9,26 +9,24 @@ router.route('/')
 
 router.route('/allEvents').get(eventController.getAllEvents)
 
-router.route('/:id')
-    .get(eventController.getEventById)
-
-router.get('/top', eventController.getTopEvents)
-router.get('/new', eventController.getNewEvents)
 router.get('/organiser/:organiserId', eventController.getEventsByOrganiser);
+router.route('/city')
+    .get(eventController.getCitiesByEventCount)
 
-router.get('/city', eventController.getCitiesByEventCount)
+router.route('event/:id')
+    .get(eventController.getEventById)
 
 router.use(verifyJWT)
 
 router.route('/')
     .post(eventController.createEvent)
 
+// todo:这里不会有问题？两个路径都是id
 router.route('/:id')
     .post(eventController.addEventReview)
     .delete(eventController.deleteEventReview)
 
 router.route('/:id')
-    .get(eventController.getEventById)
     .put(eventController.updateEvent)
     .delete(eventController.deleteEvent)
 

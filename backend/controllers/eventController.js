@@ -123,30 +123,60 @@ const getEvents = asyncHandler(async (req, res) => {
             ? {languages: {$in: languages}}
             : {};
 
+        const categories = req.query.category ? req.query.category.split(',') : [];
+        const categoryFilter = categories.length
+            ? {category: {$in: categories}}
+            : {};
 
-        const now = new Date();
+        const startDate = req.query.startDate
+        const endDate = req.query.endDate
         let timeFilter = {};
-        const times = req.query.time.split(",")
 
-        if (times.length === 1) {
-            if (times.includes('Past')) {
-                timeFilter = {
-                    startDate:
-                        {$lt: now}
-                };
-            } else if (times.includes('Future')) {
-
-                timeFilter = {
-                    startDate:
-                        {$gte: now}
-                };
-            }
+        // todo:验证一下这个对不对
+        if (startDate && endDate) {
+            timeFilter = {
+                startDate:
+                    {$gte: startDate},
+                endDate:
+                    {$lt: endDate}
+            };
+        } else if (startDate) {
+            timeFilter = {
+                startDate:
+                    {$gte: startDate}
+            };
+        } else if (endDate) {
+            timeFilter = {
+                endDate:
+                    {$lt: endDate}
+            };
         }
+
+
+        // const now = new Date();
+        // let timeFilter = {};
+        // const times = req.query.time.split(",")
+        //
+        // if (times.length === 1) {
+        //     if (times.includes('Past')) {
+        //         timeFilter = {
+        //             startDate:
+        //                 {$lt: now}
+        //         };
+        //     } else if (times.includes('Future')) {
+        //
+        //         timeFilter = {
+        //             startDate:
+        //                 {$gte: now}
+        //         };
+        //     }
+        // }
 
         const filter = {
             ...keyword,
             ...location,
             ...timeFilter,
+            ...categoryFilter,
             ...languageFilter
         };
 
@@ -280,28 +310,6 @@ const deleteEventReview = asyncHandler(async (req, res) => {
     }
 });
 
-const getTopEvents = asyncHandler(async (req, res) => {
-    try {
-        const events = await EventModel.find({}).sort({rating: -1}).limit(4)
-        res.json(events);
-
-    } catch (error) {
-        console.error(error);
-        res.status(400).json(error.message)
-    }
-})
-
-const getNewEvents = asyncHandler(async (req, res) => {
-    try {
-        const events = await EventModel.find({}).sort({_id: -1}).limit(5)
-        res.json(events);
-
-    } catch (error) {
-        console.error(error);
-        res.status(400).json(error.message)
-    }
-})
-
 const getMonthRange = () => {
     const now = new Date();
     const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
@@ -330,26 +338,36 @@ const getUserMonthlyEventsCount = asyncHandler(async (req, res) => {
 
 const getCitiesByEventCount = async (req, res) => {
     try {
-        // 聚合查询以计算每个城市的事件数量
-        const cities = await Event.aggregate([
+        // 使用MongoDB的聚合框架进行统计和排序
+        const cities = await EventModel.aggregate([
             {
                 $group: {
-                    _id: "$selectedCity", // 按城市分组
-                    eventCount: { $sum: 1 } // 计算每个城市的事件数量
+                    _id: "$selectedCity.name",
+                    count: {
+                        $sum: 1
+                    }
                 }
             },
             {
-                $sort: { eventCount: -1 } // 按事件数量从高到低排序
+                $sort: {
+                    count: -1
+                }
+            },
+            {
+                $project: {
+                    city: "$_id",
+                    _id: 0
+                }
             }
         ]);
 
         res.status(200).json(cities);
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: "服务器错误" });
+    } catch (err) {
+        res.status(500).json({error: err.message});
     }
 };
 
+// todo: 删掉不用的controller
 export default {
     createEvent,
     updateEvent,
@@ -360,8 +378,6 @@ export default {
     getAllEvents,
     addEventReview,
     deleteEventReview,
-    getTopEvents,
-    getNewEvents,
     getUserMonthlyEventsCount,
     getCitiesByEventCount
 };

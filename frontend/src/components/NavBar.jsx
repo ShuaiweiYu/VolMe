@@ -208,7 +208,7 @@ function NavBar() {
                                 textDecoration: 'none',
                             }}
                         >
-                            VolME
+                            VolMe
                         </Typography>
                     </StyledButton>
                 </Box>
