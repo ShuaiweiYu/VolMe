@@ -2,7 +2,6 @@ import React, {useState, useEffect} from 'react';
 import {useNavigate} from "react-router-dom";
 import {
     useCreateEventMutation,
-    useUploadEventImageMutation,
 } from "../../redux/events/eventApiSlice";
 import {toast} from "react-toastify";
 import {
@@ -80,7 +79,6 @@ const CreateEvent = () => {
     const [languages, setLanguages] = useState([]);
     const languageList = ["English", "German", "Spanish", "French", "Chinese", "Italian"];
 
-    const [uploadEventImage] = useUploadEventImageMutation();
     const [createEvent] = useCreateEventMutation();
 
     const [uploadURL, setUploadURL] = useState([]);

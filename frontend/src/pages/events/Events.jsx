@@ -8,7 +8,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import ClearIcon from "@mui/icons-material/Clear";
 import Autocomplete from "@mui/material/Autocomplete";
 import {useGetEventsQuery, useGetEventCityQuery} from "../../redux/events/eventApiSlice";
-import EventItem from "../../components/Events/EventItem";
+import EventItem from "./EventItem";
 import {getFileUrl} from "../../util/fileUploaderWrapper";
 import AC from "./image/AC.jpg"
 import AW from "./image/AW.jpg"
@@ -33,88 +33,21 @@ import {LocalizationProvider} from '@mui/x-date-pickers/LocalizationProvider';
 import {DatePicker, DateTimePicker} from "@mui/x-date-pickers";
 import dayjs from "dayjs";
 import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
+import {useTranslation} from "react-i18next";
 
-const date = []
-const languages = [
-    {key: "EN", value: "English"},
-    {key: "DE", value: "German"},
-    {key: "IT", value: "Italien"},
-    {key: "ES", value: "Spanish"},
-    {key: "CN", value: "Chinese"}
-]
-const category = [
-    {key: "CS", value: "Community Service"},
-    {key: "EL", value: "Education and Literacy"},
-    {key: "EC", value: "Environment and Conservation"},
-    {key: "HM", value: "Health and Medicine"},
-    {key: "AW", value: "Animal Welfare"},
-    {key: "AC", value: "Arts and Culture"},
-    {key: "DR", value: "Disaster Relief"},
-    {key: "YC", value: "Youth and Children"},
-    {key: "SE", value: "Seniors and Elderly"},
-    {key: "SR", value: "Sports and Recreation"},
-    {key: "HR", value: "Human Rights"},
-    {key: "SJ", value: "Social Justice"},
-    {key: "HH", value: "Homelessness and Housing"},
-    {key: "HF", value: "Hunger and Food Security"},
-    {key: "MH", value: "Mental Health"},
-    {key: "IV", value: "International Volunteering"},
-    {key: "CI", value: "Crisis Intervention"},
-    {key: "OT", value: "Others"}
-];
-const images = [
-    {key: "CS", value: CS},
-    {key: "EL", value: EL},
-    {key: "EC", value: EC},
-    {key: "HM", value: HM},
-    {key: "AW", value: AW},
-    {key: "AC", value: AC},
-    {key: "DR", value: DR},
-    {key: "YC", value: YC},
-    {key: "SE", value: SE},
-    {key: "SR", value: SR},
-    {key: "HR", value: HR},
-    {key: "SJ", value: SJ},
-    {key: "HH", value: HH},
-    {key: "HF", value: HF},
-    {key: "MH", value: MH},
-    {key: "IV", value: IV},
-    {key: "CI", value: CI},
-    {key: "OT", value: OT}
-];
-// const volunteerCategoriesChinese = [
-//     "社区服务",
-//     "教育与扫盲",
-//     "环境与保护",
-//     "健康与医疗",
-//     "动物福利",
-//     "艺术与文化",
-//     "灾难救援",
-//     "青少年与儿童",
-//     "老年人",
-//     "体育与娱乐",
-//     "人权",
-//     "社会正义",
-//     "无家可归与住房",
-//     "饥饿与粮食安全",
-//     "心理健康",
-//     "国际志愿服务",
-//     "危机干预"
-// ];
-// todo:多语言
-// todo：----------！！！！！！拿不到event的信息了
-
-const SearchBar = ({searchTermProp, setSearchTermProp, onSearchProp, onClearProp, label}) => {
+const SearchBar = ({searchTermProp, setSearchTermProp, onSearchProp, onClearProp}) => {
     const handleKeyDown = (e) => {
         if (e.key === 'Enter') {
             onSearchProp();
         }
     };
 
+    const {t} = useTranslation();
+
     return (
         <TextField
             id="searchInput"
-            label={label}
+            label={t("events.search")}
             sx={{paddingBottom: '20px'}}
             value={searchTermProp}
             fullWidth
@@ -149,6 +82,37 @@ const MultipleFilter = ({
                             handleLanguageChange,
                             handleCategoryChange
                         }) => {
+    const {t} = useTranslation();
+
+    const languages = [
+        {key: "EN", value: t("events.en")},
+        {key: "DE", value: t("events.de")},
+        {key: "IT", value: t("events.it")},
+        {key: "ES", value: t("events.es")},
+        {key: "FR", value: t("events.fr")},
+        {key: "CN", value: t("events.cn")}
+    ]
+    const category = [
+        {key: "CS", value: t("events.CS")},
+        {key: "EL", value: t("events.EL")},
+        {key: "EC", value: t("events.EC")},
+        {key: "HM", value: t("events.HM")},
+        {key: "AW", value: t("events.AW")},
+        {key: "AC", value: t("events.AC")},
+        {key: "DR", value: t("events.DR")},
+        {key: "YC", value: t("events.YC")},
+        {key: "SE", value: t("events.SE")},
+        {key: "SR", value: t("events.SR")},
+        {key: "HR", value: t("events.HR")},
+        {key: "SJ", value: t("events.SJ")},
+        {key: "HH", value: t("events.HH")},
+        {key: "HF", value: t("events.HF")},
+        {key: "MH", value: t("events.MH")},
+        {key: "IV", value: t("events.IV")},
+        {key: "CI", value: t("events.CI")},
+        {key: "OT", value: t("events.OT")}
+    ];
+
     const [cities, setCities] = useState([]);
 
     const {data: citylist, isSuccess: isGetCitylistSuccess} = useGetEventCityQuery();
@@ -170,7 +134,7 @@ const MultipleFilter = ({
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <Stack direction="row" spacing={1}>
                         <FullWidthDatePicker
-                            label={"Start date"}
+                            label={t("events.startDate")}
                             value={startDate}
                             minDate={dayjs()}
                             maxDate={dayjs().add(1, "year")}
@@ -185,7 +149,7 @@ const MultipleFilter = ({
                             )}
                         />
                         <FullWidthDatePicker
-                            label={"End date"}
+                            label={t("events.endDate")}
                             value={endDate}
                             minDate={startDate || dayjs()}
                             maxDate={dayjs().add(1, "year")}
@@ -212,7 +176,7 @@ const MultipleFilter = ({
                     renderInput={(params) => (
                         <TextField
                             {...params}
-                            label="Location"
+                            label={t("events.location")}
                         />
                     )}
                 />
@@ -228,7 +192,7 @@ const MultipleFilter = ({
                     renderInput={(params) => (
                         <TextField
                             {...params}
-                            label="Languages"
+                            label={t("events.language")}
                         />
                     )}
                 />
@@ -244,7 +208,7 @@ const MultipleFilter = ({
                     renderInput={(params) => (
                         <TextField
                             {...params}
-                            label="Category"
+                            label={t("events.category")}
                         />
                     )}
                 />
@@ -258,7 +222,6 @@ const ToolBar = ({
                      setSearchTermProp,
                      onSearchProp,
                      onClearProp,
-                     label,
                      startDate,
                      endDate,
                      handleStartTimeChange,
@@ -272,7 +235,7 @@ const ToolBar = ({
             <Grid container spacing={2}>
                 <Grid item xs={12} md={2}>
                     <SearchBar searchTermProp={searchTermProp} setSearchTermProp={setSearchTermProp}
-                               onSearchProp={onSearchProp} onClearProp={onClearProp} label={label}/>
+                               onSearchProp={onSearchProp} onClearProp={onClearProp}/>
                 </Grid>
                 <Grid item xs={12} md={10}>
                     <MultipleFilter
@@ -291,6 +254,28 @@ const ToolBar = ({
 }
 
 const Events = () => {
+
+    const images = [
+        {key: "CS", value: CS},
+        {key: "EL", value: EL},
+        {key: "EC", value: EC},
+        {key: "HM", value: HM},
+        {key: "AW", value: AW},
+        {key: "AC", value: AC},
+        {key: "DR", value: DR},
+        {key: "YC", value: YC},
+        {key: "SE", value: SE},
+        {key: "SR", value: SR},
+        {key: "HR", value: HR},
+        {key: "SJ", value: SJ},
+        {key: "HH", value: HH},
+        {key: "HF", value: HF},
+        {key: "MH", value: MH},
+        {key: "IV", value: IV},
+        {key: "CI", value: CI},
+        {key: "OT", value: OT}
+    ];
+
     const [searchTermProp, setSearchTermProp] = useState('');
     const [startDate, setStartDate] = useState();
     const [endDate, setEndDate] = useState();
@@ -366,7 +351,6 @@ const Events = () => {
                         setSearchTermProp={setSearchTermProp}
                         onSearchProp={handleSearch}
                         onClearProp={handleClear}
-                        label={"Enter event name"}
                         startDate={startDate}
                         endDate={endDate}
                         handleStartTimeChange={handleStartTimeChange}
@@ -430,7 +414,7 @@ const Events = () => {
                     <Box display="flex" justifyContent="center">
                         {isSuccess && <Pagination
                             sx={{padding: 2}}
-                            count={events.response.pages}
+                            count={events.response.pages || 1}
                             page={page}
                             onChange={(event, value) => {
                                 setPage(value);

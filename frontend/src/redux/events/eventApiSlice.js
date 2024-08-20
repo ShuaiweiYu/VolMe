@@ -54,16 +54,6 @@ export const eventApiSlice = apiSlice.injectEndpoints({
                 return {response: response, status: meta.response.status};
             },
         }),
-        uploadEventImage: builder.mutation({
-            query: (data) => ({
-                url: `${UPLOAD_URL}`,
-                method: "POST",
-                body: data,
-            }),
-            transformResponse: (response, meta) => {
-                return {response: response, status: meta.response.status};
-            },
-        }),
         deleteEvent: builder.mutation({
             query: (eventId) => ({
                 url: `${EVENT_URL}/${eventId}`,
@@ -77,7 +67,7 @@ export const eventApiSlice = apiSlice.injectEndpoints({
         }),
         createReview: builder.mutation({
             query: ({eventID, userID, rating, comment}) => ({
-                url: `${EVENT_URL}/${eventID}`,
+                url: `${EVENT_URL}/review/${eventID}`,
                 method: "POST",
                 body: {userID, rating, comment}
             }),
@@ -87,7 +77,7 @@ export const eventApiSlice = apiSlice.injectEndpoints({
         }),
         deleteReview: builder.mutation({
             query: ({eventID, reviewID}) => ({
-                url: `${EVENT_URL}/${eventID}`,
+                url: `${EVENT_URL}/review/${eventID}`,
                 method: "DELETE",
                 body: {reviewID}
             }),
@@ -123,7 +113,6 @@ export const {
     useDeleteEventMutation,
     useCreateReviewMutation,
     useDeleteReviewMutation,
-    useUploadEventImageMutation,
     useGetEventCountByIdMutation,
     useGetEventCityQuery
 } = eventApiSlice

@@ -14,7 +14,7 @@ import {Chat as ChatIcon} from "@mui/icons-material";
 import {useEffect, useState} from "react";
 import DialogTitle from "@mui/material/DialogTitle";
 import CloseIcon from "@mui/icons-material/Close";
-import {LoginModal, SignUpModal} from "../pages/util/LoginModal";
+import {LoginModal, SignUpModal} from "../pages/credentials/LoginModal";
 import Dialog from "@mui/material/Dialog";
 import {useNavigate} from 'react-router-dom';
 import {useDispatch, useSelector} from "react-redux";
@@ -23,7 +23,7 @@ import {getFileUrl} from "../util/fileUploaderWrapper";
 import PersonIcon from "@mui/icons-material/Person";
 import {useGetUserByUserIdQuery} from "../redux/users/usersApiSlice";
 import {useSendLogoutMutation} from "../redux/auth/authApiSlice";
-import Chat from "../pages/Chat/Chat";
+import Chat from "../pages/chat/Chat";
 import {useTranslation} from "react-i18next";
 import LogoutIcon from '@mui/icons-material/Logout';
 import GTranslateIcon from '@mui/icons-material/GTranslate';
@@ -470,7 +470,7 @@ function NavBar() {
                 {/*        }}*/}
                 {/*    >*/}
                 {/*        {(userId !== "null" && userId !== "undefined" && userId) &&*/}
-                {/*            <Chat/>}*/}
+                {/*            <chat/>}*/}
                 {/*    </Menu>*/}
                 {/*</Box>*/}
 

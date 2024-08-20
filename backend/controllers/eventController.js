@@ -102,7 +102,7 @@ const deleteEvent = asyncHandler(async (req, res) => {
     }
 });
 
-// @desc Get all events
+// @desc Get all events given filters
 // @route GET /event
 const getEvents = asyncHandler(async (req, res) => {
     try {
@@ -132,7 +132,6 @@ const getEvents = asyncHandler(async (req, res) => {
         const endDate = req.query.endDate
         let timeFilter = {};
 
-        // todo:验证一下这个对不对
         if (startDate && endDate) {
             timeFilter = {
                 startDate:
@@ -151,26 +150,6 @@ const getEvents = asyncHandler(async (req, res) => {
                     {$lt: endDate}
             };
         }
-
-
-        // const now = new Date();
-        // let timeFilter = {};
-        // const times = req.query.time.split(",")
-        //
-        // if (times.length === 1) {
-        //     if (times.includes('Past')) {
-        //         timeFilter = {
-        //             startDate:
-        //                 {$lt: now}
-        //         };
-        //     } else if (times.includes('Future')) {
-        //
-        //         timeFilter = {
-        //             startDate:
-        //                 {$gte: now}
-        //         };
-        //     }
-        // }
 
         const filter = {
             ...keyword,
@@ -218,28 +197,13 @@ const getEventsByOrganiser = asyncHandler(async (req, res) => {
         if (events.length > 0) {
             return res.json(events);
         } else {
-            res.status(404).json({message: 'No Events found for this organiser'});
+            res.status(404).json({message: 'No events found for this organiser'});
         }
     } catch (error) {
         console.error(error);
         res.status(500).json({message: 'Error fetching events'});
     }
 });
-
-const getAllEvents = asyncHandler(async (req, res) => {
-    try {
-        const events = await EventModel.find({})
-            .populate('_id')
-            .limit(12)
-            .sort({createdAt: -1});
-
-        res.json(events);
-
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({message: 'Server Error'})
-    }
-})
 
 const addEventReview = asyncHandler(async (req, res) => {
     const {eventID, userID, rating, comment} = req.body;
@@ -367,7 +331,6 @@ const getCitiesByEventCount = async (req, res) => {
     }
 };
 
-// todo: 删掉不用的controller
 export default {
     createEvent,
     updateEvent,
@@ -375,7 +338,6 @@ export default {
     getEvents,
     getEventById,
     getEventsByOrganiser,
-    getAllEvents,
     addEventReview,
     deleteEventReview,
     getUserMonthlyEventsCount,

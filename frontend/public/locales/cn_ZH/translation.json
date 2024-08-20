@@ -1,5 +1,5 @@
 {
-  "PersistLogin" : {
+  "PersistLogin": {
     "noAccess": "对不起，你没有权限访问该页面",
     "notLoggedIn": "请登录来访问页面",
     "sessionExpired": "请重新登陆"
@@ -61,13 +61,13 @@
       "signUpSuccess": "账户注册成功！",
       "signUpErrorDuplication": "这个邮箱已经注册过账号了！",
       "signUpError": "对不起，出错了，请稍后再试",
-      "allSet":"注册完毕！",
-      "codeCheckError":"验证码不匹配，请重试！",
-      "redirecting":"页面跳转倒计时： ",
+      "allSet": "注册完毕！",
+      "codeCheckError": "验证码不匹配，请重试！",
+      "redirecting": "页面跳转倒计时： ",
       "seconds": "秒",
       "resendInfo": "点击来重新发送验证码",
       "resend": "重新发送",
-      "resendCooldown":"发送验证码冷却时间： ",
+      "resendCooldown": "发送验证码冷却时间： ",
       "passwordTooLong": "输入的密码过长！",
       "usernameTooLong": "输入的用户名过长！",
       "nameTooLong": "你的名字过长！",
@@ -77,14 +77,14 @@
   },
   "resetPassword": {
     "title": "重设你的密码",
-    "success":"重设密码成功！",
+    "success": "重设密码成功！",
     "emailInfo": "输入你的邮箱地址来重设密码",
     "email": "邮箱地址",
-    "userNotFound" : "这个邮箱未被注册账号",
+    "userNotFound": "这个邮箱未被注册账号",
     "sendCodeButton": "发送验证码",
     "codeInfo": "输入我们发送到你邮箱的6位验证码",
     "code": "验证码",
-    "codeError" : "验证码有误，请重试",
+    "codeError": "验证码有误，请重试",
     "confirmButton": "确认",
     "resetInfo": "重设密码",
     "newPassword": "新密码",
@@ -94,7 +94,7 @@
     "stepsList3": "重设你的密码",
     "generalErrorInfo": "出错了，请一会儿再尝试"
   },
-  "applicationItem" : {
+  "applicationItem": {
     "firstname": "First name",
     "lastname": "Last name",
     "age": "Age",
@@ -102,7 +102,7 @@
     "email": "E-Mail address",
     "address": "Correspondence address",
     "skills": "Skills: ",
-    "languages" : "Languages: ",
+    "languages": "Languages: ",
     "user": "Applicant: ",
     "highlights": "Highlights: ",
     "accept": "Accept",
@@ -115,7 +115,7 @@
     "pending": "Applications to be reviewed",
     "decline": "Declined Applications"
   },
-  "pricing" : {
+  "pricing": {
     "title": "我们的定价",
     "description": "查看我们的订阅计划并挑选合适您需求的版本",
     "perevent": "每个活动",
@@ -160,7 +160,7 @@
     "toEvent": "To Event",
     "applyNow": "Apply Now"
   },
-  "wishlist" : {
+  "wishlist": {
     "myWishlist": "我的愿望单",
     "enterEventName": "输入活动名称",
     "backToAll": "返回所有活动",
@@ -168,7 +168,7 @@
   },
   "applicationPage": {
     "applyAs": "Apply as",
-    "uploadFiles":"Upload Files",
+    "uploadFiles": "Upload Files",
     "date": "Date",
     "place": "Place",
     "organizedBy": "Organized by",
@@ -177,9 +177,8 @@
     "apply": "Apply",
     "moreInformation": "More information",
     "viewEventsDetails": "View Events Details"
-
   },
-  "profile" : {
+  "profile": {
     "volunteerProfile": "志愿者档案",
     "organizerProfile": "组织者档案",
     "userInformation": "用户信息",
@@ -199,7 +198,7 @@
     "address": "地址",
     "postalCode": "邮编号码",
     "skills": "技能",
-    "languages" : "语言",
+    "languages": "语言",
     "subscription": "订阅计划",
     "unusedPAYG": "Unused Pay-as-you-go",
     "subscriptionType": "订阅计划",
@@ -224,7 +223,39 @@
     "confirmDeletion": "确认删除",
     "confirmDeletionMes": "你确认要删除你的账号吗？这个会导致你永久失去你的账号"
   },
-  "eventPage" : {
+  "events": {
+    "search": "搜索",
+    "startDate": "开始日期",
+    "endDate": "结束日期",
+    "location": "地点",
+    "language": "语言",
+    "category": "类别",
+    "en": "英语",
+    "de": "德语",
+    "it": "意大利语",
+    "es": "西班牙语",
+    "fr": "法语",
+    "zh": "中文",
+    "CS": "社区服务",
+    "EL": "教育与扫盲",
+    "EC": "环境与保护",
+    "HM": "健康与医疗",
+    "AW": "动物福利",
+    "AC": "艺术与文化",
+    "DR": "灾难救援",
+    "YC": "青少年与儿童",
+    "SE": "老年人",
+    "SR": "体育与娱乐",
+    "HR": "人权",
+    "SJ": "社会正义",
+    "HH": "无家可归与住房",
+    "HF": "饥饿与粮食安全",
+    "MH": "心理健康",
+    "IV": "国际志愿服务",
+    "CI": "危机干预",
+    "OT": "其他"
+  },
+  "eventPage": {
     "nameEvent": "Name Your Event",
     "eventTitle": "Event Title",
     "addPictures": "Add Pictures",
@@ -253,7 +284,7 @@
     "saveChanges": "Save Changes",
     "editEvent": "Edit Event",
     "zipCode": "ZIP / Post Code",
-    "houseNumber":"House Number",
+    "houseNumber": "House Number",
     "address": "Address",
     "city": "City",
     "state": "State / Province",
@@ -280,7 +311,7 @@
     "endDate": "End Date",
     "startDate": "Start Date",
     "zipCode": "ZIP / Post Code",
-    "houseNumber":"House Number",
+    "houseNumber": "House Number",
     "address": "Address",
     "city": "City",
     "state": "State / Province",

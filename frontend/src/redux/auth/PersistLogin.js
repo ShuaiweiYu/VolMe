@@ -3,7 +3,7 @@ import { useRefreshMutation } from "./authApiSlice"
 import { useSelector } from 'react-redux'
 import { selectCurrentToken } from "./authSlice"
 import Alert from '@mui/material/Alert';
-import { LoginModal } from "../../pages/util/LoginModal";
+import { LoginModal } from "../../pages/credentials/LoginModal";
 import CircularProgress from '@mui/material/CircularProgress';
 import ErrorComponent from "../../components/ErrorComponent";
 import Grid from "@mui/material/Grid";

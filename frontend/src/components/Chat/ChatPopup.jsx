@@ -30,7 +30,7 @@ const ChatPopup = ({receiverId, resetReceiverId}) => {
     return (
         <>
             {/*<Button variant="contained" color="primary" onClick={handleOpen}>*/}
-            {/*    Open Chat*/}
+            {/*    Open chat*/}
             {/*</Button>*/}
             <Modal
                 open={open}

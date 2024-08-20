@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 import { selectCurrentUserId } from "../../redux/auth/authSlice";
 import { useGetEventsByOrganiserQuery } from "../../redux/events/eventApiSlice";
 import HighlightCalendar from "../../components/MyEventsPage/HighlightCalendar";
-import EventItem from "../Events/EventItem";
+import EventItem from "../../pages/events/EventItem";
 import {getFileUrl} from "../../util/fileUploaderWrapper";
 import defaultEventImg from "../../Assets/defaultEventImg.png";
 
@@ -65,7 +65,7 @@ const FeedOrganiser = () => {
                         <>
                             <Box display="flex" justifyContent="center" alignItems="center" mb={2}>
                                 <Button variant="outlined" sx={{ padding: 2 }} onClick={handleFuture}>
-                                    {future ? "Hide Past Events" : 'Show All Events'}
+                                    {future ? "Hide Past events" : 'Show All events'}
                                 </Button>
                             </Box>
 

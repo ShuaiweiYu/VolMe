@@ -16,7 +16,7 @@ import {useGetUserByUserIdQuery} from '../../redux/users/usersApiSlice'
 import {useSetApplicationStatusMutation} from "../../redux/applications/applicationApiSlice"
 import ErrorComponent from "../../components/ErrorComponent";
 import {useTranslation} from 'react-i18next';
-import PdfModal from "../../util/PdfModal";
+import PdfModal from "../util/PdfModal";
 import PersonIcon from "@mui/icons-material/Person";
 import RestoreIcon from '@mui/icons-material/Restore';
 import {getFileUrl} from "../../util/fileUploaderWrapper";

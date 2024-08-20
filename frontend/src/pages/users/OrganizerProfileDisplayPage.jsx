@@ -16,7 +16,7 @@ import { getFileUrl } from "../../util/fileUploaderWrapper";
 import PersonIcon from "@mui/icons-material/Person";
 import {useParams} from "react-router-dom";
 import {useDeleteDocumentMutation, useGetDocumentByIdQuery} from "../../redux/documents/documentApiSlice";
-import PdfModal from "../../util/PdfModal";
+import PdfModal from "../util/PdfModal";
 import DeleteIcon from "@mui/icons-material/DeleteOutline";
 import {useTranslation} from "react-i18next";
 

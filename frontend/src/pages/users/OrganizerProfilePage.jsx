@@ -35,7 +35,7 @@ import {
     useGetDocumentByIdQuery
 } from "../../redux/documents/documentApiSlice";
 import FileUploadBox from "../../components/Applications/FileUploadBox";
-import PdfModal from "../../util/PdfModal";
+import PdfModal from "../util/PdfModal";
 import {useTranslation} from "react-i18next";
 
 const validateEmail = (email) => {

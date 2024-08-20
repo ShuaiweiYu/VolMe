@@ -3,20 +3,20 @@ import {useTranslation} from 'react-i18next';
 import NavBar from "./components/NavBar";
 import PersistLogin from './redux/auth/PersistLogin';
 import NoFound from "./pages/NotFound";
-import UserProfile from "./pages/Users/UserProfile";
-import ForgotPassword from "./pages/util/ForgetPasswordPage";
-import Application from "./pages/Applications/Application"
-import Events from "./pages/Events/Events";
-import EventPage from "./pages/Events/EventPage";
-import CreateEvent from "./pages/Events/CreateEvent";
-import MyEventsPage from "./pages/Events/MyEventsPage";
+import UserProfile from "./pages/users/UserProfile";
+import ForgotPassword from "./pages/credentials/ForgetPasswordPage";
+import Application from "./pages/applications/Application"
+import Events from "./pages/events/Events";
+import EventPage from "./pages/events/EventPage";
+import CreateEvent from "./pages/events/CreateEvent";
+import MyEventsPage from "./pages/events/MyEventsPage";
 import {Management} from "./pages/eventManagement/Management";
 import {userType} from "./util/userType"
 import LandingPage from "./pages/LandingPage";
 import Box from '@mui/material/Box';
 import CheckOut from "./pages/checkOut";
-import Chat from "./pages/Chat/Chat";
-import OrganizerProfileDisplayPage from "./pages/Users/OrganizerProfileDisplayPage";
+import Chat from "./pages/chat/Chat";
+import OrganizerProfileDisplayPage from "./pages/users/OrganizerProfileDisplayPage";
 import Contacts from "./components/LandingPage/Contacts";
 
 function App() {
