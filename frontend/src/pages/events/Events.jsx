@@ -90,7 +90,7 @@ const MultipleFilter = ({
         {key: "IT", value: t("events.it")},
         {key: "ES", value: t("events.es")},
         {key: "FR", value: t("events.fr")},
-        {key: "CN", value: t("events.cn")}
+        {key: "CN", value: t("events.zh")}
     ]
     const category = [
         {key: "CS", value: t("events.CS")},

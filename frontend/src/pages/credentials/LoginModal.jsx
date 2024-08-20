@@ -976,7 +976,7 @@ export const SignUpModal = ({handleClose}) => {
                 display: 'flex',
                 justifyContent: 'center',
                 alignItems: 'center',
-                minWidth: 500,
+                minWidth: 1000,
                 maxWidth: 2000,
                 padding: 2,
                 margin: '10px auto'

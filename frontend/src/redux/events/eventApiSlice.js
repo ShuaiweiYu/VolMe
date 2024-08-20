@@ -1,4 +1,4 @@
-import {EVENT_URL, UPLOAD_URL} from "../constants";
+import {EVENT_URL} from "../constants";
 import {apiSlice} from "../apiSlice";
 
 export const eventApiSlice = apiSlice.injectEndpoints({

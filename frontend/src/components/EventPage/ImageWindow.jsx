@@ -5,11 +5,11 @@ import MobileStepper from '@mui/material/MobileStepper';
 import Button from '@mui/material/Button';
 import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
-import SwipeableViews from 'react-swipeable-views';
-import { autoPlay } from 'react-swipeable-views-utils';
+// import SwipeableViews from 'react-swipeable-views';
+// import { autoPlay } from 'react-swipeable-views-utils';
 import { getFileUrl } from "../../util/fileUploaderWrapper";
 
-const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
+// const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
 
 
 
@@ -40,34 +40,34 @@ function ImageWindow({ uploadURL }) {
 
     return (
         <Box sx={{ maxWidth: "100%", maxHeight: "100%", flexGrow: 1 }}>
-            <AutoPlaySwipeableViews
-                axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
-                index={activeStep}
-                onChangeIndex={handleStepChange}
-                enableMouseEvents
-            >
-                {uploadURL.map((url, index) => (
-                    <div key={index}>
-                        {Math.abs(activeStep - index) <= 2 ? (
-                            <Box
-                                component="img"
-                                sx={{
-                                    display: 'block',
-                                    overflow: 'hidden',
-                                    width: '100%',
-                                    maxHeight: 400,
-                                }}
-                                src={getFileUrl(url, "image", "display")}
-                                alt={`Image ${index + 1}`}
-                                onError={(e) => {
-                                    console.error(`Error loading image at ${getFileUrl(url, "image", "display")}`, e);
-                                    e.target.src = 'https://via.placeholder.com/400'; // Fallback image
-                                }}
-                            />
-                        ) : null}
-                    </div>
-                ))}
-            </AutoPlaySwipeableViews>
+            {/*<AutoPlaySwipeableViews*/}
+            {/*    axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}*/}
+            {/*    index={activeStep}*/}
+            {/*    onChangeIndex={handleStepChange}*/}
+            {/*    enableMouseEvents*/}
+            {/*>*/}
+            {/*    {uploadURL.map((url, index) => (*/}
+            {/*        <div key={index}>*/}
+            {/*            {Math.abs(activeStep - index) <= 2 ? (*/}
+            {/*                <Box*/}
+            {/*                    component="img"*/}
+            {/*                    sx={{*/}
+            {/*                        display: 'block',*/}
+            {/*                        overflow: 'hidden',*/}
+            {/*                        width: '100%',*/}
+            {/*                        maxHeight: 400,*/}
+            {/*                    }}*/}
+            {/*                    src={getFileUrl(url, "image", "display")}*/}
+            {/*                    alt={`Image ${index + 1}`}*/}
+            {/*                    onError={(e) => {*/}
+            {/*                        console.error(`Error loading image at ${getFileUrl(url, "image", "display")}`, e);*/}
+            {/*                        e.target.src = 'https://via.placeholder.com/400'; // Fallback image*/}
+            {/*                    }}*/}
+            {/*                />*/}
+            {/*            ) : null}*/}
+            {/*        </div>*/}
+            {/*    ))}*/}
+            {/*</AutoPlaySwipeableViews>*/}
             <MobileStepper
                 steps={maxSteps}
                 position="static"

@@ -73,8 +73,38 @@ const CreateEvent = () => {
 
     const [description, setDescription] = useState("");
     const [peopleNeeded, setPeopleNeeded] = useState(null);
+
     const [categorylist, setCategorylist] = useState([]);
     const categories = ["a", "b", "c"]
+
+    const languagesList = [
+        {key: "EN", value: t("events.en")},
+        {key: "DE", value: t("events.de")},
+        {key: "IT", value: t("events.it")},
+        {key: "ES", value: t("events.es")},
+        {key: "FR", value: t("events.fr")},
+        {key: "CN", value: t("events.zh")}
+    ]
+    const categoryList = [
+        {key: "CS", value: t("events.CS")},
+        {key: "EL", value: t("events.EL")},
+        {key: "EC", value: t("events.EC")},
+        {key: "HM", value: t("events.HM")},
+        {key: "AW", value: t("events.AW")},
+        {key: "AC", value: t("events.AC")},
+        {key: "DR", value: t("events.DR")},
+        {key: "YC", value: t("events.YC")},
+        {key: "SE", value: t("events.SE")},
+        {key: "SR", value: t("events.SR")},
+        {key: "HR", value: t("events.HR")},
+        {key: "SJ", value: t("events.SJ")},
+        {key: "HH", value: t("events.HH")},
+        {key: "HF", value: t("events.HF")},
+        {key: "MH", value: t("events.MH")},
+        {key: "IV", value: t("events.IV")},
+        {key: "CI", value: t("events.CI")},
+        {key: "OT", value: t("events.OT")}
+    ];
 
     const [languages, setLanguages] = useState([]);
     const languageList = ["English", "German", "Spanish", "French", "Chinese", "Italian"];
@@ -372,12 +402,10 @@ const CreateEvent = () => {
 
                             <Grid item xs={12} sm={6}>
                                 <Box sx={{width: '100%'}}>
-                                    {location !== "" ? (
+                                    {location !== "" && (
                                         <Map3
                                             address={`${location}, ${selectedCity?.name || ""}, ${selectedState?.name || ""}, ${selectedCountry?.name || ""}`}
                                         />
-                                    ) : (
-                                        <Map3 address={"Boltzmannstraße 15, Garching bei München, Germany"}/>
                                     )}
                                 </Box>
                             </Grid>

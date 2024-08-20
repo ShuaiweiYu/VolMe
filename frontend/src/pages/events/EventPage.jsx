@@ -116,6 +116,34 @@ const EventPage = () => {
     const [updateEvent] = useUpdateEventMutation();
     const categories = ["a", "b", "c"]
     const languageList = ["English", "German", "Spanish", "French", "Chinese", "Italian"];
+    const languagesList = [
+        {key: "EN", value: t("events.en")},
+        {key: "DE", value: t("events.de")},
+        {key: "IT", value: t("events.it")},
+        {key: "ES", value: t("events.es")},
+        {key: "FR", value: t("events.fr")},
+        {key: "CN", value: t("events.zh")}
+    ]
+    const categoryList = [
+        {key: "CS", value: t("events.CS")},
+        {key: "EL", value: t("events.EL")},
+        {key: "EC", value: t("events.EC")},
+        {key: "HM", value: t("events.HM")},
+        {key: "AW", value: t("events.AW")},
+        {key: "AC", value: t("events.AC")},
+        {key: "DR", value: t("events.DR")},
+        {key: "YC", value: t("events.YC")},
+        {key: "SE", value: t("events.SE")},
+        {key: "SR", value: t("events.SR")},
+        {key: "HR", value: t("events.HR")},
+        {key: "SJ", value: t("events.SJ")},
+        {key: "HH", value: t("events.HH")},
+        {key: "HF", value: t("events.HF")},
+        {key: "MH", value: t("events.MH")},
+        {key: "IV", value: t("events.IV")},
+        {key: "CI", value: t("events.CI")},
+        {key: "OT", value: t("events.OT")}
+    ];
 
     const userID = useSelector(selectCurrentUserId);
     const {data: user} = useGetUserByUserIdQuery(userID, {skip: !userID});
@@ -126,7 +154,7 @@ const EventPage = () => {
     const [isInWishlist, setIsInWishlist] = useState(false);
     const [addWishList] = useAddWishlistItemMutation();
     const [deleteWishList] = useDeleteWishlistItemByEventMutation();
-    
+
     const categoryName = "categoryName";
 
     const [createReview] = useCreateReviewMutation();
@@ -351,8 +379,6 @@ const EventPage = () => {
                                     fullWidth
                                     id="eventtitle"
                                     label={t("eventPage.eventTitle")}
-                                    autoFocus
-                                    //placeholder="Name your event here"
                                     value={title}
                                     onChange={(event) => setTitle(event.target.value)}
                                     sx={{
@@ -370,20 +396,28 @@ const EventPage = () => {
                         {event && (
                             <>
                                 <Grid item xs={12}>
-                                    <Divider sx={{margin: '20px 0'}}/>
                                     {isEditing ? (
                                         <>
+                                            <Divider sx={{margin: '20px 0'}}/>
                                             <Typography variant="h2">{t("eventPage.addPictures")}</Typography>
                                             <Box sx={{marginTop: '10px'}}>
                                                 <Grid item xs={12} sm={12}>
-                                                    <ImageUploadBox onURLChange={handleURLChange} eventID={eventID} isEditing={isEditing}/>
+                                                    <ImageUploadBox onURLChange={handleURLChange} eventID={eventID}
+                                                                    isEditing={isEditing}/>
                                                 </Grid>
                                             </Box>
                                         </>
                                     ) : (
-                                        <Box sx={{textAlign: 'center', marginBottom: '10px'}}>
-                                            <ImageWindow uploadURL={event?.response?.uploadURL}/>
-                                        </Box>
+                                        <>
+                                            {event?.response?.uploadURL.length > 0 && (
+                                                <>
+                                                    <Divider sx={{margin: '20px 0'}}/>
+                                                    <Box sx={{textAlign: 'center', marginBottom: '10px'}}>
+                                                        <ImageWindow uploadURL={event?.response?.uploadURL}/>
+                                                    </Box>
+                                                </>
+                                            )}
+                                        </>
                                     )}
                                 </Grid>
 
@@ -408,7 +442,8 @@ const EventPage = () => {
                                             marginBottom: '10px',
                                             marginTop: '10px'
                                         }}>
-                                            <Typography variant="body1" dangerouslySetInnerHTML={{__html: DOMPurify.sanitize(event?.response?.description)}}/>
+                                            <Typography variant="body1"
+                                                        dangerouslySetInnerHTML={{__html: DOMPurify.sanitize(event?.response?.description)}}/>
                                         </Box>
                                     )}
                                 </Grid>
@@ -419,7 +454,7 @@ const EventPage = () => {
                                     {isEditing ? (
                                         <Box sx={{marginTop: '10px'}}>
                                             <LocalizationProvider dateAdapter={AdapterDayjs}>
-                                                <Stack direction="row" spacing={2} sx={{ width: '100%' }}>
+                                                <Stack direction="row" spacing={2} sx={{width: '100%'}}>
                                                     <DateTimePicker
                                                         label={t("eventPage.startDateLabel")}
                                                         value={dayjs(startDate).isValid() ? dayjs(startDate) : null}
@@ -468,7 +503,8 @@ const EventPage = () => {
                                                     padding: '10px',
                                                     flexGrow: 1
                                                 }}>
-                                                    <Typography variant="subtitle1" sx={{fontWeight: 'bold'}}>{t("eventPage.startDate")}</Typography>
+                                                    <Typography variant="subtitle1"
+                                                                sx={{fontWeight: 'bold'}}>{t("eventPage.startDate")}</Typography>
                                                     <Typography variant="body1">
                                                         {dayjs(event?.response?.startDate).format('YYYY-MM-DD HH:mm')}
                                                     </Typography>
@@ -481,7 +517,8 @@ const EventPage = () => {
                                                     padding: '10px',
                                                     flexGrow: 1
                                                 }}>
-                                                    <Typography variant="subtitle1" sx={{fontWeight: 'bold'}}>{t("eventPage.endDate")}</Typography>
+                                                    <Typography variant="subtitle1"
+                                                                sx={{fontWeight: 'bold'}}>{t("eventPage.endDate")}</Typography>
                                                     <Typography variant="body1">
                                                         {dayjs(event?.response?.endDate).format('YYYY-MM-DD HH:mm')}
                                                     </Typography>
@@ -639,7 +676,8 @@ const EventPage = () => {
                                                 </Grid>
                                             </Stack>
                                             <Divider sx={{margin: '20px 0'}}/>
-                                            <Typography variant="h2">{t("eventPage.selectRequiredDocuments")}</Typography>
+                                            <Typography
+                                                variant="h2">{t("eventPage.selectRequiredDocuments")}</Typography>
                                             <Box sx={{display: 'flex', flexDirection: 'row', flexWrap: 'wrap', gap: 2}}>
                                                 {allOptions.map((option, index) => (
                                                     <FormControlLabel
@@ -666,7 +704,8 @@ const EventPage = () => {
 
                                             <Box sx={{marginTop: 2}}>
                                                 <Divider sx={{margin: '20px 0'}}/>
-                                                <Typography variant="h2">{t("eventPage.selectWorkingLanguages")}</Typography>
+                                                <Typography
+                                                    variant="h2">{t("eventPage.selectWorkingLanguages")}</Typography>
                                                 <Box sx={{
                                                     display: 'flex',
                                                     flexDirection: 'row',
@@ -694,15 +733,19 @@ const EventPage = () => {
                                         <>
                                             <Grid item xs={12}>
                                                 <Stack direction="row" alignItems="center">
-                                                    <Typography variant="h2" sx={{margin: '20px 0'}}>{t("eventPage.peopleNeeded")}</Typography>
-                                                    <Typography variant="h3" sx={{marginLeft: 2}}>{event?.response?.peopleNeeded}</Typography>
+                                                    <Typography variant="h2"
+                                                                sx={{margin: '20px 0'}}>{t("eventPage.peopleNeeded")}</Typography>
+                                                    <Typography variant="h3"
+                                                                sx={{marginLeft: 2}}>{event?.response?.peopleNeeded}</Typography>
                                                 </Stack>
                                                 <Divider sx={{margin: '20px 0'}}/>
                                             </Grid>
                                             <Grid item xs={12}>
                                                 <Stack direction="row" alignItems="center">
-                                                    <Typography variant="h2" sx={{margin: '20px 0'}}>{t("eventPage.category")}</Typography>
-                                                    <Typography variant="h3" sx={{marginLeft: 2}}>{categoryName}</Typography>
+                                                    <Typography variant="h2"
+                                                                sx={{margin: '20px 0'}}>{t("eventPage.category")}</Typography>
+                                                    <Typography variant="h3"
+                                                                sx={{marginLeft: 2}}>{categoryName}</Typography>
                                                 </Stack>
                                                 <Divider sx={{margin: '20px 0'}}/>
                                             </Grid>
@@ -797,18 +840,22 @@ const EventPage = () => {
                                 </Grid>
 
                                 {user?.response?.role === 'ORGANIZER' && user?.response?._id === event?.response?.organiser._id && (
-                                    <Stack direction="row" spacing={2} justifyContent="center" sx={{ display: { xs: 'block', md: 'none' } }}>
+                                    <Stack direction="row" spacing={2} justifyContent="center"
+                                           sx={{display: {xs: 'block', md: 'none'}}}>
                                         {isEditing ? (
                                             <>
-                                                <StyledButton variant="outlined" onClick={handleEditToggle} disabled={!isUpcoming}>
+                                                <StyledButton variant="outlined" onClick={handleEditToggle}
+                                                              disabled={!isUpcoming}>
                                                     {t("eventPage.cancelEdit")}
                                                 </StyledButton>
-                                                <StyledButton variant="contained" onClick={handleSubmit} disabled={!isUpcoming}>
+                                                <StyledButton variant="contained" onClick={handleSubmit}
+                                                              disabled={!isUpcoming}>
                                                     {t("eventPage.saveChanges")}
                                                 </StyledButton>
                                             </>
                                         ) : (
-                                            <StyledButton variant="contained" onClick={handleEditToggle} disabled={!isUpcoming}>
+                                            <StyledButton variant="contained" onClick={handleEditToggle}
+                                                          disabled={!isUpcoming}>
                                                 {t("eventPage.editEvent")}
                                             </StyledButton>
                                         )}
@@ -819,13 +866,17 @@ const EventPage = () => {
                                 {user?.response.role === 'VOLUNTEER' &&
                                     <>
                                         <Grid item xs={12} sx={{display: {xs: 'block', md: 'none'}}}>
-                                            <Stack direction="row" justifyContent="space-around" spacing={2} sx={{padding: 2}}>
+                                            <Stack direction="row" justifyContent="space-around" spacing={2}
+                                                   sx={{padding: 2}}>
                                                 {!isInWishlist &&
-                                                    <StyledButton variant="outlined" onClick={handleWishlistButton} disabled={!isUpcoming}>{t("eventPage.addToWishList")}</StyledButton>}
+                                                    <StyledButton variant="outlined" onClick={handleWishlistButton}
+                                                                  disabled={!isUpcoming}>{t("eventPage.addToWishList")}</StyledButton>}
                                                 {isInWishlist &&
-                                                    <StyledButton variant="outlined" onClick={handleWishlistButton}>{t("eventPage.removeFromWishlist")}</StyledButton>}
+                                                    <StyledButton variant="outlined"
+                                                                  onClick={handleWishlistButton}>{t("eventPage.removeFromWishlist")}</StyledButton>}
                                                 <br/>
-                                                <StyledButton variant="contained" onClick={handleButtonClick} disabled={!isUpcoming}>{t("eventPage.applyNow")}</StyledButton>
+                                                <StyledButton variant="contained" onClick={handleButtonClick}
+                                                              disabled={!isUpcoming}>{t("eventPage.applyNow")}</StyledButton>
                                             </Stack>
                                         </Grid>
                                         <Grid item xs={12}>
@@ -843,7 +894,8 @@ const EventPage = () => {
                                                             precision={1}
                                                             size="large"
                                                         />
-                                                        <Typography variant="subtitle1">{t("eventPage.yourRating")}: {rating}</Typography>
+                                                        <Typography
+                                                            variant="subtitle1">{t("eventPage.yourRating")}: {rating}</Typography>
                                                     </Stack>
                                                 </Box>
                                                 <TextField
@@ -868,7 +920,8 @@ const EventPage = () => {
                                                         },
                                                     }}
                                                 />
-                                                <StyledButton type="submit" variant="contained" sx={{marginTop: '20px'}} onClick={handleAddReview}>{t("eventPage.submitReview")}</StyledButton>
+                                                <StyledButton type="submit" variant="contained" sx={{marginTop: '20px'}}
+                                                              onClick={handleAddReview}>{t("eventPage.submitReview")}</StyledButton>
                                             </Box>
                                         </Grid>
                                     </>
@@ -917,15 +970,19 @@ const EventPage = () => {
 
                 <Grid item xs={12} md={2} sx={{display: {xs: 'none', md: 'block'}}}>
                     <Box>
-                        <Stack direction="column" position="fixed" justifyContent="space-around" sx={{padding: 5, gap: 1}}>
+                        <Stack direction="column" position="fixed" justifyContent="space-around"
+                               sx={{padding: 5, gap: 1}}>
                             {user?.response.role === 'VOLUNTEER' &&
                                 <>
                                     {!isInWishlist &&
-                                        <StyledButton variant="outlined" onClick={handleWishlistButton} disabled={!isUpcoming}>{t("eventPage.addToWishList")}</StyledButton>}
+                                        <StyledButton variant="outlined" onClick={handleWishlistButton}
+                                                      disabled={!isUpcoming}>{t("eventPage.addToWishList")}</StyledButton>}
                                     {isInWishlist &&
-                                        <StyledButton variant="outlined" onClick={handleWishlistButton}>{t("eventPage.removeFromWishlist")}</StyledButton>}
+                                        <StyledButton variant="outlined"
+                                                      onClick={handleWishlistButton}>{t("eventPage.removeFromWishlist")}</StyledButton>}
                                     <br/>
-                                    <StyledButton variant="contained" onClick={handleButtonClick} disabled={!isUpcoming}>{t("eventPage.applyNow")}</StyledButton>
+                                    <StyledButton variant="contained" onClick={handleButtonClick}
+                                                  disabled={!isUpcoming}>{t("eventPage.applyNow")}</StyledButton>
                                 </>
                             }
 
@@ -933,11 +990,14 @@ const EventPage = () => {
                                 <>
                                     {isEditing ? (
                                         <>
-                                            <StyledButton variant="outlined" onClick={handleEditToggle} disabled={!isUpcoming}>{t("eventPage.cancelEdit")}</StyledButton>
-                                            <StyledButton variant="contained" onClick={handleSubmit} disabled={!isUpcoming}>{t("eventPage.saveChanges")}</StyledButton>
+                                            <StyledButton variant="outlined" onClick={handleEditToggle}
+                                                          disabled={!isUpcoming}>{t("eventPage.cancelEdit")}</StyledButton>
+                                            <StyledButton variant="contained" onClick={handleSubmit}
+                                                          disabled={!isUpcoming}>{t("eventPage.saveChanges")}</StyledButton>
                                         </>
                                     ) : (
-                                        <StyledButton variant="contained" onClick={handleEditToggle} disabled={!isUpcoming}>{t("eventPage.editEvent")}</StyledButton>
+                                        <StyledButton variant="contained" onClick={handleEditToggle}
+                                                      disabled={!isUpcoming}>{t("eventPage.editEvent")}</StyledButton>
                                     )}
                                 </>
                             )}
