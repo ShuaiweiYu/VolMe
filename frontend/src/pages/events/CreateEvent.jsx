@@ -9,14 +9,14 @@ import {
     Button,
     Typography, Container, Stack,
     Box,
-    Grid, FormControlLabel, Checkbox, Divider
+    Grid, FormControlLabel, Checkbox, Divider, MenuItem, FormControl, InputLabel, Select
 } from '@mui/material';
 import Autocomplete from '@mui/material/Autocomplete';
 import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
 import {DateTimePicker, LocalizationProvider} from "@mui/x-date-pickers";
 import {Country, State, City} from 'country-state-city';
-import Map3 from '../../components/GoogleMap/Map';
+import Map from '../../components/GoogleMap/Map';
 import DescriptionEditor from "../../components/CreateEventPage/DescriptionEditor";
 import {useSelector} from "react-redux";
 import {selectCurrentUserId} from "../../redux/auth/authSlice";
@@ -74,17 +74,7 @@ const CreateEvent = () => {
     const [description, setDescription] = useState("");
     const [peopleNeeded, setPeopleNeeded] = useState(null);
 
-    const [categorylist, setCategorylist] = useState([]);
-    const categories = ["a", "b", "c"]
-
-    const languagesList = [
-        {key: "EN", value: t("events.en")},
-        {key: "DE", value: t("events.de")},
-        {key: "IT", value: t("events.it")},
-        {key: "ES", value: t("events.es")},
-        {key: "FR", value: t("events.fr")},
-        {key: "CN", value: t("events.zh")}
-    ]
+    const [category, setCategory] = useState("");
     const categoryList = [
         {key: "CS", value: t("events.CS")},
         {key: "EL", value: t("events.EL")},
@@ -107,7 +97,14 @@ const CreateEvent = () => {
     ];
 
     const [languages, setLanguages] = useState([]);
-    const languageList = ["English", "German", "Spanish", "French", "Chinese", "Italian"];
+    const languagesList = [
+        {key: "EN", value: t("events.en")},
+        {key: "DE", value: t("events.de")},
+        {key: "IT", value: t("events.it")},
+        {key: "ES", value: t("events.es")},
+        {key: "FR", value: t("events.fr")},
+        {key: "CN", value: t("events.zh")}
+    ]
 
     const [createEvent] = useCreateEventMutation();
 
@@ -228,7 +225,6 @@ const CreateEvent = () => {
                 "address": address,
                 "houseNumber": houseNumber,
                 "zipCode": zipCode,
-                //"location": location,
                 "description": description,
                 "peopleNeeded": peopleNeeded,
                 "category": "",
@@ -254,7 +250,6 @@ const CreateEvent = () => {
     useEffect(() => {
         setCountry(Country.getAllCountries());
     }, []);
-
 
     const handleCountryChange = (event, value) => {
         setSelectedCountry(value);
@@ -403,7 +398,7 @@ const CreateEvent = () => {
                             <Grid item xs={12} sm={6}>
                                 <Box sx={{width: '100%'}}>
                                     {location !== "" && (
-                                        <Map3
+                                        <Map
                                             address={`${location}, ${selectedCity?.name || ""}, ${selectedState?.name || ""}, ${selectedCountry?.name || ""}`}
                                         />
                                     )}
@@ -456,7 +451,6 @@ const CreateEvent = () => {
                             <Typography variant="h2" sx={{margin: '20px 0'}}>{t("createEvent.description")}</Typography>
                             <Grid item xs={12} sm={6}>
                                 <DescriptionEditor
-                                    label={t("createEvent.eventDescription")}
                                     value={description}
                                     onChange={handleEditorChange}
                                 />
@@ -473,29 +467,29 @@ const CreateEvent = () => {
                                             label={t("createEvent.peopleNeeded")}
                                             type="number"
                                             value={peopleNeeded}
-                                            placeholder="min 5, max 200"
-                                            InputProps={{inputProps: {min: 5, max: 200}}}
+                                            placeholder="min 1, max 200"
+                                            InputProps={{inputProps: {min: 1, max: 200}}}
                                             onChange={(event) => setPeopleNeeded(event.target.value)}
                                         />
                                     </Grid>
-                                    {/*<Grid item xs={8}>*/}
-                                    {/*    <FormControl fullWidth required>*/}
-                                    {/*        <InputLabel id="category-label">Category</InputLabel>*/}
-                                    {/*        <Select*/}
-                                    {/*            labelId="category-label"*/}
-                                    {/*            id="category-select"*/}
-                                    {/*            value={category}*/}
-                                    {/*            label={t("createEvent.category")}*/}
-                                    {/*            onChange={(event) => setCategory(event.target.value)}*/}
-                                    {/*        >*/}
-                                    {/*            {categories?.map((cat) => (*/}
-                                    {/*                <MenuItem key={cat._id} value={cat._id}>*/}
-                                    {/*                    {cat.name}*/}
-                                    {/*                </MenuItem>*/}
-                                    {/*            ))}*/}
-                                    {/*        </Select>*/}
-                                    {/*    </FormControl>*/}
-                                    {/*</Grid>*/}
+                                    <Grid item xs={8}>
+                                        <FormControl fullWidth required>
+                                            <InputLabel id="category-label">Category</InputLabel>
+                                            <Select
+                                                labelId="category-label"
+                                                id="category-select"
+                                                value={category}
+                                                label={t("createEvent.category")}
+                                                onChange={(event) => setCategory(event.target.value)}
+                                            >
+                                                {categoryList?.map((cat) => (
+                                                    <MenuItem key={cat.key} value={cat.value}>
+                                                        {cat.value}
+                                                    </MenuItem>
+                                                ))}
+                                            </Select>
+                                        </FormControl>
+                                    </Grid>
                                 </Grid>
                             </Stack>
 
@@ -531,17 +525,17 @@ const CreateEvent = () => {
                                 <Divider sx={{margin: '20px 0'}}/>
                                 <Typography variant="h2">{t("createEvent.selectWorkingLanguages")}</Typography>
                                 <Box sx={{display: 'flex', flexDirection: 'row', flexWrap: 'wrap', gap: 2}}>
-                                    {languageList.map((language) => (
+                                    {languagesList.map((language) => (
                                         <FormControlLabel
-                                            key={language}
+                                            key={language.value}
                                             control={
                                                 <Checkbox
-                                                    checked={languages.includes(language)}
+                                                    checked={languages.includes(language.value)}
                                                     onChange={handleLanguageChange}
-                                                    name={language}
+                                                    name={language.value}
                                                 />
                                             }
-                                            label={language}
+                                            label={language.value}
                                         />
                                     ))}
                                 </Box>
@@ -572,7 +566,6 @@ const CreateEvent = () => {
                                             <Typography variant="h3">{t("createEvent.create")}</Typography>
                                         </StyledButton>
                                     </Grid>
-                                    {/*
                                     <Grid item xs={12} sm={4}>
                                         <StyledButton
                                             variant="outlined"
@@ -586,7 +579,6 @@ const CreateEvent = () => {
                                             <Typography variant="h3" color="primary">Save to draft</Typography>
                                         </StyledButton>
                                     </Grid>
-                                    */}
                                     <Grid item xs={12} sm={4}>
                                         <StyledButton
                                             variant="outlined"

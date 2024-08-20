@@ -34,7 +34,7 @@ const DescriptionEditor = ({ label, value, onChange, ...props }) => {
 
     return (
         <Box>
-            <StyledFormControl required fullWidth variant="outlined" {...props}>
+            <StyledFormControl fullWidth variant="outlined" {...props}>
                 <InputLabel shrink>{label}</InputLabel>
                 <Box
                     component={Paper}
@@ -43,21 +43,6 @@ const DescriptionEditor = ({ label, value, onChange, ...props }) => {
                         padding: '16.5px 14px',
                         minHeight: '200px',
                         maxHeight: '800px',
-                        '& .ql-editor': {
-                            fontFamily: 'Roboto, sans-serif',
-                        },
-                        '& .ql-editor h1': {
-                            fontFamily: 'Lobster, cursive',
-                        },
-                        '& .ql-editor h2': {
-                            fontFamily: 'Open Sans, sans-serif',
-                        },
-                        '& .ql-editor h3': {
-                            fontFamily: 'Merriweather, serif',
-                        },
-                        '& .ql-editor h4': {
-                            fontFamily: 'Raleway, sans-serif',
-                        },
                     }}
                 >
                     <ReactQuill
@@ -65,13 +50,9 @@ const DescriptionEditor = ({ label, value, onChange, ...props }) => {
                         onChange={handleEditorChange}
                         modules={{
                             toolbar: [
-                                [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
-                                [{ 'font': fonts }],
+                                [{ 'header': [1, 2, 3, false] }],
                                 [{ 'list': 'ordered' }, { 'list': 'bullet' }],
                                 ['bold', 'italic', 'underline', 'strike', 'blockquote'],
-                                ['link', 'image'],
-                                ['clean'],
-                                [{ 'align': [] }],
                             ],
                         }}
                         formats={[
