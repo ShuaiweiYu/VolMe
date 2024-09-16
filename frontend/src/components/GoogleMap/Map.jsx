@@ -18,7 +18,7 @@ const Map = ({ address }) => {
             }
         };
 
-        fetchCoordinates();
+        fetchCoordinates().catch(console.error);
     }, [address]);
 
     const mapContainerStyle = {

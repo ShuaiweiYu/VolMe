@@ -23,6 +23,24 @@ import {getFileUrl} from "../../util/fileUploaderWrapper";
 import {useTranslation} from "react-i18next";
 import {useDispatch} from "react-redux";
 import {closeWishlistDrawer} from "../../redux/wishlist/wishlistSlice";
+import CS from "../../pages/events/image/CS.jpg";
+import EL from "../../pages/events/image/EL.jpg";
+import EC from "../../pages/events/image/EC.jpg";
+import HM from "../../pages/events/image/HM.jpg";
+import AW from "../../pages/events/image/AW.jpg";
+import AC from "../../pages/events/image/AC.jpg";
+import DR from "../../pages/events/image/DR.jpg";
+import YC from "../../pages/events/image/OT.jpg";
+import SE from "../../pages/events/image/SE.jpg";
+import SR from "../../pages/events/image/SR.jpg";
+import HR from "../../pages/events/image/HR.jpg";
+import SJ from "../../pages/events/image/SJ.jpg";
+import HH from "../../pages/events/image/HH.jpg";
+import HF from "../../pages/events/image/HF.jpg";
+import MH from "../../pages/events/image/MH.jpg";
+import IV from "../../pages/events/image/IV.jpg";
+import CI from "../../pages/events/image/CI.jpg";
+import OT from "../../pages/events/image/OT.jpg";
 
 const WishlistItemCard = ({ item, onDelete, isSelected, onSelectChange }) => {
     const [deleteWishlistItemForUser, { isLoading: deleteLoading, isError: deleteError }] = useDeleteWishlistItemForUserMutation();
@@ -30,6 +48,27 @@ const WishlistItemCard = ({ item, onDelete, isSelected, onSelectChange }) => {
     const [dialogOpen, setDialogOpen] = useState(false);
     const dispatch = useDispatch();
     const {t} = useTranslation();
+
+    const images = [
+        {key: "CS", value: CS},
+        {key: "EL", value: EL},
+        {key: "EC", value: EC},
+        {key: "HM", value: HM},
+        {key: "AW", value: AW},
+        {key: "AC", value: AC},
+        {key: "DR", value: DR},
+        {key: "YC", value: YC},
+        {key: "SE", value: SE},
+        {key: "SR", value: SR},
+        {key: "HR", value: HR},
+        {key: "SJ", value: SJ},
+        {key: "HH", value: HH},
+        {key: "HF", value: HF},
+        {key: "MH", value: MH},
+        {key: "IV", value: IV},
+        {key: "CI", value: CI},
+        {key: "OT", value: OT}
+    ];
 
     const { data: user, isLoading: userLoading, isError: userError } = useGetUserByUserIdQuery(item?.event?.organiser);
 
@@ -104,7 +143,7 @@ const WishlistItemCard = ({ item, onDelete, isSelected, onSelectChange }) => {
             <CardMedia
                 component="img"
                 height="50%"
-                image={getFileUrl(item?.event?.uploadURL[0], "image", "default")}
+                image={item?.event?.uploadURL.length !== 0 ? getFileUrl(item?.event?.uploadURL[0], "image", "default") : images.find(img => img.key === item?.event?.category)?.value}
                 alt="Event image"
                 sx={{ height: 300, filter: !isUpcoming ? 'grayscale(100%)' : 'none' }} // Apply grayscale filter if not upcoming
             />

@@ -977,6 +977,10 @@ const Cart = ({chosenPlan, isYearlyPlan, lockPlan, setLockPlan}) => {
         setLockPlan(true);
     };
 
+    const descriptions1 = [t("pricing.item1_description2-1"), t("pricing.item1_description2-2"), t("pricing.item1_description2-3"), t("pricing.item1_description2-4"), t("pricing.item1_description2-5")]
+    const descriptions2 = [t("pricing.item1_description3-1"), t("pricing.item1_description3-2"), t("pricing.item1_description3-3"), t("pricing.item1_description3-4"), t("pricing.item1_description3-5"), t("pricing.item1_description3-6"), t("pricing.item1_description3-7")]
+    const descriptions3 = [t("pricing.item1_description3-1"), t("pricing.item1_description3-3"), t("pricing.item1_description3-4"), t("pricing.item1_description3-5"), t("pricing.item1_description3-6"), t("pricing.item1_description3-7")]
+
     return (
         <>
             {chosenPlan && (
@@ -998,7 +1002,7 @@ const Cart = ({chosenPlan, isYearlyPlan, lockPlan, setLockPlan}) => {
                         <Typography component="h2" variant="h2" align="center" gutterBottom>
                             {t("pricing.details")}
                         </Typography>
-                        <Grid container spacing={3}>
+                        <Grid container spacing={1}>
                             <Grid item xs={12} sm={8}>
                                 <Typography component="text" variant="subtitle">
                                     {t("pricing.choose")}:
@@ -1014,27 +1018,81 @@ const Cart = ({chosenPlan, isYearlyPlan, lockPlan, setLockPlan}) => {
                                 <Typography component="text" variant="subtitle">
                                     {t("pricing.benefits")}:
                                 </Typography>
-                                {chosenPlan.description.map((descriptionItem) => (
-                                    <Box
-                                        key={descriptionItem}
-                                        sx={{
-                                            py: 1,
-                                            display: 'flex',
-                                            gap: 1.5,
-                                            alignItems: 'center',
-                                        }}
-                                    >
-                                        <CheckCircleRoundedIcon
-                                            sx={{
-                                                width: 20,
-                                                color: 'primary.main',
-                                            }}
-                                        />
-                                        <Typography component="text" variant="subtitle2">
-                                            {descriptionItem}
-                                        </Typography>
-                                    </Box>
-                                ))}
+                                {chosenPlan.name === "Basic" && (
+                                    <>
+                                        {descriptions1.map((descriptionItem) => (
+                                            <Box
+                                                key={descriptionItem}
+                                                sx={{
+                                                    py: 1,
+                                                    display: 'flex',
+                                                    gap: 1.5,
+                                                    alignItems: 'center',
+                                                }}
+                                            >
+                                                <CheckCircleRoundedIcon
+                                                    sx={{
+                                                        width: 20,
+                                                        color: 'primary.main',
+                                                    }}
+                                                />
+                                                <Typography component="text" variant="subtitle2">
+                                                    {descriptionItem}
+                                                </Typography>
+                                            </Box>
+                                        ))}
+                                    </>
+                                )}
+                                {chosenPlan.name === "Premium" && (
+                                    <>
+                                        {descriptions2.map((descriptionItem) => (
+                                            <Box
+                                                key={descriptionItem}
+                                                sx={{
+                                                    py: 1,
+                                                    display: 'flex',
+                                                    gap: 1.5,
+                                                    alignItems: 'center',
+                                                }}
+                                            >
+                                                <CheckCircleRoundedIcon
+                                                    sx={{
+                                                        width: 20,
+                                                        color: 'primary.main',
+                                                    }}
+                                                />
+                                                <Typography component="text" variant="subtitle2">
+                                                    {descriptionItem}
+                                                </Typography>
+                                            </Box>
+                                        ))}
+                                    </>
+                                )}
+                                {chosenPlan.name === "Pay As You Go" && (
+                                    <>
+                                        {descriptions3.map((descriptionItem) => (
+                                            <Box
+                                                key={descriptionItem}
+                                                sx={{
+                                                    py: 1,
+                                                    display: 'flex',
+                                                    gap: 1.5,
+                                                    alignItems: 'center',
+                                                }}
+                                            >
+                                                <CheckCircleRoundedIcon
+                                                    sx={{
+                                                        width: 20,
+                                                        color: 'primary.main',
+                                                    }}
+                                                />
+                                                <Typography component="text" variant="subtitle2">
+                                                    {descriptionItem}
+                                                </Typography>
+                                            </Box>
+                                        ))}
+                                    </>
+                                )}
                             </Grid>
                             <Grid item xs={12} sm={4}
                                   sx={{display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2}}>

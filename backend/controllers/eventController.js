@@ -12,6 +12,8 @@ const createEvent = asyncHandler(async (req, res) => {
     const startDate = req.body.startDate;
     const endDate = req.body.endDate;
 
+    const isDraft = req.body.isDraft;
+
     const selectedCountry = req.body.selectedCountry;
     const selectedState = req.body.selectedState;
     const selectedCity = req.body.selectedCity;
@@ -31,6 +33,7 @@ const createEvent = asyncHandler(async (req, res) => {
     const isRegularUntil = req.body.isRegularUntil;
 
     const eventObj = new Event(title, organiser, creationPlan)
+    if (isDraft) eventObj.isDraft = isDraft;
     if (startDate) eventObj.startDate = startDate;
     if (endDate) eventObj.endDate = endDate;
     if (selectedCountry) eventObj.selectedCountry = selectedCountry;

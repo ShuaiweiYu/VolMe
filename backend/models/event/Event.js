@@ -3,10 +3,12 @@ import mongoose from 'mongoose';
 const {ObjectId} = mongoose.Schema;
 
 class Event {
-    constructor(title, organiser, creationPlan) {
+    constructor(title, organiser, creationPlan, isDraft) {
         this.title = title
         this.organiser = organiser
         this.uploadURL = []
+
+        this.isDraft = isDraft
 
         this.startDate = null
         this.endDate = null
@@ -30,6 +32,8 @@ class Event {
         this.reviews = []
         this.numReviews = 0
         this.creationPlan = creationPlan
+
+        this.customQuestions = []
     }
 }
 
@@ -45,22 +49,22 @@ class Review {
 }
 
 const ReviewSchema = mongoose.Schema({
-        name: {type: String,},
-        eventID: {type: ObjectId},
-        rating: {type: Number, required: true,},
-        comment: {type: String, required: true},
-        user: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'User',
-        },
-        createdAt: {type: Date, default: Date.now}
+    name: {type: String,},
+    eventID: {type: ObjectId},
+    rating: {type: Number, required: true,},
+    comment: {type: String, required: true},
+    user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
     },
-    {timestamps: true}
-)
+    createdAt: {type: Date, default: Date.now}
+}, {timestamps: true})
 
 const EventSchema = mongoose.Schema({
     title: {type: String, required: true},
     organiser: {type: ObjectId, ref: "User", required: true},
+
+    isDraft: {type: Boolean, required: true},
 
     selectedCountry: {type: Object},
     selectedState: {type: Object},
@@ -84,7 +88,9 @@ const EventSchema = mongoose.Schema({
     rating: {type: Number, default: 0},
     reviews: [ReviewSchema],
     numReviews: {type: Number, default: 0},
-    creationPlan: {type: String, required: true}
+    creationPlan: {type: String, required: true},
+
+    customQuestions: [{type: Object}]
 }, {timestamps: true});
 
 const EventModel = mongoose.model("Event", EventSchema);
