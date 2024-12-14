@@ -17,7 +17,6 @@ import documentRoutes from "./routes/documentRoutes.js";
 import wishlistItemRoutes from "./routes/wishlistItemRoutes.js";
 import paymentItemRoutes from "./routes/paymentItemRoutes.js";
 import paymentRoutes from "./routes/paymentRoutes.js";
-import messageRoutes from "./routes/messageRoutes.js";
 
 dotenv.config();
 
@@ -44,7 +43,6 @@ app.use("/api/applications",applicationRoutes)
 app.use("/api/documents",documentRoutes)
 app.use("/api/wishlist",wishlistItemRoutes)
 app.use("/api/paymentItems", paymentItemRoutes)
-app.use("/api/messages",messageRoutes)
 
 app.all('*', (req, res) => {
     res.status(404).json({ message: 'Unknown URL' })

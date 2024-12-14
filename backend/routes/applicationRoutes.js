@@ -3,7 +3,8 @@ import applicationController from '../controllers/applicationController.js';
 import verifyJWT from '../middleware/verifyJWT.js'
 
 const router = express.Router();
-//router.use(verifyJWT)
+
+router.use(verifyJWT)
 
 router.route('/apply/:id')
     .post(applicationController.createApplication)
